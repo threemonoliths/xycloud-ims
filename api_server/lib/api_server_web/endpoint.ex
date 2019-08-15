@@ -40,5 +40,7 @@ defmodule ApiServerWeb.Endpoint do
     key: "_api_server_key",
     signing_salt: "xI7XMeMz"
 
+
+  plug CORSPlug
   plug ApiServerWeb.Router
 end

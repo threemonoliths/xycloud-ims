@@ -20,7 +20,7 @@ defmodule ApiServer.MixProject do
   def application do
     [
       mod: {ApiServer.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :scrivener_ecto]
     ]
   end
 
@@ -40,7 +40,19 @@ defmodule ApiServer.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      
+      {:poison, "~> 3.1"},
+      {:comeonin, "~> 5.1.2"},
+      {:pbkdf2_elixir, "~> 1.0.2"},
+      {:scrivener_ecto, "~> 2.0"},
+      {:cors_plug, "~> 2.0"},
+      {:guardian, "~> 1.2.1"},
+      {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.1"},
+      {:quantum, "~> 2.3"},
+      {:timex, "~> 3.5"},
+      {:elixlsx, "~> 0.4.1"}
     ]
   end
 
