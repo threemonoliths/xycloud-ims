@@ -90,6 +90,7 @@ export class UserLoginComponent implements OnDestroy {
   // #endregion
 
   submit() {
+    localStorage.clear();
     this.error = '';
     // if (this.type === 0) {
     this.userName.markAsDirty();

@@ -22,8 +22,8 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
-    // canActivateChild: [SimpleGuard],
-    // canActivate: [SimpleGuard],
+    // canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard/v1', pathMatch: 'full' },
       { path: 'dashboard', redirectTo: 'dashboard/v1', pathMatch: 'full' },
