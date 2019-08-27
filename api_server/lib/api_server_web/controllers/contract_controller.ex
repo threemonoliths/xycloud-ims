@@ -8,9 +8,9 @@ defmodule ApiServerWeb.ContractController do
 
   action_fallback ApiServerWeb.FallbackController
 
-  plug Bitwise, need_perms([:delete]) when action in [:delete]
-  plug Bitwise, need_perms([:read]) when action in [:index]
-  plug Bitwise, need_perms([:write]) when action in [:create, :update]
+  # plug Bitwise, need_perms([:delete]) when action in [:delete]
+  # plug Bitwise, need_perms([:read]) when action in [:index]
+  # plug Bitwise, need_perms([:write]) when action in [:create, :update]
 
   def index(conn, params) do
     page = page(params)

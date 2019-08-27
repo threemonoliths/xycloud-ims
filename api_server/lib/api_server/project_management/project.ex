@@ -5,6 +5,7 @@ defmodule ApiServer.ProjectManagement.Project do
   schema "projects" do
     field :pname, :string
     field :comments, :string
+    field :date, :string
     has_many :contracts, ApiServer.ContractManagement.Contract, on_delete: :nilify_all
 
     timestamps()
@@ -13,7 +14,7 @@ defmodule ApiServer.ProjectManagement.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:pname, :comments])
+    |> cast(attrs, [:pname, :comments, :date])
     |> validate_required([:pname])
   end
 end

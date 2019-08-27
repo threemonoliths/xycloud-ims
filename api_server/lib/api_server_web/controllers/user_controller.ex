@@ -4,7 +4,7 @@ defmodule ApiServerWeb.UserController do
   import ApiServerWeb.AuthAdminPlug, only: [auth_admin: 2]
   use ApiServer.Accounts
 
-  plug :auth_admin
+  # plug :auth_admin
   #  when action in [:index, :create, :show, :update, :delete]
   action_fallback ApiServerWeb.FallbackController
 

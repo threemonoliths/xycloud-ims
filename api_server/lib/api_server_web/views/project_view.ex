@@ -20,7 +20,8 @@ defmodule ApiServerWeb.ProjectView do
     %{
       id: project.id,
       pname: project.pname,
-      comments: project.comments
+      comments: project.comments,
+      date: project.date
     }
   end
 end

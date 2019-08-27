@@ -17,7 +17,7 @@ defmodule ApiServerWeb.Router do
   end
 
   scope "/api/v1", ApiServerWeb do
-    pipe_through [:api_auth]
+    # pipe_through [:api_auth]
     resources "/users", UserController, except: [:new, :edit]
     resources "/projects", ProjectController, except: [:new, :edit]
     resources "/contracts", ContractController, except: [:new, :edit]

@@ -1,0 +1,22 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+        <se label="名称" error="请输入名称，大于两个字符" required>
+          <input nz-input formControlName="pname" placeholder="请输入项目名称" />
+        </se>
+        <se label="日期" error="请选择日期" required>
+          <nz-date-picker formControlName="date"></nz-date-picker>
+        </se>
+        <se label="描述">
+          <textarea rows="4" nz-input formControlName="comments" placeholder="请输入描述"></textarea>
+        </se>
+        <se>
+          <button nz-button nzType="primary" [disabled]="form.invalid" type="submit"
+            [nzLoading]="submitting">提交</button>
+          <button nz-button class="ml-sm" type="reset">重置</button>
+        </se>
+      </form>
+    </nz-card>
+  </div>
+</div>

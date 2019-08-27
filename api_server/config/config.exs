@@ -28,6 +28,7 @@ config :phoenix, :json_library, Jason
 # Configures CORS
 config :cors_plug,
   origin: ["*"],
+  headers: ["*"],
   max_age: 86400,
   methods: ["*"]
 

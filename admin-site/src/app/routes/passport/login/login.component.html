@@ -1,23 +1,23 @@
 <form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
-  <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">
-    <nz-tab [nzTitle]="'app.login.tab-login-credentials' | translate">
-      <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
-      <nz-form-item>
-        <nz-form-control [nzErrorTip]="'Please enter mobile number!' | translate">
-          <nz-input-group nzSize="large" nzPrefixIcon="user">
-            <input nz-input formControlName="userName" placeholder="username: admin or user" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control nzErrorTip="'Please enter password!' | translate">
-          <nz-input-group nzSize="large" nzPrefixIcon="lock">
-            <input nz-input type="password" formControlName="password" placeholder="password: ng-alain.com" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-    </nz-tab>
-    <nz-tab [nzTitle]="'app.login.tab-login-mobile' | translate">
+  <!-- <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)"> -->
+  <!-- <nz-tab [nzTitle]="'app.login.tab-login-credentials' | translate"> -->
+  <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="'Please enter mobile number!' | translate">
+      <nz-input-group nzSize="large" nzPrefixIcon="user">
+        <input nz-input formControlName="userName" placeholder="username: admin or user" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="'Please enter password!' | translate">
+      <nz-input-group nzSize="large" nzPrefixIcon="lock">
+        <input nz-input type="password" formControlName="password" placeholder="password: ng-alain.com" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- </nz-tab> -->
+  <!-- <nz-tab [nzTitle]="'app.login.tab-login-mobile' | translate">
       <nz-form-item>
         <nz-form-control [nzErrorTip]="mobileErrorTip">
           <nz-input-group nzSize="large" nzPrefixIcon="user">
@@ -57,8 +57,8 @@
           </nz-row>
         </nz-form-control>
       </nz-form-item>
-    </nz-tab>
-  </nz-tabset>
+    </nz-tab> -->
+  <!-- </nz-tabset> -->
   <nz-form-item>
     <nz-col [nzSpan]="12">
       <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | translate }}</label>
@@ -73,16 +73,11 @@
     </button>
   </nz-form-item>
 </form>
-<div class="other">
+<!-- <div class="other">
   {{ 'app.login.sign-in-with' | translate }}
-  <i
-    nz-tooltip="in fact Auth0 via window"
-    (click)="open('auth0', 'window')"
-    nz-icon
-    nzType="alipay-circle"
-    class="icon"
-  ></i>
+  <i nz-tooltip="in fact Auth0 via window" (click)="open('auth0', 'window')" nz-icon nzType="alipay-circle"
+    class="icon"></i>
   <i nz-tooltip="in fact Github via redirect" (click)="open('github')" nz-icon nzType="taobao-circle" class="icon"></i>
   <i (click)="open('weibo', 'window')" nz-icon nzType="weibo-circle" class="icon"></i>
   <a class="register" routerLink="/passport/register">{{ 'app.login.signup' | translate }}</a>
-</div>
+</div> -->

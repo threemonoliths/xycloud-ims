@@ -4,6 +4,7 @@ defmodule ApiServer.Repo.Migrations.CreateProjects do
   def change do
     create table(:projects) do
       add :pname, :string
+      add :date, :string
       add :comments, :text
 
       timestamps()
