@@ -5,6 +5,7 @@ defmodule ApiServerWeb.ProjectController do
   action_fallback ApiServerWeb.FallbackController
 
   def index(conn, params) do
+    IO.inspect conn
     page = page(params)
     render(conn, "index.json", page: page)
   end

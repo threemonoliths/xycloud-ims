@@ -8,14 +8,14 @@ import { MenuService } from '@delon/theme';
 
 import { baseUrl } from '../../../shared/app-config';
 
-export function getTokenOptions() {
-  let headers = new HttpHeaders();
-  let jwt = 'Bearer ' + localStorage.getItem('currentToken');
-  headers.append('Authorization', jwt);
-  headers.append('Content-Type', 'application/json');
-  let options = { headers: headers };
-  return options;
-}
+// export function getTokenOptions() {
+//   let headers = new HttpHeaders();
+//   let jwt = 'Bearer ' + localStorage.getItem('currentToken');
+//   headers.append('Authorization', jwt);
+//   headers.append('Content-Type', 'application/json');
+//   let options = { headers: headers };
+//   return options;
+// }
 
 @Injectable()
 export class AuthenticationService {
