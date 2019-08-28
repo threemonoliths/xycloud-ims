@@ -4,6 +4,10 @@ defmodule ApiServerWeb.ProjectController do
   use ApiServer.ProjectManagement
   action_fallback ApiServerWeb.FallbackController
 
+  import ApiServerWeb.Permissions, only: [need_perms: 1]
+  alias Guardian.Permissions.Bitwise
+  plug Bitwise, need_perms([:read]) when action in [:index, :show]
+
   def index(conn, params) do
     IO.inspect conn
     page = page(params)

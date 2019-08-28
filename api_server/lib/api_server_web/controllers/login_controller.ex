@@ -11,7 +11,8 @@ defmodule ApiServerWeb.LoginController do
     %{"password" => pw, "username" => un} = login_params
     case check_pwd(un, pw) do
       {:ok, user} ->
-        {:ok, token, claims} = Guardian.encode_and_sign(user)
+
+        {:ok, token, claims} = Guardian.encode_and_sign(user, %{pem: %{"default" => user.perms_number}})
         render(conn, "login_ok.json", %{user: user, jwt: token})
       {:error, _} ->
         msg = "Username or password incorrect!"

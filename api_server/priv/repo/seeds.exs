@@ -18,6 +18,7 @@ admin = %{
   mobile: "15156709660",
   position: "挨踢狗",
   is_admin: true,
+  perms_number: 15
 }
 User.changeset(%User{}, admin)
 |> ApiServer.Repo.insert

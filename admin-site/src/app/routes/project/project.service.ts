@@ -14,11 +14,6 @@ export class ProjectService {
   project: any = null;
   isUpdate = false;
 
-  createAuthorizationHeader(headers: HttpHeaders) {
-    headers.append('Authorization', 'Basic ' +
-      btoa('username:password'));
-  }
-
   listOnePage(q: any) {
     return this.http.get(this.url, getOptionWithParams(q));
   }
