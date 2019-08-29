@@ -9,7 +9,6 @@ defmodule ApiServerWeb.ProjectController do
   plug Bitwise, need_perms([:read]) when action in [:index, :show]
 
   def index(conn, params) do
-    IO.inspect conn
     page = page(params)
     render(conn, "index.json", page: page)
   end
