@@ -40,11 +40,11 @@
           "children": [
             {
               "text": "用户管理",
-              "link": "/user/list"
+              "link": "/user/page"
             },
             {
               "text": "数据字典",
-              "link": "/dictionary/list"
+              "link": "/dictionary/page"
             }
           ]
         }

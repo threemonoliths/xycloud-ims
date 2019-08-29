@@ -1,0 +1,72 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">名称</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.name" name="name" placeholder="输入名称搜索" id="name" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+          </div>
+        </div>
+      </form>
+      <div class="mb-md">
+        <button nz-button (click)="add()" [nzType]="'primary'">
+          <i nz-icon nzType="plus"></i>
+          <span>新建</span>
+        </button>
+      </div>
+
+      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
+        (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
+        <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+          <tr>
+            <th nz-th nzShowSort nzSortKey="name">
+              <span>用户名</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="real_name">
+              <span>姓名</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="mobile">
+              <span>手机号</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="position">
+              <span>岗位</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="is_admin">
+              <span>管理员</span>
+            </th>
+
+            <th nz-th>
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+            <td nz-td>{{i.name}}</td>
+            <td nz-td>{{i.real_name}}</td>
+            <td nz-td>{{i.mobile}}</td>
+            <td nz-td>{{i.position}}</td>
+            <td nz-td>{{i.is_admin? "是" : "否"}}</td>
+
+            <td nz-td>
+              <a (click)="modify(i.id)">修改<i nz-icon nzType="edit" nzTheme="outline"></i></a>
+              <span nz-table-divider></span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="remove(i)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+</div>

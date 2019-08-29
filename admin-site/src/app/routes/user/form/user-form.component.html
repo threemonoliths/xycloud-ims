@@ -1,0 +1,36 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+        <se label="用户名" error="请输入名称，大于两个字符" required>
+          <input nz-input formControlName="name" placeholder="请输入用户名" />
+        </se>
+        <se label="姓名" error="请输入姓名，大于两个字符">
+          <input nz-input formControlName="real_name" placeholder="请输入姓名" />
+        </se>
+        <se label="手机号" error="请输入手机号">
+          <input nz-input formControlName="mobile" placeholder="请输入手机号" />
+        </se>
+        <se label="岗位" error="请输入岗位名称">
+          <input nz-input formControlName="position" placeholder="请输入岗位名称" />
+        </se>
+        <se label="管理员">
+          <nz-radio-group formControlName="is_admin">
+            <label nz-radio [nzValue]="true">是</label>
+            <label nz-radio [nzValue]="false">否</label>
+          </nz-radio-group>
+        </se>
+        <se label="权限">
+          <nz-transfer [nzDataSource]="list" [nzTitles]="['可用', '已选']" (nzSelectChange)="select($event)"
+            (nzChange)="change($event)">
+          </nz-transfer>
+        </se>
+        <se>
+          <button nz-button nzType="primary" [disabled]="form.invalid" type="submit"
+            [nzLoading]="submitting">提交</button>
+          <button nz-button class="ml-sm" type="reset">重置</button>
+        </se>
+      </form>
+    </nz-card>
+  </div>
+</div>
