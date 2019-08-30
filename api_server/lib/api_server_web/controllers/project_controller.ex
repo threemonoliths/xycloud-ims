@@ -6,7 +6,7 @@ defmodule ApiServerWeb.ProjectController do
 
   import ApiServerWeb.Permissions, only: [need_perms: 1]
   alias Guardian.Permissions.Bitwise
-  plug Bitwise, need_perms([:read]) when action in [:index, :show]
+  plug Bitwise, need_perms(["合同查询"]) when action in [:index, :show]
 
   def index(conn, params) do
     page = page(params)
