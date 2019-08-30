@@ -19,30 +19,44 @@ defmodule ApiServerWeb.ContractController do
 
   def create(conn, %{"contract" => contract_params}) do
     contract_changeset = Contract.changeset(%Contract{}, contract_params)
-    with {:ok, %Contract{} = contract} <- save_create(contract_changeset) do
+    IO.inspect get_details_changesets(contract_params)
+    changeset_with_details = Ecto.Changeset.put_assoc(contract_changeset, :contract_details, get_details_changesets(contract_params))
+    with {:ok, %Contract{} = contract} <- save_create(changeset_with_details) do
       conn
       |> render("show.json", contract: contract)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    with {:ok, contract} <- get_by_id(Contract, id) do
+    with {:ok, contract} <- get_by_id(Contract, id, [:contract_details]) do
       render(conn, "show.json", contract: contract)
     end
   end
 
   def update(conn, %{"id" => id, "contract" => contract_params}) do
-    with {:ok, contract} <- get_by_id(Contract, id) do
+    with {:ok, contract} <- get_by_id(Contract, id, [:contract_details]) do
       contract_changeset = Contract.changeset(contract, contract_params)
-      with {:ok, %Contract{} = contract} <- save_update(contract_changeset) do
+      changeset_with_details = Ecto.Changeset.put_assoc(contract_changeset, :contract_details, get_details_changesets(contract_params))
+      with {:ok, %Contract{} = contract} <- save_update(changeset_with_details) do
         render(conn, "show.json", contract: contract)
       end
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    with {:ok, %Contract{} = contract} <- delete_by_id(Contract, id) do
+    with {:ok, %Contract{} = contract} <- delete_by_id(Contract, id, [:contract_details]) do
       render(conn, "show.json", contract: contract)
     end
   end
+
+  defp get_details_changesets(contract_params) do
+    case Map.get(contract_params, "contract_details") do
+      nil -> []
+      list ->
+        list 
+        |> Enum.map(fn(el) -> ContractDetail.changeset(%ContractDetail{}, el) end)
+    end
+  end
+
+
 end

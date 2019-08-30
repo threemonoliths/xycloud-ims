@@ -13,13 +13,16 @@ defmodule ApiServerWeb.Router do
   end
 
   scope "/api/v1", ApiServerWeb do
+    resources "/contracts", ContractController, except: [:new, :edit]
     post "/login", LoginController, :login
+    get "/users/permissions/all", UserController, :permissions
   end
 
   scope "/api/v1", ApiServerWeb do
     pipe_through [:api_auth]
     resources "/users", UserController, except: [:new, :edit]
+    
     resources "/projects", ProjectController, except: [:new, :edit]
-    resources "/contracts", ContractController, except: [:new, :edit]
+    
   end
 end

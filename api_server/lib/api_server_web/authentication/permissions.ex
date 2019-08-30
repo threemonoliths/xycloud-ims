@@ -3,10 +3,14 @@ defmodule ApiServerWeb.Permissions do
 	use Guardian, otp_app: :api_server,
 		permissions: %{
       default: [
-        :read,
-        :write, 
-        :delete,
-        :statistics   
+        # :read,
+        # :write, 
+        # :delete,
+				# :statistics   
+				"合同查询",
+				"合同修改",
+				"合同删除",
+				"合同统计"
       ]
 		}
 	use Guardian.Permissions.Bitwise

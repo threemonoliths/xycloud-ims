@@ -15,6 +15,7 @@ defmodule ApiServer.ContractManagement do
       import ApiServer.ContractManagement
       use ApiServer.BaseContext
       alias ApiServer.ContractManagement.Contract
+      alias ApiServer.ContractManagement.ContractDetail
     end
   end
 
@@ -23,6 +24,7 @@ defmodule ApiServer.ContractManagement do
     |> query_like(params, "cname")
     |> query_like(params, "comments")
     |> query_order_desc_by(params, "inserted_at")
+    |> query_preload([:contract_details])
     |> get_pagination(params)
   end
 end

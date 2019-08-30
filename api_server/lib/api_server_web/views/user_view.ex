@@ -29,7 +29,17 @@ defmodule ApiServerWeb.UserView do
     }
   end
 
-  defp resolve_perms(perms_number) do
-    perms_number
+  def render("permissions.json", %{params: _}) do
+    %{
+      all_perms: ApiServerWeb.Permissions.get_all_permissions 
+      |> Map.get(:default)
+    }
   end
+
+  defp resolve_perms(perms_number) do
+    %{default: perms_number}
+    |> ApiServerWeb.Permissions.get_perms_from_number
+    |> Map.get(:default)
+  end
+
 end
