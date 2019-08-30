@@ -1,0 +1,43 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+    <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+        <nz-card [nzBordered]="false" [nzTitle]="title">
+            <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+                <!-- 
+                <se label="合同编号" error="请输入合同编号，大于两个字符" required>
+                    <input nz-input formControlName="cno" placeholder="请输入合同编号" />
+                </se>
+             -->
+                <se label="合同名称" error="请输入合同名称，大于两个字符" required>
+                    <input nz-input formControlName="cname" placeholder="请输入合同名称" />
+                </se>
+                <!-- 
+                <se label="甲方" error="请输入甲方，大于两个字符" required>
+                    <input nz-input formControlName="party_a" placeholder="请输入甲方" />
+                </se>
+                <se label="乙方" error="请输入乙方，大于两个字符" required>
+                    <input nz-input formControlName="party_b" placeholder="请输入乙方" />
+                </se>
+             -->
+                <se label="签订日期" error="请选择签订日期" required>
+                    <nz-date-picker formControlName="sign_date"></nz-date-picker>
+                </se>
+                <!-- 
+                <se label="终止日期" error="请选择终止日期" required>
+                    <nz-date-picker formControlName="expiry_date"></nz-date-picker>
+                </se>
+                <se label="合同额" error="请输入合同额，大于两个字符" required>
+                    <input nz-input formControlName="amount" placeholder="请输入合同额" />
+                </se>
+             -->
+                <se label="描述">
+                    <textarea rows="4" nz-input formControlName="comments" placeholder="请输入描述"></textarea>
+                </se>
+                <se>
+                    <button nz-button nzType="primary" [disabled]="form.invalid" type="submit"
+                        [nzLoading]="submitting">提交</button>
+                    <button nz-button class="ml-sm" type="reset">重置</button>
+                </se>
+            </form>
+        </nz-card>
+    </div>
+</div>

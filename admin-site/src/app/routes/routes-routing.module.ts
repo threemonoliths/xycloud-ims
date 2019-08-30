@@ -33,6 +33,8 @@ const routes: Routes = [
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // project
       { path: 'project', loadChildren: () => import('./project/project.module').then(m => m.ProjectModule) },
+      // contract
+      { path: 'contract', loadChildren: () => import('./contract/contract.module').then(m => m.ContractModule) },
     ],
 
   },
