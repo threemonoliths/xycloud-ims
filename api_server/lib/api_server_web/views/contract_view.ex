@@ -27,17 +27,21 @@ defmodule ApiServerWeb.ContractView do
       expiry_date: contract.expiry_date,
       amount: contract.amount,
       comments: contract.comments,
-      details: render_many(contract.contract_details, ContractView, "contract_detail.json")
+      details: rend_details(contract.contract_details)
     }
   end
 
-  def render("contract_detail.json", %{contract_detail: contract_detail}) do
-    %{
-      issue_name: contract_detail.cno,
-      invoice_amount: contract_detail.invoice_amount,
-      actual_payment: contract_detail.actual_payment,
-      invoice_date: contract_detail.invoice_date,
-      payment_date: contract_detail.payment_date
-    }
+  def rend_details(details) do
+    details
+    |> Enum.map(fn el -> 
+      %{
+        issue_name: el.issue_name,
+        invoice_amount: el.invoice_amount,
+        actual_payment: el.actual_payment,
+        invoice_date: el.invoice_date,
+        payment_date: el.payment_date
+      }
+    end)
+    
   end
 end
