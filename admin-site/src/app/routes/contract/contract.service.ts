@@ -10,12 +10,18 @@ export class ContractService {
   constructor(private http: HttpClient) { }
   url = baseUrl + 'contracts';
   project_url = baseUrl + 'projects';
+  detail_url = baseUrl + 'contract_details';
 
   contract: any = null;
-  isUpdate = false;
+  //isUpdate = false;
 
   listOnePage(q: any) {
     return this.http.get(this.url, getOptionWithParams(q));
+  }
+
+  //获取合同明细页面
+  listDetailPage(q: any) {
+    return this.http.get(this.detail_url, getOptionWithParams(q));
   }
 
   getById(id) {
@@ -33,4 +39,6 @@ export class ContractService {
   delete(id) {
     return this.http.delete(this.url + `/${id}`, getTokenOptions());
   }
+
+  formOperation = 'create';
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { UploadFile } from 'ng-zorro-antd';
@@ -14,12 +14,21 @@ import { ProjectService } from '../../project/project.service';
 })
 
 export class ContractFormComponent implements OnInit {
+  editIndex = -1;
+  editObj = {};
 
   form: FormGroup;
   submitting = false;
   title: string;
   contract: any = {};
   options = [];  //接收select的数组
+
+  submit_audit = false;
+  submit_string = '提交';
+  breadcrumbItem = { label: "合同管理", routerLink: "/contract/form" }
+
+  editable = true;
+
 
   constructor(
     private fb: FormBuilder,
@@ -31,9 +40,16 @@ export class ContractFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //获取项目类型
     this.getProjectData();
-    if (this.srv.isUpdate) this.initUpdate();
-    this.setTitle();
+
+    let op = this.srv.formOperation;
+    if (op == 'create') this.initCreate();
+    if (op == 'update') this.initUpdate();
+    if (op == 'audit') this.initAudit();
+    if (op == 'show') this.initShow();
+    //if (this.srv.isUpdate) this.initUpdate();
+    //this.setTitle();
     this.form = this.fb.group({
       cno: [
         this.contract.cno ? this.contract.cno : null,
@@ -57,43 +73,153 @@ export class ContractFormComponent implements OnInit {
       amount: [this.contract.amount ? this.contract.amount : null, [Validators.required]],
       comments: [this.contract.comments ? this.contract.comments : null, []],
 
+      contract_details: this.fb.array([])
+    });
+    if ((op == 'update') || (op == 'audit' || (op == 'show'))) {
+      this.contract.contract_details ? this.contract.contract_details.forEach(i => {
+        const field = this.createDetail();
+        field.patchValue(i);
+        this.contract_details.push(field);
+      }) : console.log("this contract has no contract_details.");
+    }
+  }
+
+  //新增明细
+  createDetail(): FormGroup {
+    return this.fb.group({
+      issue_name: [null, [Validators.required]],
+      invoice_amount: [null, [Validators.required]],
+      actual_payment: [null, [Validators.required]],
+      invoice_date: [null, [Validators.required]],
+      payment_date: [null, [Validators.required]],
     });
   }
 
+  //#region get form fields
+  get cno() { return this.form.controls.cno; }
+  get cname() { return this.form.controls.cname; }
+  get project_id() { return this.form.controls.project_id; }
+  get party_a() { return this.form.controls.party_a; }
+  get party_b() { return this.form.controls.party_b; }
+  get sign_date() { return this.form.controls.sign_date; }
+  get expiry_date() { return this.form.controls.expiry_date; }
+  get amount() { return this.form.controls.amount; }
+  get comments() { return this.form.controls.comments; }
+
+  get contract_details() { return this.form.controls.contract_details as FormArray; }
+
+  //#endregion
+  add() {
+    this.contract_details.push(this.createDetail());
+    this.edit(this.contract_details.length - 1);
+  }
+
+  del(index: number) {
+    this.contract_details.removeAt(index);
+
+  }
+
+  edit(index: number) {
+    if (this.editIndex !== -1 && this.editObj) {
+      this.contract_details.at(this.editIndex).patchValue(this.editObj);
+    }
+    this.editObj = { ...this.contract_details.at(index).value };
+    this.editIndex = index;
+  }
+
+  save(index: number) {
+    this.contract_details.at(index).markAsDirty();
+    if (this.contract_details.at(index).invalid) return;
+    this.editIndex = -1;
+  }
+
+  cancel(index: number) {
+    if (!this.contract_details.at(index).value.key) {
+      this.del(index);
+    } else {
+      this.contract_details.at(index).patchValue(this.editObj);
+    }
+    this.editIndex = -1;
+  }
+
+
+  //提交表
   submit() {
     console.log('表格提交')
-    if (!this.srv.isUpdate) {
-      this.submitting = true;
-      const obj = this.formmatFormValue();
-      this.srv.add(obj).subscribe(resp => {
-        this.submitting = false;
-        if (resp['data']) this.msg.success(`保存成功！`);
-        this.router.navigateByUrl('/contract/page');
-        this.cdr.detectChanges();
-      });
-    } else {
-      this.submitting = true;
-      const obj = this.formmatFormValue();
-      this.srv.update(this.contract.id, obj).subscribe(resp => {
-        if (resp['data']) {
+    for (const i in this.form.controls) {
+      this.form.controls[i].markAsDirty();
+    }
+    if (this.form.invalid) {
+      this.msg.info('ya! this.form.invalid!');
+      return;
+    }
+    if (this.form.valid) {
+      let op = this.srv.formOperation;
+      if (op == 'create') {
+        this.submitting = true;
+        const obj = this.formmatFormValue();
+        this.srv.add(obj).subscribe(resp => {
           this.submitting = false;
           if (resp['data']) this.msg.success(`保存成功！`);
           this.router.navigateByUrl('/contract/page');
           this.cdr.detectChanges();
-        }
-      });
+        });
+        this.goBack()
+      }
+      if (op == 'update') {
+        this.submitting = true;
+        const obj = this.formmatFormValue();
+        this.srv.update(this.contract.id, obj).subscribe(resp => {
+          if (resp['data']) {
+            this.submitting = false;
+            if (resp['data']) this.msg.success(`保存成功！`);
+            this.router.navigateByUrl('/contract/page');
+            this.cdr.detectChanges();
+          }
+        });
+      }
+      this.goBack()
     }
   }
-  setTitle() {
-    if (this.srv.isUpdate) {
-      this.title = '修改项目';
-    } else this.title = '创建项目';
+  goBack() {
+    this.router.navigateByUrl('/contract/list');
+
+  }
+  initCreate() {
+    this.title = '创建采购合同';
+    this.submit_string = '提交';
+    this.breadcrumbItem = { label: this.title, routerLink: "/contract/form" };
+    //this.globalService.addBreadcrumbItem(this.breadcrumbItem);
   }
 
   initUpdate() {
-    this.setTitle();
+    this.title = '修改采购合同';
+    this.submit_string = '提交修改';
+    //this.contract = this.contractForPurchaseService.updateContract;
     this.contract = this.srv.contract;
   }
+
+  initAudit() {
+    this.title = '审核合同';
+    this.submit_audit = true;
+    this.editable = false;
+    this.submit_string = '审核通过';
+    //this.contract = this.contractForPurchaseService.updateContract;
+    this.contract = this.srv.contract;
+  }
+
+  initShow() {
+    this.title = '查看合同';
+    this.editable = false;
+    //this.contract = this.contractForPurchaseService.updateContract;
+    this.contract = this.srv.contract;
+  }
+
+  /* setTitle() {
+    if (this.srv.isUpdate) {
+      this.title = '修改合同';
+    } else this.title = '创建合同';
+  }*/
 
   formmatFormValue() {
     let obj = this.form.value;

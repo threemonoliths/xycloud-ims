@@ -24,6 +24,8 @@ export class ContractListComponent implements OnInit {
   };
 
   data: any[] = [];
+  detailData: any[] = [];
+  idExpand: any;
   loading = false;
 
   expandForm = false;
@@ -55,13 +57,23 @@ export class ContractListComponent implements OnInit {
     console.log(this.data)
   }
 
+  getDetailData(id) {
+    console.log(this.idExpand + "===" + id);
+    this.idExpand = id;
+    this.srv.getById(id)
+      .then(result => { this.detailData = result.contrac_details })
+      .catch((error) => { console.log(error) });
+  }
+
   add(tpl: TemplateRef<{}>) {
-    this.srv.isUpdate = false;
+    //this.srv.isUpdate = false;
+    this.srv.formOperation = 'create';
     this.router.navigateByUrl('/contract/form');
   }
 
   modify(id) {
-    this.srv.isUpdate = true;
+    //this.srv.isUpdate = true;
+    this.srv.formOperation = 'update';
     this.srv.getById(id).subscribe(resp => {
       this.srv.contract = resp['data'];
       this.router.navigateByUrl('/contract/form');
@@ -71,7 +83,7 @@ export class ContractListComponent implements OnInit {
   remove(item) {
     this.modalSrv.create({
       nzTitle: '确认删除',
-      nzContent: '确认要删除项目：' + item.cname + ' 吗?',
+      nzContent: '确认要删除合同：' + item.cname + ' 吗?',
       nzOnOk: () => {
         this.loading = true;
         this.srv.delete(item.id).subscribe(
