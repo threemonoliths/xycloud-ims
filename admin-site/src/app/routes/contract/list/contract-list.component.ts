@@ -54,16 +54,15 @@ export class ContractListComponent implements OnInit {
           this.cdr.detectChanges();
         }
       );
-    console.log(this.data)
   }
 
-  getDetailData(id) {
-    console.log(this.idExpand + "===" + id);
-    this.idExpand = id;
-    this.srv.getById(id)
-      .then(result => { this.detailData = result.contrac_details })
-      .catch((error) => { console.log(error) });
-  }
+  // getDetailData(id) {
+  //   console.log(this.idExpand + "===" + id);
+  //   this.idExpand = id;
+  //   this.srv
+  //     .getById(id)
+  //     .then(result => { this.detailData = result.contract_details })
+  // }
 
   add(tpl: TemplateRef<{}>) {
     //this.srv.isUpdate = false;
@@ -76,6 +75,8 @@ export class ContractListComponent implements OnInit {
     this.srv.formOperation = 'update';
     this.srv.getById(id).subscribe(resp => {
       this.srv.contract = resp['data'];
+      this.srv.contract.contract_details = resp['data'].details;
+      console.log(this.srv.contract)
       this.router.navigateByUrl('/contract/form');
     });
   }

@@ -164,7 +164,6 @@ export class ContractFormComponent implements OnInit {
           this.router.navigateByUrl('/contract/page');
           this.cdr.detectChanges();
         });
-        this.goBack()
       }
       if (op == 'update') {
         this.submitting = true;
@@ -178,11 +177,10 @@ export class ContractFormComponent implements OnInit {
           }
         });
       }
-      this.goBack()
     }
   }
   goBack() {
-    this.router.navigateByUrl('/contract/list');
+    this.router.navigateByUrl('/contract/page');
 
   }
   initCreate() {
