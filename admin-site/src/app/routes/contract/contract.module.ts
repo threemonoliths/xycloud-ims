@@ -8,6 +8,7 @@ import { ContractFormComponent } from './form/contract-form.component';
 import { ContractListComponent } from './list/contract-list.component';
 
 import { ContractService } from './contract.service';
+import { ProjectService } from '../project/project.service';
 
 const COMPONENTS = [];
 const COMPONENTS_NOROUNT = [];
@@ -26,6 +27,7 @@ const COMPONENTS_NOROUNT = [];
   ],
   providers: [
     ContractService,
+    ProjectService,
   ],
   entryComponents: COMPONENTS_NOROUNT
 })

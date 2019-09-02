@@ -9,6 +9,7 @@ import { getOptionWithParams, getTokenOptions, getFormData } from '../../shared/
 export class ContractService {
   constructor(private http: HttpClient) { }
   url = baseUrl + 'contracts';
+  project_url = baseUrl + 'projects';
 
   contract: any = null;
   isUpdate = false;

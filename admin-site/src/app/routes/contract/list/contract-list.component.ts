@@ -52,7 +52,7 @@ export class ContractListComponent implements OnInit {
           this.cdr.detectChanges();
         }
       );
-    console.log('获取数据', this.data)
+    console.log(this.data)
   }
 
   add(tpl: TemplateRef<{}>) {

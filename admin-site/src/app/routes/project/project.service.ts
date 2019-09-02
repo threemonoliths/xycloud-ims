@@ -5,7 +5,6 @@ import { baseUrl } from '../../shared/app-config';
 import { getOptionWithParams, getTokenOptions, getFormData } from '../../shared/utils/formmat';
 
 
-
 @Injectable()
 export class ProjectService {
   constructor(private http: HttpClient) { }
@@ -16,6 +15,10 @@ export class ProjectService {
 
   listOnePage(q: any) {
     return this.http.get(this.url, getOptionWithParams(q));
+  }
+
+  listAll() {
+    return this.http.get(this.url, getTokenOptions())
   }
 
   getById(id) {
