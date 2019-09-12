@@ -56,7 +56,7 @@
       "hideInBreadcrumb": true,
       "children": [
         {
-          "text": "合同管理",
+          "text": "项目管理",
           "icon": "anticon-edit",
           "children": [
             {
@@ -66,14 +66,34 @@
             {
               "text": "项目管理",
               "link": "/project/page"
+            }
+          ]
+        },
+        {
+          "text": "合同管理",
+          "icon": "anticon-edit",
+          "children": [
+            {
+              "text": "采购合同",
+              "link": "/contract/page"
+            },
+            {
+              "text": "销售合同",
+              "link": "/contract/page"
+            }
+          ]
+        },
+        {
+          "text": "客商管理",
+          "icon": "anticon-edit",
+          "children": [
+            {
+              "text": "客户管理",
+              "link": "/client/page"
             },
             {
               "text": "供应商管理",
               "link": "/supplier/page"
-            },
-            {
-              "text": "合同管理",
-              "link": "/contract/page"
             }
           ]
         }
