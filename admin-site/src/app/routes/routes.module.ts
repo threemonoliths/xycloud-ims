@@ -13,7 +13,6 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 import { UserLockComponent } from './passport/lock/lock.component';
 
 import { AuthenticationService } from './passport/login/login.service';
-import { UserComponent } from './user/user.component';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -28,7 +27,7 @@ const COMPONENTS_NOROUNT = [];
 
 @NgModule({
   imports: [SharedModule, RouteRoutingModule],
-  declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT, UserComponent],
+  declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT,],
   entryComponents: COMPONENTS_NOROUNT,
   providers: [AuthenticationService]
 })

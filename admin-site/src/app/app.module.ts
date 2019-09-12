@@ -63,10 +63,11 @@ const FORM_MODULES = [JsonSchemaModule];
 
 // #region Http Interceptors
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SimpleInterceptor } from '@delon/auth';
+import { SimpleInterceptor, JWTInterceptor } from '@delon/auth';
 import { DefaultInterceptor } from '@core';
 const INTERCEPTOR_PROVIDES = [
-  { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
+  // { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
 ];
 // #endregion
@@ -112,7 +113,6 @@ import { AuthGuard } from './routes/auth.guard';
     ...FORM_MODULES,
   ],
   providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES, AuthGuard],
-  // providers: [...LANG_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

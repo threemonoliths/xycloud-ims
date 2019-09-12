@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "祥云项目管理系统",
+    "name": "祥云合同管理",
     "description": "Ng-zorro admin panel front-end framework"
   },
   "user": {
@@ -59,6 +59,10 @@
           "text": "合同管理",
           "icon": "anticon-edit",
           "children": [
+            {
+              "text": "模板管理",
+              "link": "/tmpl/page"
+            },
             {
               "text": "项目管理",
               "link": "/project/page"

@@ -2,20 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { baseUrl } from '../../shared/app-config';
-import { formmat } from '../../shared/utils/formmat';
-
+import { getFormData, formmat } from '../../shared/utils/formmat';
 
 
 @Injectable()
-export class UserService {
+export class TmplService {
   constructor(private http: HttpClient) { }
-  url = baseUrl + 'users';
+  url = baseUrl + 'tmpls';
 
-  user: any = null;
+  tmpl: any = null;
   isUpdate = false;
 
   listOnePage(q: any) {
     return this.http.get(this.url, { params: formmat(q) });
+  }
+
+  listAll() {
+    return this.http.get(this.url)
   }
 
   getById(id) {
@@ -23,18 +26,22 @@ export class UserService {
   }
 
   add(obj) {
-    return this.http.post(this.url, obj);
+    return this.http.post(this.url, getFormData(obj));
   }
 
   update(id, obj) {
-    return this.http.put(this.url + `/${id}`, obj);
+    return this.http.put(this.url + `/${id}`, getFormData(obj));
   }
 
   delete(id) {
     return this.http.delete(this.url + `/${id}`);
   }
 
-  getAllPermissions() {
-    return this.http.get(this.url + `/permissions/all`);
+  download(url) {
+    return this.http.get(url, {
+      responseType: "blob",
+      headers: new HttpHeaders().append("Content-Type", "application/json")
+    });
   }
+
 }

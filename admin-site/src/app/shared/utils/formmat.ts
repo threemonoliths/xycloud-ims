@@ -8,7 +8,15 @@ export function getTokenOptions() {
   let jwt = 'Bearer ' + localStorage.getItem('currentToken');
   let _headers = headers.append('Authorization', jwt).append('Content-Type', 'application/json');
   let options = { headers: _headers };
-  console.log(headers);
+  return options;
+}
+
+//请求增加身份信息
+export function setToken() {
+  let headers = new HttpHeaders();
+  let jwt = 'Bearer ' + localStorage.getItem('currentToken');
+  let _headers = headers.append('Authorization', jwt);
+  let options = { headers: _headers };
   return options;
 }
 
@@ -25,12 +33,10 @@ export function formmat(obj) {
 }
 
 // 格式化get请求参数，可以直接传给http.get方法
-export function getOptionWithParams(obj) {
+export function setTokenAndParams(obj) {
   let headers = new HttpHeaders();
   let jwt = 'Bearer ' + localStorage.getItem('currentToken');
-  let _headers = headers.append('Authorization', jwt).append('Content-Type', 'application/json');
-
-  console.log({ headers: headers, params: formmat(obj) });
+  let _headers = headers.append('Authorization', jwt);
   return { headers: _headers, params: formmat(obj) }
 }
 

@@ -1,11 +1,11 @@
 defmodule ApiServerWeb.ProjectController do
+  
   use ApiServerWeb, :controller
-
   use ApiServer.ProjectManagement
-  action_fallback ApiServerWeb.FallbackController
-
   import ApiServerWeb.Permissions, only: [need_perms: 1]
   alias Guardian.Permissions.Bitwise
+
+  action_fallback ApiServerWeb.FallbackController
   plug Bitwise, need_perms(["合同查询"]) when action in [:index, :show]
 
   def index(conn, params) do

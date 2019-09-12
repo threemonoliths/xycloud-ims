@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { baseUrl } from '../../shared/app-config';
-import { getOptionWithParams, getTokenOptions, getFormData } from '../../shared/utils/formmat';
+import { setToken, setTokenAndParams } from '../../shared/utils/formmat';
 
 
 @Injectable()
@@ -16,28 +16,28 @@ export class ContractService {
   //isUpdate = false;
 
   listOnePage(q: any) {
-    return this.http.get(this.url, getOptionWithParams(q));
+    return this.http.get(this.url, setTokenAndParams(q));
   }
 
   //获取合同明细页面
   listDetailPage(q: any) {
-    return this.http.get(this.detail_url, getOptionWithParams(q));
+    return this.http.get(this.detail_url, setTokenAndParams(q));
   }
 
   getById(id) {
-    return this.http.get(this.url + `/${id}`, getTokenOptions());
+    return this.http.get(this.url + `/${id}`, setToken());
   }
 
   add(obj) {
-    return this.http.post(this.url, obj, getTokenOptions());
+    return this.http.post(this.url, obj, setToken());
   }
 
   update(id, obj) {
-    return this.http.put(this.url + `/${id}`, obj, getTokenOptions());
+    return this.http.put(this.url + `/${id}`, obj, setToken());
   }
 
   delete(id) {
-    return this.http.delete(this.url + `/${id}`, getTokenOptions());
+    return this.http.delete(this.url + `/${id}`, setToken());
   }
 
   formOperation = 'create';

@@ -37,6 +37,8 @@ const routes: Routes = [
       { path: 'contract', loadChildren: () => import('./contract/contract.module').then(m => m.ContractModule) },
       // user
       { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
+      // tmpl
+      { path: 'tmpl', loadChildren: () => import('./tmpl/tmpl.module').then(m => m.TmplModule) },
     ],
 
   },
