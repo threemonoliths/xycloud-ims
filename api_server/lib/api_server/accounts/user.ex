@@ -7,7 +7,7 @@ defmodule ApiServer.Accounts.User do
     field :mobile, :string
     field :password, :string, virtual: true
     # 默认密码"admin123"
-    field :password_hash, :string
+    field :password_hash, :string, default: "$pbkdf2-sha512$160000$GhgB6V3uq7P5y2A/4ujKqQ$k1.DjV8r1WM2aMyhpCuR1nCilPn7cdKPdDLt10GWXdj.CMsQ/kiGg.cPLbmVF78pUbmlLramQM65L65iI5fLFw"
     field :real_name, :string
     field :position, :string
     field :is_admin, :boolean, default: false

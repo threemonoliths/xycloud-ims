@@ -19,7 +19,6 @@ defmodule ApiServerWeb.ContractController do
 
   def create(conn, %{"contract" => contract_params}) do
     contract_changeset = Contract.changeset(%Contract{}, contract_params)
-    IO.inspect get_details_changesets(contract_params)
     changeset_with_details = Ecto.Changeset.put_assoc(contract_changeset, :contract_details, get_details_changesets(contract_params))
     with {:ok, %Contract{} = contract} <- save_create(changeset_with_details) do
       conn

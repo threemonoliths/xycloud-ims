@@ -6,6 +6,7 @@ import { UploadFile } from 'ng-zorro-antd';
 import { getFormatDateStr, getDateByDateStr } from '../../../shared/utils/datehandler';
 import { ContractService } from '../contract.service';
 import { ProjectService } from '../../project/project.service';
+import { MessageRemindingService } from '../../../message-reminding.service';
 
 @Component({
   templateUrl: './contract-form.component.html',
@@ -25,9 +26,10 @@ export class ContractFormComponent implements OnInit {
 
   submit_audit = false;
   submit_string = '提交';
-  breadcrumbItem = { label: "合同管理", routerLink: "/contract/form" }
+  // breadcrumbItem = { label: "合同管理", routerLink: "/contract/form" }
 
   editable = true;
+  // channel: any;
 
 
   constructor(
@@ -37,11 +39,14 @@ export class ContractFormComponent implements OnInit {
     private router: Router,
     private srv: ContractService,
     private projectService: ProjectService,
+    private wsSrv: MessageRemindingService
   ) { }
 
   ngOnInit(): void {
     //获取项目类型
     this.getProjectData();
+    //消息提醒服务
+    // this.channel = this.wsSrv.getChannel("reminding:contract");
 
     let op = this.srv.formOperation;
     if (op == 'create') this.initCreate();
@@ -161,6 +166,7 @@ export class ContractFormComponent implements OnInit {
         this.srv.add(obj).subscribe(resp => {
           this.submitting = false;
           if (resp['data']) this.msg.success(`保存成功！`);
+          this.wsSrv.channel.push("new_msg", { body: localStorage.getItem("username") + " 创建了 " + resp['data']['cname'] })
           this.router.navigateByUrl('/contract/page');
           this.cdr.detectChanges();
         });
@@ -186,7 +192,7 @@ export class ContractFormComponent implements OnInit {
   initCreate() {
     this.title = '创建采购合同';
     this.submit_string = '提交';
-    this.breadcrumbItem = { label: this.title, routerLink: "/contract/form" };
+    // this.breadcrumbItem = { label: this.title, routerLink: "/contract/form" };
     //this.globalService.addBreadcrumbItem(this.breadcrumbItem);
   }
 

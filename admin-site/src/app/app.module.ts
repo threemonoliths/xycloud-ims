@@ -96,6 +96,8 @@ import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 
 import { AuthGuard } from './routes/auth.guard';
+// ws消息提醒服务
+import { MessageRemindingService } from './message-reminding.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -112,7 +114,7 @@ import { AuthGuard } from './routes/auth.guard';
     ...GLOBAL_THIRD_MODULES,
     ...FORM_MODULES,
   ],
-  providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES, AuthGuard],
+  providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES, AuthGuard, MessageRemindingService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

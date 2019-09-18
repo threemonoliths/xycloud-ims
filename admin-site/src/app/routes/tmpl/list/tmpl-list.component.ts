@@ -105,12 +105,7 @@ export class TmplListComponent implements OnInit {
     const url = this.downloadUrl + i.id;
     this.srv.download(url).subscribe(
       data => {
-        console.log(data);
         saveAs(data, i.file_name);
-      },
-      err => {
-        alert("Problem while downloading the file.");
-        console.error(err);
       }
     );
   }
