@@ -16,4 +16,10 @@ defmodule ApiServerWeb.FallbackController do
     |> put_status(:not_found)
     |> render(ApiServerWeb.ErrorView, "404.json")
   end
+
+  def call(conn, {:error, message}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(ApiServerWeb.ChangesetView, "error.json", message: message)
+  end
 end

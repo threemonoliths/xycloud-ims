@@ -37,6 +37,10 @@ const routes: Routes = [
       { path: 'contract', loadChildren: () => import('./contract/contract.module').then(m => m.ContractModule) },
       // user
       { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
+      // user self info
+      { path: 'user/info', loadChildren: () => import('./userinfo/user-info.module').then(m => m.UserInfoModule) },
+      // user password
+      { path: 'user/password', loadChildren: () => import('./userpassword/user-password.module').then(m => m.UserPasswordModule) },
       // tmpl
       { path: 'tmpl', loadChildren: () => import('./tmpl/tmpl.module').then(m => m.TmplModule) },
     ],

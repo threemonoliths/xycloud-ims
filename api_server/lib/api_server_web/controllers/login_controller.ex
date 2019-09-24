@@ -11,7 +11,6 @@ defmodule ApiServerWeb.LoginController do
     %{"password" => pw, "username" => un} = login_params
     case check_pwd(un, pw) do
       {:ok, user} ->
-
         {:ok, token, claims} = Guardian.encode_and_sign(user, %{pem: %{"default" => user.perms_number}})
         render(conn, "login_ok.json", %{user: user, jwt: token})
       {:error, _} ->
@@ -20,7 +19,7 @@ defmodule ApiServerWeb.LoginController do
     end
   end
 
-  defp check_pwd(username, password) do
+  def check_pwd(username, password) do
     user = Repo.get_by(User, name: username)
     cond do
       user && user.actived &&  Pbkdf2.verify_pass(password, user.password_hash) ->

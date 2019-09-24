@@ -14,6 +14,9 @@ defmodule ApiServerWeb.LoginView do
     %{
       name: user.name,
       real_name: user.real_name,
+      position: user.position,
+      mobile: user.mobile,
+      avatar: user |> ApiServerWeb.UserView.get_avatar,
       perms: user.perms_number |> resolve_perms,
     }
   end

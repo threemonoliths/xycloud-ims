@@ -38,10 +38,16 @@ export class AuthenticationService {
           let error = response && response['error'];
           let token = response && response['jwt'];
           let username = response && response['user'] && response['user']['real_name'];
-          if (!error && token && username) {
+          let position = response && response['user'] && response['user']['position'];
+          let avatar = response && response['user'] && response['user']['avatar'];
+          let mobile = response && response['user'] && response['user']['mobile'];
+          if (!error && token) {
             localStorage.clear();
             localStorage.setItem('currentToken', token);
-            localStorage.setItem('username', username);
+            if (username) localStorage.setItem('real_name', username);
+            if (avatar) localStorage.setItem('avatar', avatar);
+            if (position) localStorage.setItem('position', position);
+            if (mobile) localStorage.setItem('mobile', mobile);
             return true;
           } else {
             return false;

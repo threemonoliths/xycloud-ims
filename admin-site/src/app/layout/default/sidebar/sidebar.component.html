@@ -1,15 +1,17 @@
 <div class="alain-default__aside-inner">
   <div nz-dropdown nzTrigger="click" [nzDropdownMenu]="userMenu" class="alain-default__aside-user">
-    <nz-avatar class="alain-default__aside-user-avatar" [nzSrc]="settings.user.avatar"></nz-avatar>
+    <nz-avatar class="alain-default__aside-user-avatar" [nzSrc]="avatar"></nz-avatar>
     <div class="alain-default__aside-user-info">
-      <strong>{{ settings.user.name }}</strong>
-      <p class="mb0">{{ settings.user.email }}</p>
+      <strong>{{ username }}</strong>
+      <p class="mb0">{{ position }}</p>
     </div>
   </div>
   <nz-dropdown-menu #userMenu="nzDropdownMenu">
     <ul nz-menu>
-      <li nz-menu-item routerLink="/pro/account/center">{{ 'menu.account.center' | translate }}</li>
-      <li nz-menu-item routerLink="/pro/account/settings">{{ 'menu.account.settings' | translate }}</li>
+      <li nz-menu-item routerLink="/user/info">{{ 'menu.account.settings' | translate }}</li>
+      <li nz-menu-item routerLink="/user/password">修改密码</li>
+      <li nz-menu-item (click)="logout()">{{ 'menu.account.logout' | translate }}</li>
+
     </ul>
   </nz-dropdown-menu>
   <sidebar-nav class="d-block py-lg"></sidebar-nav>

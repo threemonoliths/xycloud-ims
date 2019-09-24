@@ -25,7 +25,8 @@ defmodule ApiServerWeb.UserView do
       position: user.position,
       is_admin: user.is_admin,
       activedd: user.actived,
-      perms_number: user.perms_number |> resolve_perms
+      perms_number: user.perms_number |> resolve_perms,
+      avatar: user |> get_avatar,
     }
   end
 
@@ -40,6 +41,16 @@ defmodule ApiServerWeb.UserView do
     %{default: perms_number}
     |> ApiServerWeb.Permissions.get_perms_from_number
     |> Map.get(:default)
+  end
+
+  # 获avatar图片url
+  def get_avatar(user) do
+    case user.avatar do
+      nil -> ""
+      avatar -> 
+        url = ApiServer.Utils.StringHandler.take_prefix(ApiServer.UserAvatar.url({user.avatar, user}, :original),"/priv/static")  
+        ApiServerWeb.Endpoint.static_url <> url
+    end
   end
 
 end

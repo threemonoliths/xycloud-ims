@@ -79,11 +79,13 @@ export class TmplFormComponent implements OnInit {
     let obj = this.form.value;
     if ((this.fileList) && (this.fileList.length > 0))
       obj.attachment = this.fileList[0]
+    console.log(obj);
     return obj;
   }
 
   fileList: UploadFile[] = []
   beforeUpload = (file: UploadFile): boolean => {
+    console.log(file);
     this.showFile = false;
     this.fileList = [file];
     return false;

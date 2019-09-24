@@ -1,0 +1,31 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+
+        <se label="姓名" error="请输入姓名，大于两个字符">
+          <input nz-input formControlName="real_name" placeholder="请输入姓名" />
+        </se>
+        <se label="手机号" error="请输入手机号">
+          <input nz-input formControlName="mobile" placeholder="请输入手机号" />
+        </se>
+        <se label="岗位" error="请输入岗位名称">
+          <input nz-input formControlName="position" placeholder="请输入岗位名称" />
+        </se>
+        <se label="用户头像">
+          <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [(nzFileList)]="fileList"
+            [nzBeforeUpload]="beforeUpload">
+            <button nz-button type="button"><i nz-icon nzType="upload"></i><span>点击上传</span></button>
+          </nz-upload>
+          <!-- <a *ngIf="showFile">{{tmpl.file_name}}</a> -->
+        </se>
+
+        <se>
+          <button nz-button nzType="primary" [disabled]="form.invalid" type="submit"
+            [nzLoading]="submitting">提交</button>
+          <button nz-button class="ml-sm" type="reset">重置</button>
+        </se>
+      </form>
+    </nz-card>
+  </div>
+</div>

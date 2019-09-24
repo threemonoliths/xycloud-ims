@@ -12,12 +12,19 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
       nzPlacement="bottomRight"
       [nzDropdownMenu]="userMenu"
     >
-      <nz-avatar [nzSrc]="settings.user.avatar" nzSize="small" class="mr-sm"></nz-avatar>
-      {{ username }}
+      <nz-avatar [nzSrc]="avatar" nzSize="small" class="mr-sm"></nz-avatar>
+      {{ real_name }}
     </div>
     <nz-dropdown-menu #userMenu="nzDropdownMenu">
       <div nz-menu class="width-sm">
-       
+        <div nz-menu-item (click)="selfinfo()">
+          <i nz-icon nzType="user" class="mr-sm"></i>
+          {{ 'menu.account.selfinfo' | translate }}
+        </div>
+        <div nz-menu-item (click)="password()">
+          <i nz-icon nzType="lock" class="mr-sm"></i>
+          修改密码
+        </div>
         <div nz-menu-item (click)="logout()">
           <i nz-icon nzType="logout" class="mr-sm"></i>
           {{ 'menu.account.logout' | translate }}
@@ -29,18 +36,36 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 })
 export class HeaderUserComponent {
 
-  username: string = null
+  real_name: string = null;
+  avatar: string = null;
 
   constructor(
     public settings: SettingsService,
     private router: Router,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
   ) {
-    this.username = localStorage.getItem("username")
+    this.real_name = localStorage.getItem("real_name");
+    this.avatar = this.getUrl();
   }
 
   logout() {
     this.tokenService.clear();
     this.router.navigateByUrl(this.tokenService.login_url!);
+  }
+
+  // modifypwd() {
+  //   this.router.navigateByUrl('/user/modifypwd');
+  // }
+
+  selfinfo() {
+    this.router.navigateByUrl('/user/info');
+  }
+
+  password() {
+    this.router.navigateByUrl('/user/password');
+  }
+
+  getUrl() {
+    return localStorage.getItem("avatar");
   }
 }

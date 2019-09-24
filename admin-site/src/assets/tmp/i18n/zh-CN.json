@@ -60,6 +60,8 @@
   "menu.account.settings": "个人设置",
   "menu.account.trigger": "触发错误",
   "menu.account.logout": "退出登录",
+  "menu.account.selfinfo": "个人设置",
+  "menu.account.modifypwd": "修改密码",
   "menu.more": "更多",
   "menu.report": "报表",
   "menu.report.relation": "全屏关系图",

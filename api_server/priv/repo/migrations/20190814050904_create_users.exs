@@ -11,6 +11,8 @@ defmodule ApiServer.Repo.Migrations.CreateUsers do
       add :is_admin, :boolean, default: false
       add :actived, :boolean, default: true
       add :perms_number, :integer, default: 0
+      add :uuid, :string
+      add :avatar, :string
 
       timestamps()
     end
