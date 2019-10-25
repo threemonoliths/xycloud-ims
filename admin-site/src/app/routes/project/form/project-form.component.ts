@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
-import { UploadFile } from 'ng-zorro-antd';
 import { getFormatDateStr, getDateByDateStr } from '../../../shared/utils/datehandler';
 import { ProjectService } from '../project.service';
 
