@@ -12,7 +12,7 @@ defmodule ApiServer.Repo.Migrations.CreateContracts do
       add :amount, :float #合同额
       add :comments, :text #备注
 
-      add :project_id, references(:projects)
+      add :project_id, references(:projects) 
 
       timestamps()
     end

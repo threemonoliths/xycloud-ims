@@ -44,6 +44,10 @@ const routes: Routes = [
       { path: 'user/password', loadChildren: () => import('./userpassword/user-password.module').then(m => m.UserPasswordModule) },
       // tmpl
       { path: 'tmpl', loadChildren: () => import('./tmpl/tmpl.module').then(m => m.TmplModule) },
+      //client
+      { path: 'client', loadChildren: () => import('./client/client.module').then(m => m.ClientModule) },
+      //supplier
+      { path: 'supplier', loadChildren: () => import('./supplier/supplier.module').then(m => m.SupplierModule) },
     ],
 
   },
