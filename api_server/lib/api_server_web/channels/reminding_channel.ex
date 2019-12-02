@@ -33,7 +33,7 @@ defmodule ApiServerWeb.RemindingChannel do
     {:noreply, socket}
   end
 
-  # 客户端确认接收到消息后，会发一条返回消息，后台置已读状态
+  # 客户端清空消息后，会发一条返回消息，后台置已读状态
   def handle_in("received", %{"last_datetime" => last_datetime, "token" => token}, socket) do
     with {:ok, claims} <- ApiServerWeb.Guardian.decode_and_verify(token) do
       {:ok, resource} = ApiServerWeb.Guardian.resource_from_claims(claims)
