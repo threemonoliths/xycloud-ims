@@ -74,11 +74,11 @@
           "icon": "anticon-edit",
           "children": [
             {
-              "text": "采购合同",
+              "text": "销售合同",
               "link": "/contract/page"
             },
             {
-              "text": "销售合同",
+              "text": "采购合同",
               "link": "/purchase_contract/page"
             }
           ]
