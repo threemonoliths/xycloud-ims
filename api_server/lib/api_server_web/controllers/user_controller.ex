@@ -57,6 +57,7 @@ defmodule ApiServerWeb.UserController do
     end
   end
 
+  # 获取所有权限
   def permissions(conn, params) do
     render(conn, "permissions.json", params: params)
   end
