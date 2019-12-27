@@ -13,7 +13,7 @@ alias ApiServer.Accounts.User
 
 admin = %User{
   name: "admin",
-  password_hash: Comeonin.Pbkdf2.hashpwsalt("admin123"),
+  password_hash: Comeonin.Pbkdf2.hash_pwd_salt("admin123"),
   real_name: "王磊",
   mobile: "15156709660",
   position: "挨踢狗",
