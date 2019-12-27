@@ -11,10 +11,8 @@ export class AuthGuard implements CanActivate {
 
     canActivate() {
         if (localStorage.getItem('currentToken')) {
-            console.log("canActivate")
             return true;
         }
-        console.log("can not activate")
         this.router.navigate(['/passport/login']);
         return false;
     }

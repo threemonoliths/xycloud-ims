@@ -11,14 +11,15 @@
 # and so on) as they will fail if something goes wrong.
 alias ApiServer.Accounts.User
 
-admin = %{
+admin = %User{
   name: "admin",
-  password: "admin123",
+  password_hash: Comeonin.Pbkdf2.hashpwsalt("admin123"),
   real_name: "王磊",
   mobile: "15156709660",
   position: "挨踢狗",
   is_admin: true,
   perms_number: 15
 }
-User.changeset(%User{}, admin)
+
+admin
 |> ApiServer.Repo.insert
