@@ -16,8 +16,10 @@ defmodule ApiServerWeb.Router do
     post "/login", LoginController, :login
     get "/users/permissions/all", UserController, :permissions 
     resources "/tmpls", TmplController, except: [:new, :edit]
+  end
 
-
+  scope "/api/v1", ApiServerWeb do 
+    pipe_through [:api_auth]
     resources "/users", UserController, except: [:new, :edit]
     resources "/projects", ProjectController, except: [:new, :edit]
     resources "/contracts", ContractController, except: [:new, :edit]
@@ -30,21 +32,5 @@ defmodule ApiServerWeb.Router do
     get "/tmpls/attachment/:id", TmplController, :download_attachment
     put "/user/info", UserController, :set_self
     put "/user/password", UserController, :set_self_password
-  end
-
-  scope "/api/v1", ApiServerWeb do 
-    pipe_through [:api_auth]
-    # resources "/users", UserController, except: [:new, :edit]
-    # resources "/projects", ProjectController, except: [:new, :edit]
-    # resources "/contracts", ContractController, except: [:new, :edit]
-
-    # resources "/purchase_contracts", PurchaseContractController, except: [:new, :edit]
-
-    # resources "/clients", ClientController, except: [:new, :edit]
-    # resources "/suppliers", SupplierController, except: [:new, :edit]
-
-    # get "/tmpls/attachment/:id", TmplController, :download_attachment
-    # put "/user/info", UserController, :set_self
-    # put "/user/password", UserController, :set_self_password
   end
 end
