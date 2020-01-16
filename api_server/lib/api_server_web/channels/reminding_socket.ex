@@ -1,4 +1,4 @@
-defmodule ApiServerWeb.UserSocket do
+defmodule ApiServerWeb.RemindingSocket do
   use Phoenix.Socket
 
   ## Channels

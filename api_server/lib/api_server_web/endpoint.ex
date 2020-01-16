@@ -1,7 +1,7 @@
 defmodule ApiServerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :api_server
 
-  socket "/socket", ApiServerWeb.UserSocket,
+  socket "/socket", ApiServerWeb.RemindingSocket,
     websocket: true,
     longpoll: false
 

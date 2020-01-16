@@ -41,6 +41,15 @@ config :api_server, ApiServerWeb.Guardian,
 config :arc,
   storage: Arc.Storage.Local
 
+# Cron scheduler
+config :api_server, ApiServer.Scheduler,
+  jobs: [
+    # Every minute
+    {"* * * * *",      fn -> ApiServer.ContractManagement.get_receivable_message() end},
+    # Every minute
+    {"* * * * *",      fn -> ApiServer.PurchaseContractManagement.get_payable_message() end},
+  ] 
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

@@ -166,7 +166,7 @@ export class ContractFormComponent implements OnInit {
         this.srv.add(obj).subscribe(resp => {
           this.submitting = false;
           if (resp['data']) this.msg.success(`保存成功！`);
-          this.wsSrv.channel.push("new_msg", { body: localStorage.getItem("real_name") + " 创建了 " + resp['data']['cname'] })
+          this.wsSrv.channel.push("new_msg", { body: "新的合同：" + localStorage.getItem("real_name") + " 创建了 " + resp['data']['cname'] })
           this.router.navigateByUrl('/contract/page');
           this.cdr.detectChanges();
         });

@@ -39,6 +39,21 @@ defmodule ApiServer.SearchTerm do
     |> where([e], field(e, ^String.to_existing_atom(field_name)) > ^compare_value)
   end
 
+  def query_greater_or_equal_than(query, field_name, compare_value) do
+    query 
+    |> where([e], field(e, ^String.to_existing_atom(field_name)) >= ^compare_value)
+  end
+
+  def query_less_than(query, field_name, compare_value) do
+    query 
+    |> where([e], field(e, ^String.to_existing_atom(field_name)) < ^compare_value)
+  end
+
+  def query_less_or_equal_than(query, field_name, compare_value) do
+    query 
+    |> where([e], field(e, ^String.to_existing_atom(field_name)) <= ^compare_value)
+  end
+
   # 默认升序排列
   def query_order_by(query, params, default_field) do
     sort = [{Map.get(params, "sort_direction", "asc") |> String.to_existing_atom, Map.get(params, "sort_field", default_field) |> String.to_existing_atom}]

@@ -26,9 +26,9 @@ import { MessageRemindingService } from '../../../../message-reminding.service';
 export class HeaderNotifyComponent implements OnInit {
   data: NoticeItem[] = [
     {
-      title: '新的合同',
+      title: '新的消息',
       list: [],
-      emptyText: '没有新增的合同',
+      emptyText: '没有新的消息',
       emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
       clearText: '清空',
     },
@@ -39,13 +39,13 @@ export class HeaderNotifyComponent implements OnInit {
     //   emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg',
     //   clearText: '清空消息',
     // },
-    {
-      title: '收款提醒',
-      list: [],
-      emptyText: '近期没有收款提醒',
-      emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg',
-      clearText: '清空',
-    },
+    // {
+    //   title: '新的收付款',
+    //   list: [],
+    //   emptyText: '近期没有收付款提醒',
+    //   emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg',
+    //   clearText: '清空',
+    // },
   ];
 
   count = 0;
@@ -199,7 +199,7 @@ export class HeaderNotifyComponent implements OnInit {
     let src = this.messageList;
     let des: any[] = [];
     for (var i in src) {
-      let e = { id: src[i]['id'], title: src[i]['body'], datetime: src[i]['datetime'], type: '新的合同', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
+      let e = { id: src[i]['id'], title: src[i]['body'], datetime: src[i]['datetime'], type: '新的消息', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
       des.push(e)
     }
     return des;

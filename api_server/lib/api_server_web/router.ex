@@ -16,6 +16,11 @@ defmodule ApiServerWeb.Router do
     post "/login", LoginController, :login
     get "/users/permissions/all", UserController, :permissions 
     resources "/tmpls", TmplController, except: [:new, :edit]
+
+    # 临时
+    get "/contract/receivable_yearly", ContractController, :get_receivable_by_year
+    get "/purchase_contract/payable_yearly", PurchaseContractController, :get_payable_by_year
+    get "/contract/export",ContractController, :export_excel
   end
 
   scope "/api/v1", ApiServerWeb do 
