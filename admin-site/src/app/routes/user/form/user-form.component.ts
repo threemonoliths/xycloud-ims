@@ -139,7 +139,7 @@ export class UserFormComponent implements OnInit {
 
   convertPermsToTransferItems(perms: any[], direction: string) {
     const destList = []
-    perms.map(function (v, k) { destList.push({ key: v, title: v, direction: direction, disabled: false }); })
+    perms.map(function (v, k) { destList.push({ key: v, title: v, direction, disabled: false }); })
     return destList
   }
 
