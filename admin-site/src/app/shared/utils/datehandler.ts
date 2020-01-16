@@ -48,28 +48,28 @@ export function getNowFormatTime() {
   return h + seperator1 + m + seperator1 + s;
 }
 
-//将日期字符串yyyy-MM-dd 转换为日期对象
+// 将日期字符串yyyy-MM-dd 转换为日期对象
 export function getDateByDateStr(dateStr) {
-  var dateArr = dateStr.split(" ");
-  var d = dateArr[0].split("-");
+  const dateArr = dateStr.split(" ");
+  const d = dateArr[0].split("-");
   return new Date(d[0], (d[1] - 1), d[2]);
 }
 
-//将字符串格式yyyy-MM-dd HH:mm:ss 转换为js日期对象
+// 将字符串格式yyyy-MM-dd HH:mm:ss 转换为js日期对象
 export function getDateByTimeStr(timeStr) {
-  var timeArr = timeStr.split(" ");
-  var d = timeArr[0].split("-");
-  var t = timeArr[1].split(":");
+  const timeArr = timeStr.split(" ");
+  const d = timeArr[0].split("-");
+  const t = timeArr[1].split(":");
   return new Date(d[0], (d[1] - 1), d[2], t[0], t[1], t[2]);
 }
 
-//将js日期对象转换为字符串格式 yyyy-MM-dd HH:mm:ss
+// 将js日期对象转换为字符串格式 yyyy-MM-dd HH:mm:ss
 export function getTimeStrByDate(date) {
-  var y = date.getFullYear();
-  var M = date.getMonth() + 1;
-  var d = date.getDate();
-  var H = date.getHours();
-  var m = date.getMinutes();
-  var s = date.getSeconds();
+  const y = date.getFullYear();
+  const M = date.getMonth() + 1;
+  const d = date.getDate();
+  const H = date.getHours();
+  const m = date.getMinutes();
+  const s = date.getSeconds();
   return y + '-' + (M < 10 ? ('0' + M) : M) + '-' + (d < 10 ? ('0' + d) : d) + " " + (H < 10 ? ('0' + H) : H) + ":" + (m < 10 ? ('0' + m) : m) + ":" + (s < 10 ? ('0' + s) : s);
 }

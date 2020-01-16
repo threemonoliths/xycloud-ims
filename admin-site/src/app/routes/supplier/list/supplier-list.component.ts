@@ -57,7 +57,7 @@ export class SupplierListComponent implements OnInit {
       .listOnePage(this.q)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(resp => {
-        this.data = resp['data'];
+        this.data = resp.data;
         this.cdr.detectChanges();
       });
   }
@@ -70,7 +70,7 @@ export class SupplierListComponent implements OnInit {
   modify(id) {
     this.srv.isUpdate = true;
     this.srv.getById(id).subscribe(resp => {
-      this.srv.supplier = resp['data'];
+      this.srv.supplier = resp.data;
       this.router.navigateByUrl('/supplier/form');
     });
   }
@@ -82,7 +82,7 @@ export class SupplierListComponent implements OnInit {
       nzOnOk: () => {
         this.loading = true;
         this.srv.delete(item.id).subscribe(resp => {
-          if (resp['data']) this.msg.success(`删除成功！`);
+          if (resp.data) this.msg.success(`删除成功！`);
           this.reset();
         });
       },

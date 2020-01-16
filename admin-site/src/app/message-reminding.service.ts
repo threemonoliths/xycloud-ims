@@ -22,7 +22,7 @@ export class MessageRemindingService {
   }
 
   getChannel(channelStr) {
-    let channel = this.socket.channel(channelStr, { token: localStorage.getItem("currentToken") })
+    const channel = this.socket.channel(channelStr, { token: localStorage.getItem("currentToken") })
     channel.join()
       .receive("ok", ({ messages }) => { console.log("##########catching up###########"); console.log(messages) })
       .receive("error", ({ reason }) => console.log("failed join", reason))

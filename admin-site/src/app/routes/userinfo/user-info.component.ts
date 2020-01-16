@@ -11,12 +11,6 @@ import { UserInfoService } from './user-info.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent implements OnInit {
-  form: FormGroup;
-  submitting = false;
-  title: string;
-  user: any = {};
-
-  avatarUrl: any = '';
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +19,15 @@ export class UserInfoComponent implements OnInit {
     private router: Router,
     private srv: UserInfoService,
   ) { }
+  form: FormGroup;
+  submitting = false;
+  title: string;
+  user: any = {};
+
+  avatarUrl: any = '';
+
+  showFile = true;
+  fileList: UploadFile[] = []
 
   ngOnInit(): void {
     this.setTitle();
@@ -50,9 +53,9 @@ export class UserInfoComponent implements OnInit {
     const obj = this.formmatFormValue();
     // if (this.file) obj.avatar = this.fileList[0];
     this.srv.update(this.user.id, obj).subscribe(resp => {
-      if (resp['data']) {
+      if (resp.data) {
         this.submitting = false;
-        if (resp['data']) this.msg.success(`保存成功！`);
+        if (resp.data) this.msg.success(`保存成功！`);
         this.router.navigateByUrl('/project/page');
         this.cdr.detectChanges();
       }
@@ -64,14 +67,11 @@ export class UserInfoComponent implements OnInit {
   }
 
   formmatFormValue() {
-    let obj = this.form.value;
+    const obj = this.form.value;
     if ((this.fileList) && (this.fileList.length > 0)) { obj.avatar = this.fileList[0] }
     console.log(obj);
     return obj;
   }
-
-  showFile = true;
-  fileList: UploadFile[] = []
   beforeUpload = (file: UploadFile): boolean => {
     console.log(file);
     this.showFile = false;

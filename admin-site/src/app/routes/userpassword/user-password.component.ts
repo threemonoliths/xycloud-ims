@@ -50,9 +50,9 @@ export class UserPasswordComponent implements OnInit {
     const obj = this.formmatFormValue();
     // if (this.file) obj.avatar = this.fileList[0];
     this.srv.modifyPassword(obj).subscribe(resp => {
-      if (resp['data']) {
+      if (resp.data) {
         this.submitting = false;
-        if (resp['data']) this.msg.success(`密码已修改！`);
+        if (resp.data) this.msg.success(`密码已修改！`);
         this.router.navigateByUrl('/project/page');
         this.cdr.detectChanges();
       }
@@ -64,17 +64,17 @@ export class UserPasswordComponent implements OnInit {
   }
 
   formmatFormValue() {
-    let obj: any = new Object();
-    obj.password = this.form.controls["password"].value;
-    obj.new_password = this.form.controls["newPassword"].value;
+    const obj: any = new Object();
+    obj.password = this.form.controls.password.value;
+    obj.new_password = this.form.controls.newPassword.value;
     return obj;
   }
 
-  //确认密码验证
+  // 确认密码验证
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
-    } else if (control.value !== this.form.controls['newPassword'].value) {
+    } else if (control.value !== this.form.controls.newPassword.value) {
       return { confirm: true, error: true };
     }
   }

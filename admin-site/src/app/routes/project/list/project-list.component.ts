@@ -47,7 +47,7 @@ export class ProjectListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp['data'];
+          this.data = resp.data;
           this.cdr.detectChanges();
         }
       );
@@ -61,7 +61,7 @@ export class ProjectListComponent implements OnInit {
   modify(id) {
     this.srv.isUpdate = true;
     this.srv.getById(id).subscribe(resp => {
-      this.srv.project = resp['data'];
+      this.srv.project = resp.data;
       this.router.navigateByUrl('/project/form');
     });
   }
@@ -74,7 +74,7 @@ export class ProjectListComponent implements OnInit {
         this.loading = true;
         this.srv.delete(item.id).subscribe(
           resp => {
-            if (resp['data']) this.msg.success(`删除成功！`);
+            if (resp.data) this.msg.success(`删除成功！`);
             this.reset();
           }
         );

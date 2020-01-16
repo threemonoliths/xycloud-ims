@@ -11,12 +11,6 @@ import { TmplService } from '../tmpl.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TmplFormComponent implements OnInit {
-  form: FormGroup;
-  submitting = false;
-  title: string;
-  tmpl: any = {};
-
-  showFile = true;
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +19,14 @@ export class TmplFormComponent implements OnInit {
     private router: Router,
     private srv: TmplService,
   ) { }
+  form: FormGroup;
+  submitting = false;
+  title: string;
+  tmpl: any = {};
+
+  showFile = true;
+
+  fileList: UploadFile[] = []
 
   ngOnInit(): void {
     if (this.srv.isUpdate) this.initUpdate();
@@ -45,7 +47,7 @@ export class TmplFormComponent implements OnInit {
       const obj = this.formmatFormValue();
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
-        if (resp['data']) this.msg.success(`保存成功！`);
+        if (resp.data) this.msg.success(`保存成功！`);
         this.router.navigateByUrl('/tmpl/page');
         this.cdr.detectChanges();
       });
@@ -53,9 +55,9 @@ export class TmplFormComponent implements OnInit {
       this.submitting = true;
       const obj = this.formmatFormValue();
       this.srv.update(this.tmpl.id, obj).subscribe(resp => {
-        if (resp['data']) {
+        if (resp.data) {
           this.submitting = false;
-          if (resp['data']) this.msg.success(`保存成功！`);
+          if (resp.data) this.msg.success(`保存成功！`);
           this.router.navigateByUrl('/tmpl/page');
           this.cdr.detectChanges();
         }
@@ -76,14 +78,12 @@ export class TmplFormComponent implements OnInit {
   }
 
   formmatFormValue() {
-    let obj = this.form.value;
+    const obj = this.form.value;
     if ((this.fileList) && (this.fileList.length > 0))
       obj.attachment = this.fileList[0]
     console.log(obj);
     return obj;
   }
-
-  fileList: UploadFile[] = []
   beforeUpload = (file: UploadFile): boolean => {
     console.log(file);
     this.showFile = false;

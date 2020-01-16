@@ -57,7 +57,7 @@ export class ContractListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp['data'];
+          this.data = resp.data;
           this.cdr.detectChanges();
         }
       );
@@ -81,8 +81,8 @@ export class ContractListComponent implements OnInit {
     // this.srv.isUpdate = true;
     this.srv.formOperation = 'update';
     this.srv.getById(id).subscribe(resp => {
-      this.srv.contract = resp['data'];
-      this.srv.contract.contract_details = resp['data'].details;
+      this.srv.contract = resp.data;
+      this.srv.contract.contract_details = resp.data.details;
       console.log(this.srv.contract)
       this.router.navigateByUrl('/contract/form');
     });
@@ -96,7 +96,7 @@ export class ContractListComponent implements OnInit {
         this.loading = true;
         this.srv.delete(item.id).subscribe(
           resp => {
-            if (resp['data']) this.msg.success(`删除成功！`);
+            if (resp.data) this.msg.success(`删除成功！`);
             this.reset();
           }
         );

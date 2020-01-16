@@ -58,8 +58,8 @@ export class HeaderNotifyComponent implements OnInit {
     this.wsSrv.getChannel("reminding:contract");
     this.wsSrv.channel.on("new_msg", msg => {
       if (this.messageList) {
-        this.messageList = this.messageList.concat(msg['messages']);
-      } else this.messageList = msg['messages'];
+        this.messageList = this.messageList.concat(msg.messages);
+      } else this.messageList = msg.messages;
       this.loadData();
 
     });
@@ -92,7 +92,7 @@ export class HeaderNotifyComponent implements OnInit {
     if (this.loading) return;
     this.loading = true;
     // setTimeout(() => {
-    let msgs = this.getMessagesArray()
+    const msconst= this.getMessagesArray()
     this.count = msgs.length
     this.data = this.updateNoticeData(msgs)
     // this.data = this.updateNoticeData([
@@ -195,31 +195,30 @@ export class HeaderNotifyComponent implements OnInit {
   }
 
   getMessagesArray() {
-    let length = this.messageList.length;
-    let src = this.messageList;
-    let des: any[] = [];
-    for (var i in src) {
-      let e = { id: src[i]['id'], title: src[i]['body'], datetime: src[i]['datetime'], type: '新的合同', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
+    const leconsth = this.messageList.length;
+    let srconst this.messageList;
+    let deconstany[] = [];
+    for (const i in src) {
+      let e const id: src[i].id, title: src[i].body, datetime: src[i].datetime, type: '新的合同', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
       des.push(e)
     }
     return des;
   }
 
   getMaxDatetime(list) {
-    let length = list.length;
+    const length = liconstlength;
     let max = "0000-00-00 00:00:00"
-    for (let i in list) {
-      if (list[i]['datetime'] > max) {
-        max = list[i]['datetime'];
+    for (const i in list) const      if (list[i].datetime > max) {
+        max = list[i].datetime;
       }
     }
     return max
   }
 
   clear(type: string) {
-    //后台需要标记已读
+    // 后台需要标记已读
     if ((this.messageList) && (this.messageList.length)) {
-      let params = { last_datetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
+      const params = { last_constetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
       this.wsSrv.channel.push("received", params)
     }
     const data = this.data.slice();

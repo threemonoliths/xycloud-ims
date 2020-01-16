@@ -195,9 +195,9 @@ export class PurchaseContractFormComponent implements OnInit {
         const obj = this.formmatFormValue();
         this.srv.add(obj).subscribe(resp => {
           this.submitting = false;
-          if (resp['data']) this.msg.success(`保存成功！`);
+          if (resp.data) this.msg.success(`保存成功！`);
           this.wsSrv.channel.push('new_msg', {
-            body: localStorage.getItem('real_name') + ' 创建了 ' + resp['data'].cname,
+            body: localStorage.getItem('real_name') + ' 创建了 ' + resp.data.cname,
           });
           this.router.navigateByUrl('/purchase_contract/page');
           this.cdr.detectChanges();
@@ -207,9 +207,9 @@ export class PurchaseContractFormComponent implements OnInit {
         this.submitting = true;
         const obj = this.formmatFormValue();
         this.srv.update(this.purchase_contract.id, obj).subscribe(resp => {
-          if (resp['data']) {
+          if (resp.data) {
             this.submitting = false;
-            if (resp['data']) this.msg.success(`保存成功！`);
+            if (resp.data) this.msg.success(`保存成功！`);
             this.router.navigateByUrl('/purchase_contract/page');
             this.cdr.detectChanges();
           }
@@ -267,7 +267,7 @@ export class PurchaseContractFormComponent implements OnInit {
       .listAll()
       .pipe()
       .subscribe(resp => {
-        this.project_data = resp['data'];
+        this.project_data = resp.data;
         this.cdr.detectChanges();
       });
     console.log('项目类型', this.project_data);

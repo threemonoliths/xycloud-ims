@@ -23,24 +23,24 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, public aclSrv: ACLService, private menuSrv: MenuService) {
     // set token if saved in local storage
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
   }
 
   login(value): Observable<any> {
-    let headers = new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    let options = { headers: headers };
+    const options = { headers };
     return this.http.post(baseUrl + `login`, value, options)
       .pipe(
         map((response: Response) => {
           console.log(response)
-          let error = response && response['error'];
-          let token = response && response['jwt'];
-          let username = response && response['user'] && response['user']['real_name'];
-          let position = response && response['user'] && response['user']['position'];
-          let avatar = response && response['user'] && response['user']['avatar'];
-          let mobile = response && response['user'] && response['user']['mobile'];
+          const error = response && response.error;
+          const token = response && response.jwt;
+          const username = response && response.user && response.user.real_name;
+          const position = response && response.user && response.user.position;
+          const avatar = response && response.user && response.user.avatar;
+          const mobile = response && response.user && response.user.mobile;
           if (!error && token) {
             localStorage.clear();
             localStorage.setItem('currentToken', token);
