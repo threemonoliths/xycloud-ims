@@ -26,9 +26,9 @@ import { MessageRemindingService } from '../../../../message-reminding.service';
 export class HeaderNotifyComponent implements OnInit {
   data: NoticeItem[] = [
     {
-      title: '新的合同',
+      title: '新的消息',
       list: [],
-      emptyText: '没有新增的合同',
+      emptyText: '没有新的消息',
       emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
       clearText: '清空',
     },
@@ -39,13 +39,13 @@ export class HeaderNotifyComponent implements OnInit {
     //   emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg',
     //   clearText: '清空消息',
     // },
-    {
-      title: '收款提醒',
-      list: [],
-      emptyText: '近期没有收款提醒',
-      emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg',
-      clearText: '清空',
-    },
+    // {
+    //   title: '新的收付款',
+    //   list: [],
+    //   emptyText: '近期没有收付款提醒',
+    //   emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg',
+    //   clearText: '清空',
+    // },
   ];
 
   count = 0;
@@ -92,7 +92,7 @@ export class HeaderNotifyComponent implements OnInit {
     if (this.loading) return;
     this.loading = true;
     // setTimeout(() => {
-    const msconst= this.getMessagesArray()
+    const msconst = this.getMessagesArray()
     this.count = msgs.length
     this.data = this.updateNoticeData(msgs)
     // this.data = this.updateNoticeData([
@@ -199,37 +199,38 @@ export class HeaderNotifyComponent implements OnInit {
     let srconst this.messageList;
     let deconstany[] = [];
     for (const i in src) {
-      let e const id: src[i].id, title: src[i].body, datetime: src[i].datetime, type: '新的合同', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
-      des.push(e)
+      let e const id: src[i].id, title: src[i].body, datetime: src[i].datetime, type: '新的合同', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png'
     }
+    des.push(e)
+  }
     return des;
   }
 
-  getMaxDatetime(list) {
-    const length = liconstlength;
-    let max = "0000-00-00 00:00:00"
-    for (const i in list) const      if (list[i].datetime > max) {
-        max = list[i].datetime;
-      }
-    }
-    return max
+getMaxDatetime(list) {
+  const length = liconstlength;
+  let max = "0000-00-00 00:00:00"
+  for (const i in list) const      if (list[i].datetime > max) {
+    max = list[i].datetime;
+  }
+}
+return max
   }
 
-  clear(type: string) {
-    // 后台需要标记已读
-    if ((this.messageList) && (this.messageList.length)) {
-      const params = { last_constetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
-      this.wsSrv.channel.push("received", params)
-    }
-    const data = this.data.slice();
-    data.forEach(i => (i.list = []));
-    this.messageList = [];
-    this.data = data;
-    this.count = 0;
-    this.msg.success(`清空了 ${type}`);
+clear(type: string) {
+  // 后台需要标记已读
+  if ((this.messageList) && (this.messageList.length)) {
+    const params = { last_constetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
+    this.wsSrv.channel.push("received", params)
   }
+  const data = this.data.slice();
+  data.forEach(i => (i.list = []));
+  this.messageList = [];
+  this.data = data;
+  this.count = 0;
+  this.msg.success(`清空了 ${type}`);
+}
 
-  select(res: any) {
-    this.msg.success(`点击了 ${res.title} 的 ${res.item.title}`);
-  }
+select(res: any) {
+  this.msg.success(`点击了 ${res.title} 的 ${res.item.title}`);
+}
 }

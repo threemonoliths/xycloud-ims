@@ -55,6 +55,31 @@ defmodule ApiServerWeb.ContractController do
     end
   end
 
+  # 查询年度中每个月应收金额
+  def get_receivable_by_year(conn, %{ "date" => date}) do
+    json conn, get_receivable_yearly(date)
+  end
+
+  # 将合同导出excel
+  def export_excel(conn, params) do
+    
+    file_name = ApiServerWeb.ContractExporter.get_name
+    path = ApiServerWeb.ContractExporter.get_path <> file_name
+    find_all(params)
+    |> ApiServerWeb.ContractExporter.export
+    |> case do
+      { :ok, _ } ->
+        conn
+        |> put_resp_content_type("application/octet-stream")
+        |> put_resp_header("content-disposition", "attachment; filename=\"#{file_name}\"")
+        |> Plug.Conn.send_file(200, path)
+        |> halt()
+      { _ , _ } ->
+        json conn, %{error: "export failed!"}
+    end
+    
+  end
+
   defp get_details_changesets(contract_params) do
     case Map.get(contract_params, "contract_details") do
       nil -> []

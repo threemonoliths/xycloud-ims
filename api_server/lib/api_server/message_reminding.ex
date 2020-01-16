@@ -44,22 +44,29 @@ defmodule ApiServer.MessageReminding do
   end
 
   def set_last_datetime(user_id, last_datetime) do
-
     UserMessageRecord
     |> query_equal(%{ "user_id" => user_id }, "user_id")
     |> Repo.one
     |> case do
       nil ->
-        IO.inspect "############# inserting #############"
         params = %{ user_id: user_id, last_datetime: last_datetime} 
         UserMessageRecord.changeset(%UserMessageRecord{}, params)
         |> Repo.insert
       record ->
-        IO.inspect "############# updating #############"
         UserMessageRecord.changeset(record, %{last_datetime: last_datetime})
         |> Repo.update
-        |> IO.inspect 
-        IO.inspect "############# updated #############"
+    end
+  end
+
+  # 根据消息针对的对象id和类型，查询message是否已经存在
+  def is_exist(object_name, object_type) do
+    Message
+    |> query_equal(%{ "object_name" => object_name }, "object_name")
+    |> query_equal(%{ "object_type" => object_type }, "object_type")
+    |> Repo.all 
+    |> case do
+      [] -> false
+      _ -> true
     end
   end
 end

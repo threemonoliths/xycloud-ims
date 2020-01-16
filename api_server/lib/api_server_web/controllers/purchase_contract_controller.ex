@@ -48,6 +48,10 @@ defmodule ApiServerWeb.PurchaseContractController do
     end
   end
 
+  def get_payable_by_year(conn, %{ "date" => date}) do
+    json conn, get_payable_yearly(date)
+  end
+
   defp get_details_changesets(purchase_contract_params) do
     case Map.get(purchase_contract_params, "purchase_contract_details") do
       nil -> []
