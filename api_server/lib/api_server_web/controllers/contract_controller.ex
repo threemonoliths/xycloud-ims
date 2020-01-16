@@ -2,8 +2,9 @@ defmodule ApiServerWeb.ContractController do
   use ApiServerWeb, :controller
 
   use ApiServer.ContractManagement
-
+  use Ecto.Schema
   alias Guardian.Permissions.Bitwise
+  alias ApiServerWeb.{ContractView,DateTimeHandler, Repo, ResolveAssociationRecursion}
   import ApiServerWeb.Permissions, only: [need_perms: 1]
 
   action_fallback ApiServerWeb.FallbackController
@@ -14,7 +15,13 @@ defmodule ApiServerWeb.ContractController do
 
   def index(conn, params) do
     page = page(params)
+    page_size = Map.get(params, "page_size", "20")
+    date1 = Map.get(params, "date1", "2019-07-01")
+    date2 = Map.get(params, "date2", "2019-08-01")
+    flag = Map.get(params, "flag","0")
     render(conn, "index.json", page: page)
+    IO.puts inspect ("-----------------------")
+    json conn, ContractView.add_data(page_size,page,date1,date2,flag)
   end
 
   def create(conn, %{"contract" => contract_params}) do

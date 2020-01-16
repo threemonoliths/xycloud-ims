@@ -11,7 +11,6 @@ import { SupplierService } from '../supplier.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SupplierListComponent implements OnInit {
-
   title = '供应商管理';
   total = 0;
   q: any = {
@@ -24,14 +23,13 @@ export class SupplierListComponent implements OnInit {
 
   datas = [
     {
-      "sname": "xycloud",
-      "comments": "123"
-
+      sname: 'xycloud',
+      comments: '123',
     },
     {
-      "sname": "masteel",
-      "comments": "456"
-    }
+      sname: 'masteel',
+      comments: '456',
+    },
   ];
 
   data: any[] = [];
@@ -46,7 +44,7 @@ export class SupplierListComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private srv: SupplierService,
     private router: Router,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getData();
@@ -58,12 +56,10 @@ export class SupplierListComponent implements OnInit {
     this.srv
       .listOnePage(this.q)
       .pipe(tap(() => (this.loading = false)))
-      .subscribe(
-        resp => {
-          this.data = resp['data'];
-          this.cdr.detectChanges();
-        }
-      );
+      .subscribe(resp => {
+        this.data = resp['data'];
+        this.cdr.detectChanges();
+      });
   }
 
   add(tpl: TemplateRef<{}>) {
@@ -85,12 +81,10 @@ export class SupplierListComponent implements OnInit {
       nzContent: '确认要删除供应商：' + item.pname + ' 吗?',
       nzOnOk: () => {
         this.loading = true;
-        this.srv.delete(item.id).subscribe(
-          resp => {
-            if (resp['data']) this.msg.success(`删除成功！`);
-            this.reset();
-          }
-        );
+        this.srv.delete(item.id).subscribe(resp => {
+          if (resp['data']) this.msg.success(`删除成功！`);
+          this.reset();
+        });
       },
     });
   }

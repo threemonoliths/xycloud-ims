@@ -4070,7 +4070,7 @@ __webpack_require__.r(__webpack_exports__);
 // export const baseUrl = 'http://172.27.39.116:4000/api/v1/';
 // export const wsConnStr = 'ws://172.27.39.116:4000/socket';
 // export const baseUrl = 'http://localhost:4000/api/v1/';
-var baseUrl = 'http://xycloud-ims-api-srv:4000/api/v1/';
+var baseUrl = 'http://localhost:4000/api/v1/';
 var wsConnStr = 'ws://localhost:4000/socket';
 
 

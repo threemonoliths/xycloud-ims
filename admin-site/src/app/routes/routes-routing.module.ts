@@ -44,10 +44,14 @@ const routes: Routes = [
       { path: 'user/password', loadChildren: () => import('./userpassword/user-password.module').then(m => m.UserPasswordModule) },
       // tmpl
       { path: 'tmpl', loadChildren: () => import('./tmpl/tmpl.module').then(m => m.TmplModule) },
-      //client
+      // client
       { path: 'client', loadChildren: () => import('./client/client.module').then(m => m.ClientModule) },
-      //supplier
+      // supplier
       { path: 'supplier', loadChildren: () => import('./supplier/supplier.module').then(m => m.SupplierModule) },
+      // sales_query
+      { path: 'sales_query', loadChildren: () => import('./sales_query/sales_query.module').then(m => m.SalesQueryModule) },
+      // purchase_query
+      { path: 'purchase_query', loadChildren: () => import('./purchase_query/purchase_query.module').then(m => m.PurchaseQueryModule) },
     ],
 
   },

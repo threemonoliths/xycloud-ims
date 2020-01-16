@@ -84,6 +84,20 @@
           ]
         },
         {
+          "text": "合同查询",
+          "icon": "anticon-edit",
+          "children": [
+            {
+              "text": "销售查询",
+              "link": "/sales_query/page"
+            },
+            {
+              "text": "采购查询",
+              "link": "/purchase_query/page"
+            }
+          ]
+        }, 
+        {
           "text": "客商管理",
           "icon": "anticon-edit",
           "children": [

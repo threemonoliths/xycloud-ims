@@ -1,87 +1,105 @@
 <div nz-row [nzGutter]="24" class="pt-lg">
-    <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
-        <nz-card [nzBordered]="false" [nzTitle]="title">
-            <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
-                <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
-                    <div nz-col nzMd="8" nzSm="24">
-                        <nz-form-item>
-                            <nz-form-label nzFor="no">名称</nz-form-label>
-                            <nz-form-control>
-                                <input nz-input [(ngModel)]="q.cname" name="cname" placeholder="输入名称搜索" id="cname" />
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }" nzGutter="16">
 
-                    <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
-                        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-                        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
-                    </div>
-                </div>
-            </form>
-            <div class="mb-md">
-                <button nz-button (click)="add()" [nzType]="'primary'">
-                    <i nz-icon nzType="plus"></i>
-                    <span>新建</span>
-                </button>
-            </div>
+          <div nz-col [nzSpan]="12" class="mb-md">
+            <nz-form-item class="d-flex">
+              <nz-form-label nzFor="no">订单日期</nz-form-label>
+              <nz-form-control [nzValidateStatus]="'sign_date'" class="flex-1">
+                <nz-date-picker style="width: 40%;" (ngModelChange)="q.startDate=$event;_startValueChange()"
+                  [ngModel]="q.startDate" name="sign_date" [nzDisabledDate]="_disabledStartDate"
+                  [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'Start date'"></nz-date-picker>
+                <nz-date-picker style="width: 40%;" (ngModelChange)="q.endDate=$event;_endValueChange()"
+                  [ngModel]="q.endDate" name="sign_date" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'"
+                  [nzPlaceHolder]="'End date'"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
 
-            <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
-                (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
-                <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
-                    <tr>
-                        <th nz-th nzShowSort nzSortKey="cno">
-                            <span>编号</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="cname">
-                            <span>名称</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="party_a">
-                            <span>甲方</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="party_b">
-                            <span>乙方</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="sign_date">
-                            <span>签订日期</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="expiry_date">
-                            <span>终止日期</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="amount">
-                            <span>合同额</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="comments">
-                            <span>描述</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="project_id">
-                            <span>项目类型</span>
-                        </th>
+          <div nz-col nzMd="8" nzSm="24" [nzSpan]="12" class="mb-md">
+            <nz-form-item>
+              <nz-form-label nzFor="no">名称</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.cname" name="cname" placeholder="输入名称搜索" id="cname" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="12" [class.text-left]="expandForm" class="mb-md">
+            <button nz-button type="button" (click)="excelin()" [nzType]="'primary'" [nzLoading]="loading">导入</button>
+            <button nz-button type="button" (click)="excelout()" class="mx-sm">导出</button>
+          </div>
+          <div nz-col [nzSpan]="12" [class.text-right]="expandForm" class="mb-md">
+            <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+          </div>
+        </div>
+      </form>
+      <div class="mb-md">
+        <button nz-button (click)="add()" [nzType]="'primary'">
+          <i nz-icon nzType="plus"></i>
+          <span>新建</span>
+        </button>
+      </div>
 
-                        <th nz-th>
-                            <span>操作</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody nz-tbody>
-                    <tr nz-tbody-tr *ngFor="let i of nzTable.data">
-                        <td nz-td>{{i.cno}}</td>
-                        <td nz-td>{{i.cname}}</td>
-                        <td nz-td>{{i.party_a}}</td>
-                        <td nz-td>{{i.party_b}}</td>
-                        <td nz-td>{{i.sign_date}}</td>
-                        <td nz-td>{{i.expiry_date}}</td>
-                        <td nz-td>{{i.amount}}</td>
-                        <td nz-td>{{i.comments}}</td>
-                        <td nz-td>{{i.project_id}}</td>
-                        <td nz-td>
-                            <a (click)="modify(i.id)">修改</a>
-                            <span nz-table-divider></span>
-                            <nz-divider nzType="vertical"></nz-divider>
-                            <a (click)="remove(i)">删除</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-        </nz-card>
-    </div>
+      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
+        (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
+        <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+          <tr>
+            <th nz-th nzShowSort nzSortKey="cno">
+              <span>编号</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="cname">
+              <span>名称</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="party_a">
+              <span>甲方</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="party_b">
+              <span>乙方</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="sign_date">
+              <span>签订日期</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="expiry_date">
+              <span>终止日期</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="amount">
+              <span>合同额</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="comments">
+              <span>描述</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="project_id">
+              <span>项目类型</span>
+            </th>
+
+            <th nz-th>
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+            <td nz-td>{{i.cno}}</td>
+            <td nz-td>{{i.cname}}</td>
+            <td nz-td>{{i.party_a}}</td>
+            <td nz-td>{{i.party_b}}</td>
+            <td nz-td>{{i.sign_date}}</td>
+            <td nz-td>{{i.expiry_date}}</td>
+            <td nz-td>{{i.amount}}</td>
+            <td nz-td>{{i.comments}}</td>
+            <td nz-td>{{i.project_id}}</td>
+            <td nz-td>
+              <a (click)="modify(i.id)">修改</a>
+              <span nz-table-divider></span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="remove(i)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
 </div>

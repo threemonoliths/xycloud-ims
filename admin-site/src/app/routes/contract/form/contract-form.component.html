@@ -1,176 +1,172 @@
 <page-header nzTitle="创建合同">
-    <button nz-button class="ml-sm" type="return" (click)="goBack()">返回</button>
+  <button nz-button class="ml-sm" type="return" (click)="goBack()">返回</button>
 </page-header>
 <div nz-row [nzGutter]="24" class="pt-lg">
-    <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
-        <nz-card [nzBordered]="false">
-            <form nz-form [formGroup]="form" (ngSubmit)="submit()" [nzLayout]="'vertical'">
-                <nz-card [nzBordered]="false" nzTitle="合同管理">
-                    <nz-row nzGutter="16">
-                        <nz-col nzLg="6" nzMd="12" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label nzFor="name">合同编号</nz-form-label>
-                                <nz-form-control nzErrorTip="请输入合同编号，大于两个字符" required>
-                                    <input nz-input formControlName="cno" placeholder="请输入合同编号" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                        <nz-col [nzXl]="{ span: 6, offset: 2 }" [nzLg]="{ span: 8 }" [nzMd]="{ span: 12 }" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>合同名称</nz-form-label>
-                                <nz-form-control nzErrorTip="请输入合同名称，大于两个字符" required>
-                                    <input nz-input formControlName="cname" placeholder="请输入合同名称" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                        <nz-col [nzXl]="{ span: 8, offset: 2 }" [nzLg]="{ span: 10 }" [nzMd]="{ span: 24 }" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>项目类型</nz-form-label>
-                                <nz-form-control nzErrorTip="请选择项目类型" required>
-                                    <nz-select formControlName="project_id" placeholder="请选择项目类型"
-                                        [(ngModel)]="selectedOption" [nzPlaceHolder]="myPlaceHolder" nzAllowClear
-                                        [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
-                                        <nz-option *ngFor="let option of project_data" [nzLabel]="option.pname"
-                                            [nzValue]="option.id" [nzDisabled]="option.disabled">
-                                        </nz-option>
-                                    </nz-select>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                    </nz-row>
-                    <nz-row nzGutter="16">
-                        <nz-col nzLg="6" nzMd="12" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>甲方</nz-form-label>
-                                <nz-form-control nzErrorTip="请输入甲方，大于两个字符" required>
-                                    <input nz-input formControlName="party_a" placeholder="请输入甲方" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                        <nz-col [nzXl]="{ span: 6, offset: 2 }" [nzLg]="{ span: 8 }" [nzMd]="{ span: 12 }" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>乙方</nz-form-label>
-                                <nz-form-control nzErrorTip="请输入乙方，大于两个字符" required>
-                                    <input nz-input formControlName="party_b" placeholder="请输入乙方" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                        <nz-col [nzXl]="{ span: 8, offset: 2 }" [nzLg]="{ span: 10 }" [nzMd]="{ span: 24 }" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>合同额</nz-form-label>
-                                <nz-form-control nzErrorTip="请输入合同额，大于两个字符" required>
-                                    <input nz-input formControlName="amount" placeholder="请输入合同额" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                    </nz-row>
-                    <nz-row>
-                        <nz-col nzLg="6" nzMd="12" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>签订日期</nz-form-label>
-                                <nz-form-control nzErrorTip="请选择签订日期" required>
-                                    <nz-date-picker formControlName="sign_date"></nz-date-picker>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                        <nz-col [nzXl]="{ span: 6, offset: 2 }" [nzLg]="{ span: 8 }" [nzMd]="{ span: 12 }" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>终止日期</nz-form-label>
-                                <nz-form-control nzErrorTip="请选择终止日期" required>
-                                    <nz-date-picker formControlName="expiry_date"></nz-date-picker>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                        <nz-col [nzXl]="{ span: 8, offset: 2 }" [nzLg]="{ span: 10 }" [nzMd]="{ span: 24 }" nzSm="24">
-                            <nz-form-item>
-                                <nz-form-label>描述</nz-form-label>
-                                <nz-form-control nzErrorTip="请输入描述，大于两个字符" required>
-                                    <textarea rows="1" nz-input formControlName="comments"
-                                        placeholder="请输入描述"></textarea>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </nz-col>
-                    </nz-row>
-                </nz-card>
-                <!-- 合同子表 -->
-                <nz-card [nzBordered]="false" nzTitle="合同明细子表">
-                    <nz-table formArrayName="contract_details" [nzData]="contract_details.value"
-                        [nzShowPagination]="false">
-                        <thead>
-                            <tr>
-                                <th>笔次信息</th>
-                                <th>发票金额</th>
-                                <th>实付金额</th>
-                                <th>发票信息</th>
-                                <th>实付信息</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of contract_details.controls; let i = index" [formGroupName]="i">
-                                <td>
-                                    <span *ngIf="editIndex !== i">{{ contract_details.value[i].issue_name }}</span>
-                                    <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入笔次信息">
-                                        <input nz-input formControlName="issue_name" placeholder="请输入笔次信息" />
-                                    </span>
-                                </td>
-                                <td>
-                                    <span *ngIf="editIndex !== i">{{ contract_details.value[i].invoice_amount }}</span>
-                                    <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入发票金额">
-                                        <input nz-input formControlName="invoice_amount" placeholder="发票金额" />
-                                    </span>
-                                </td>
-                                <td>
-                                    <span *ngIf="editIndex !== i">{{ contract_details.value[i].actual_payment }}</span>
-                                    <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入实付金额">
-                                        <input nz-input formControlName="actual_payment" placeholder="请输入实付金额" />
-                                    </span>
-                                </td>
-                                <td>
-                                    <span *ngIf="editIndex !== i">{{ contract_details.value[i].invoice_date }}</span>
-                                    <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择发票日期">
-                                        <nz-date-picker formControlName="invoice_date"></nz-date-picker>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span *ngIf="editIndex !== i">{{ contract_details.value[i].payment_date }}</span>
-                                    <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择实付日期">
-                                        <nz-date-picker formControlName="payment_date"></nz-date-picker>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span *ngIf="editIndex !== i">
-                                        <a (click)="edit(i)">编辑</a>
-                                        <nz-divider nzType="vertical"></nz-divider>
-                                        <nz-popconfirm (nzOnConfirm)="del(i)" [nzTitle]="'是否要删除此行？'">
-                                            <a nz-popconfirm>删除</a>
-                                        </nz-popconfirm>
-                                    </span>
-                                    <span *ngIf="editIndex === i">
-                                        <a (click)="save(i)">保存</a>
-                                        <nz-divider nzType="vertical"></nz-divider>
-                                        <nz-popconfirm (nzOnConfirm)="cancel(i)" [nzTitle]="'是否要取消操作？'">
-                                            <a nz-popconfirm>取消</a>
-                                        </nz-popconfirm>
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </nz-table>
-                    <button *ngIf="editIndex === -1" nz-button [nzType]="'dashed'" (click)="add()" nzBlock
-                        class="mt-md">
-                        <i nz-icon nzType="plus"></i>
-                        <span>新增明细</span>
-                    </button>
-                </nz-card>
-                <footer-toolbar errorCollect>
-                    <button nz-button class="ml-sm" type="reset">重置</button>
-                    <button nz-button type="submit" nzType="primary" [disabled]="form.invalid"
-                        [nzLoading]="submitting">提交</button>
-                </footer-toolbar>
-
-
-            </form>
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false">
+      <form nz-form [formGroup]="form" (ngSubmit)="submit()" [nzLayout]="'vertical'">
+        <nz-card [nzBordered]="false" nzTitle="销售合同">
+          <nz-row nzGutter="16">
+            <nz-col nzLg="6" nzMd="12" nzSm="24">
+              <nz-form-item>
+                <nz-form-label nzFor="name">合同编号</nz-form-label>
+                <nz-form-control nzErrorTip="请输入合同编号，大于两个字符" required>
+                  <input nz-input formControlName="cno" placeholder="请输入合同编号" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col [nzXl]="{ span: 6, offset: 2 }" [nzLg]="{ span: 8 }" [nzMd]="{ span: 12 }" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>合同名称</nz-form-label>
+                <nz-form-control nzErrorTip="请输入合同名称，大于两个字符" required>
+                  <input nz-input formControlName="cname" placeholder="请输入合同名称" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col [nzXl]="{ span: 8, offset: 2 }" [nzLg]="{ span: 10 }" [nzMd]="{ span: 24 }" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>项目类型</nz-form-label>
+                <nz-form-control nzErrorTip="请选择项目类型" required>
+                  <nz-select formControlName="project_id" placeholder="请选择项目类型" [(ngModel)]="selectedOption"
+                    [nzPlaceHolder]="'myPlaceHolder'" nzAllowClear [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
+                    <nz-option *ngFor="let option of project_data" [nzLabel]="option.pname" [nzValue]="option.id"
+                      [nzDisabled]="option.disabled">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+          <nz-row nzGutter="16">
+            <nz-col nzLg="6" nzMd="12" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>甲方</nz-form-label>
+                <nz-form-control nzErrorTip="请输入甲方，大于两个字符" required>
+                  <input nz-input formControlName="party_a" placeholder="请输入甲方" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col [nzXl]="{ span: 6, offset: 2 }" [nzLg]="{ span: 8 }" [nzMd]="{ span: 12 }" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>乙方</nz-form-label>
+                <nz-form-control nzErrorTip="请输入乙方，大于两个字符" required>
+                  <input nz-input formControlName="party_b" placeholder="请输入乙方" [ngModel]="'安徽祥云科技有限公司'" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col [nzXl]="{ span: 8, offset: 2 }" [nzLg]="{ span: 10 }" [nzMd]="{ span: 24 }" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>合同额</nz-form-label>
+                <nz-form-control nzErrorTip="请输入合同额，大于两个字符" required>
+                  <input nz-input formControlName="amount" placeholder="请输入合同额" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+          <nz-row nzGutter="16">
+            <nz-col nzLg="6" nzMd="12" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>签订日期</nz-form-label>
+                <nz-form-control nzErrorTip="请选择签订日期" required>
+                  <nz-date-picker formControlName="sign_date" style="width: 100%"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col [nzXl]="{ span: 6, offset: 2 }" [nzLg]="{ span: 8 }" [nzMd]="{ span: 12 }" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>终止日期</nz-form-label>
+                <nz-form-control nzErrorTip="请选择终止日期" required>
+                  <nz-date-picker formControlName="expiry_date" style="width: 100%"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col [nzXl]="{ span: 8, offset: 2 }" [nzLg]="{ span: 10 }" [nzMd]="{ span: 24 }" nzSm="24">
+              <nz-form-item>
+                <nz-form-label>描述</nz-form-label>
+                <nz-form-control nzErrorTip="请输入描述，大于两个字符" required>
+                  <textarea rows="1" nz-input formControlName="comments" placeholder="请输入描述"></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
         </nz-card>
-    </div>
+        <!-- 合同子表 -->
+        <nz-card [nzBordered]="false" nzTitle="合同明细子表">
+          <nz-table formArrayName="contract_details" [nzData]="contract_details.value" [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th>笔次信息</th>
+                <th>发票金额</th>
+                <th>实付金额</th>
+                <th>发票信息</th>
+                <th>实付信息</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of contract_details.controls; let i = index" [formGroupName]="i">
+                <td>
+                  <span *ngIf="editIndex !== i">{{ contract_details.value[i].issue_name }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入笔次信息">
+                    <input nz-input formControlName="issue_name" placeholder="请输入笔次信息" />
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ contract_details.value[i].invoice_amount }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入发票金额">
+                    <input nz-input formControlName="invoice_amount" placeholder="发票金额" />
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ contract_details.value[i].actual_payment }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入实付金额">
+                    <input nz-input formControlName="actual_payment" placeholder="请输入实付金额" />
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ contract_details.value[i].invoice_date }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择发票日期">
+                    <nz-date-picker formControlName="invoice_date"></nz-date-picker>
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ contract_details.value[i].payment_date }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择实付日期">
+                    <nz-date-picker formControlName="payment_date"></nz-date-picker>
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">
+                    <a (click)="edit(i)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <nz-popconfirm (nzOnConfirm)="del(i)" [nzTitle]="'是否要删除此行？'">
+                      <a nz-popconfirm>删除</a>
+                    </nz-popconfirm>
+                  </span>
+                  <span *ngIf="editIndex === i">
+                    <a (click)="save(i)">保存</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <nz-popconfirm (nzOnConfirm)="cancel(i)" [nzTitle]="'是否要取消操作？'">
+                      <a nz-popconfirm>取消</a>
+                    </nz-popconfirm>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <button *ngIf="editIndex === -1" nz-button [nzType]="'dashed'" (click)="add()" nzBlock class="mt-md">
+            <i nz-icon nzType="plus"></i>
+            <span>新增明细</span>
+          </button>
+        </nz-card>
+        <footer-toolbar errorCollect>
+          <button nz-button class="ml-sm" type="reset">重置</button>
+          <button nz-button type="submit" nzType="primary" [disabled]="form.invalid"
+            [nzLoading]="submitting">提交</button>
+        </footer-toolbar>
+
+
+      </form>
+    </nz-card>
+  </div>
 </div>

@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { PurchaseContractService } from '../purchase_contract.service';
 
 @Component({
   templateUrl: './purchase_contract-list.component.html',
-  //styleUrls: ['./purchase_contract-list.component.less'],
+  // styleUrls: ['./purchase_contract-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
@@ -21,6 +22,11 @@ export class PurchaseContractListComponent implements OnInit {
     sort_field: 'sign_date',
     sort_direction: 'desc',
     cname: null,
+    date1: "",
+    date2: "",
+    startDate: null,
+    endDate: null,
+    flag: 0
   };
 
   data: any[] = [];
@@ -29,6 +35,7 @@ export class PurchaseContractListComponent implements OnInit {
   loading = false;
 
   expandForm = false;
+  flag = false;
 
   constructor(
     private http: _HttpClient,
@@ -65,13 +72,13 @@ export class PurchaseContractListComponent implements OnInit {
   // }
 
   add(tpl: TemplateRef<{}>) {
-    //this.srv.isUpdate = false;
+    // this.srv.isUpdate = false;
     this.srv.formOperation = 'create';
     this.router.navigateByUrl('/purchase_contract/form');
   }
 
   modify(id) {
-    //this.srv.isUpdate = true;
+    // this.srv.isUpdate = true;
     this.srv.formOperation = 'update';
     this.srv.getById(id).subscribe(resp => {
       this.srv.purchase_contract = resp['data'];
@@ -110,5 +117,50 @@ export class PurchaseContractListComponent implements OnInit {
     this.q.sort_field = sort.key;
     this.q.sort_direction = sort.value;
     this.reset();
+  }
+
+  search() {
+    this.q.pi = 1;
+    if (this.q.startDate == null) {
+      this.flag = true;
+    }
+    else {
+      this.flag = false;
+      this.srv.formDate(this.q);
+      this.getData()
+    }
+  }
+
+  newArray = (len) => {
+    const result = [];
+    for (let i = 0; i < len; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+  _startValueChange = () => {
+    if (this.q.startDate > this.q.endDate) {
+      this.q.endDate = null;
+    }
+  };
+  _endValueChange = () => {
+    if (this.q.startDate > this.q.endDate) {
+      this.q.startDate = null;
+    }
+  };
+  _disabledStartDate = (startValue) => {
+    if (!startValue || !this.q.endDate) {
+      return false;
+    }
+    return startValue >= this.q.endDate;
+  };
+  _disabledEndDate = (endValue) => {
+    if (!endValue || !this.q.startDate) {
+      return false;
+    }
+    return endValue <= this.q.startDate;
+  };
+  get _isSameDay() {
+    return this.q.startDate && this.q.endDate && moment(this.q.startDate).isSame(this.q.endDate, 'day')
   }
 }
