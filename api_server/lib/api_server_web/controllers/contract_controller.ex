@@ -49,8 +49,8 @@ defmodule ApiServerWeb.ContractController do
   end
 
   # 查询年度中每个月应收金额
-  def get_receivable_by_year(conn, _) do
-    json conn, get_receivable_yearly()
+  def get_receivable_by_year(conn, %{ "date" => date}) do
+    json conn, get_receivable_yearly(date)
   end
 
   # 将合同导出excel

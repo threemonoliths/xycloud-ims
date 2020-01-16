@@ -25,6 +25,8 @@ defmodule ApiServer.ContractManagement do
     Contract
     |> query_like(params, "cname")
     |> query_like(params, "comments")
+    |> query_by_start_time(params)
+    |> query_by_end_time(params)
     |> query_order_desc_by(params, "inserted_at")
     |> query_preload([:contract_details])
     |> get_pagination(params)
@@ -76,8 +78,8 @@ defmodule ApiServer.ContractManagement do
   end
 
   # 获取年度应收款信息
-  def get_receivable_yearly() do
-    date = Timex.now()
+  def get_receivable_yearly(date) do
+    # date = Timex.now()
     # 取一年的所有合同明细 details
     start_time = Timex.beginning_of_year(date)
     end_time = Timex.end_of_year(date)
@@ -94,5 +96,30 @@ defmodule ApiServer.ContractManagement do
     end)
     |> Enum.map(fn {k,v} -> {k, Float.to_string(v, decimals: 2)} end)
 
+  end
+
+  # 通过起始时间设置查询条件
+  defp query_by_start_time(query, params) do 
+    params
+    |> Map.get("start_time")
+    |> case do
+      nil -> query
+      start_time -> 
+        query
+        |> query_greater_or_equal_than("sign_date", start_time)
+    end
+
+  end
+
+  # 通过结束时间设置查询条件
+  defp query_by_end_time(query, params) do
+    params
+    |> Map.get("end_time")
+    |> case do
+      nil -> query
+      start_time -> 
+        query
+        |> query_less_or_equal_than("sign_date", start_time)
+    end
   end
 end
