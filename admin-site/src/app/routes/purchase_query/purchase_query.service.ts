@@ -8,26 +8,17 @@ import { setToken, setTokenAndParams } from '../../shared/utils/formmat';
 @Injectable()
 export class PurchaseQueryService {
   constructor(private http: HttpClient) { }
-  url = baseUrl + 'purchase_query';
-  contract_url = baseUrl + 'purchase_contracts';
+  url = baseUrl + 'purchase_contracts/payable_yearly';
 
   purchase_query: any = null;
 
   formOperation = 'create';
   // isUpdate = false;
 
-  listOnePage(q: any) {
-    return this.http.get(this.url, setTokenAndParams(q));
+  listpayable(q: any) {
+    return this.http.get(this.url + `/${q.date}`, setToken());
   }
 
-  // 获取合同明细页面
-  listContractPage(q: any) {
-    return this.http.get(this.contract_url, setTokenAndParams(q));
-  }
-
-  getById(id) {
-    return this.http.get(this.url + `/${id}`, setToken());
-  }
 
   getDate(v) {
     v.date = getFormatDateStr(v.date)
@@ -47,30 +38,27 @@ export class PurchaseQueryService {
   //   const day = d.getDate();
   //   console.log(d)
   //   if (month < 10) {
-  //     q.date1 = year + "-" + "0" + month + "-01";
-  //     q.date2 = year + "-" + "0" + month + "-" + day;
+  //     q.start_time = year + "-" + "0" + month + "-01";
+  //     q.end_time = year + "-" + "0" + month + "-" + day;
   //   }
   //   else {
-  //     q.date1 = year + "-" + month + "-01";
-  //     q.date2 = year + "-" + month + "-" + day;
+  //     q.start_time = year + "-" + month + "-01";
+  //     q.end_time = year + "-" + month + "-" + day;
   //   }
-  //   console.log(q.date1)
-  //   console.log(q.date2)
+  //   console.log(q.start_time)
+  //   console.log(q.end_time)
   // }
 
-  formDate(q) {
-    const year = q.startDate.getFullYear();
-    const month = q.startDate.getMonth() + 1;
+  // formDate(q) {
+  //   const year = q.startDate.getFullYear();
+  //   const month = q.startDate.getMonth() + 1;
 
-    if (month < 10) {
-      q.date1 = year + "-" + "0" + month + "-1";
-      // q.startDate = year + "-" + "0" + month + "-" + day;
-    }
-    else
-      q.date1 = year + "-" + month + "-1";
-    // q.startDate = year + "-" + month + "-" + day;
+  //   if (month < 10) {
+  //     q.start_time = year + "-" + "0" + month + "-1";
+  //   }
+  //   else
+  //     q.start_time = year + "-" + month + "-1";
 
-    console.log(q.date1)
-  }
-
+  //   console.log(q.start_time)
+  // }
 }

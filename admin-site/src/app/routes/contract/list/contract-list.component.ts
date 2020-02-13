@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
+import { UploadFile } from 'ng-zorro-antd';
 import * as moment from 'moment';
 
 import { ContractService } from '../contract.service';
@@ -22,8 +23,8 @@ export class ContractListComponent implements OnInit {
     sort_field: 'sign_date',
     sort_direction: 'desc',
     cname: null,
-    date1: "",
-    date2: "",
+    start_time: "",
+    end_time: "",
     startDate: null,
     endDate: null,
     flag: 0
@@ -36,6 +37,8 @@ export class ContractListComponent implements OnInit {
 
   expandForm = false;
   flag = false;
+  uploading = false;
+  fileList: UploadFile[] = [];
 
   constructor(
     private http: _HttpClient,
@@ -105,7 +108,11 @@ export class ContractListComponent implements OnInit {
   }
 
   reset() {
-    setTimeout(() => this.getData());
+    this.q.startDate = null,
+      this.q.endDate = null,
+      this.q.start_time = "",
+      this.q.end_time = "",
+      setTimeout(() => this.getData());
   }
 
   pageChange(pi: number) {
@@ -162,6 +169,29 @@ export class ContractListComponent implements OnInit {
   };
   get _isSameDay() {
     return this.q.startDate && this.q.endDate && moment(this.q.startDate).isSame(this.q.endDate, 'day')
+  }
+
+  // 导入
+  beforeUpload = (file: UploadFile): boolean => {
+    console.log(file);
+    this.fileList = [file];
+    return false;
+  };
+  excelin() {
+
+  }
+  // 导出excel
+  excelout() {
+    this.q.startDate = null,
+      this.q.endDate = null,
+      this.q.start_time = "",
+      this.q.end_time = "",
+      this.srv.export_excel(this.q).subscribe(
+        resp => {
+          this.cdr.detectChanges();
+        }
+      );
+    console.log("excelout")
   }
 
 }

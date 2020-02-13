@@ -5,6 +5,7 @@ import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { SalesQueryService } from '../sales_query.service';
 import * as moment from 'moment';
+import { getFormatDateStr, getDateByDateStr } from '../../../shared/utils/datehandler';
 
 @Component({
   templateUrl: './sales_query-list.component.html',
@@ -17,11 +18,9 @@ export class SalesQueryListComponent implements OnInit {
   q: any = {
     pi: 1,
     ps: 10,
-    sort_field: 'date',
+    sort_field: 'invoice_date',
     sort_direction: 'desc',
-    date1: null,
-    startDate: null,
-    flag: 0
+    date: null,
   };
 
   data: any[] = [];
@@ -41,26 +40,40 @@ export class SalesQueryListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getData();
+    // this.getData();
   }
 
+  // getData() {
+  //   this.loading = true;
+  //   this.srv
+  //     .listOnePage(this.q)
+  //     .pipe(tap(() => (this.loading = false)))
+  //     .subscribe(
+  //       resp => {
+  //         this.data = resp['data'];
+  //         this.cdr.detectChanges();
+  //       }
+  //     );
+  // }
+
   getData() {
-    // this.loading = true;
-    // this.srv
-    //   .listOnePage(this.q)
-    //   .pipe(tap(() => (this.loading = false)))
-    //   .subscribe(
-    //     resp => {
-    //       this.data = resp['data'];
-    //       this.cdr.detectChanges();
-    //     }
-    //   );
+    this.loading = true;
+    this.srv
+      .listReceivable(this.q)
+      .pipe(tap(() => (this.loading = false)))
+      .subscribe(
+        resp => {
+          this.data = resp.data;
+          this.cdr.detectChanges();
+        }
+      );
   }
 
 
 
   reset() {
-    setTimeout(() => this.getData());
+    this.q.date = null,
+      this.loading = false;
   }
 
   pageChange(pi: number) {
@@ -75,47 +88,8 @@ export class SalesQueryListComponent implements OnInit {
   }
 
   search() {
-    this.q.pi = 1;
-    if (this.q.startDate == null) {
-      this.flag = true;
-    }
-    else {
-      this.flag = false;
-      this.srv.formDate(this.q);
-      this.getData()
-    }
+    console.log(this.q.date)
   }
 
-  // newArray = (len) => {
-  //   const result = [];
-  //   for (let i = 0; i < len; i++) {
-  //     result.push(i);
-  //   }
-  //   return result;
-  // };
-  // _startValueChange = () => {
-  //   if (this.q.startDate > this.q.endDate) {
-  //     this.q.endDate = null;
-  //   }
-  // };
-  // _endValueChange = () => {
-  //   if (this.q.startDate > this.q.endDate) {
-  //     this.q.startDate = null;
-  //   }
-  // };
-  // _disabledStartDate = (startValue) => {
-  //   if (!startValue || !this.q.endDate) {
-  //     return false;
-  //   }
-  //   return startValue >= this.q.endDate;
-  // };
-  // _disabledEndDate = (endValue) => {
-  //   if (!endValue || !this.q.startDate) {
-  //     return false;
-  //   }
-  //   return endValue <= this.q.startDate;
-  // };
-  // get _isSameDay() {
-  //   return this.q.startDate && this.q.endDate && moment(this.q.startDate).isSame(this.q.endDate, 'day')
-  // }
+
 }

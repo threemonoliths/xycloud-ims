@@ -92,7 +92,7 @@ export class HeaderNotifyComponent implements OnInit {
     if (this.loading) return;
     this.loading = true;
     // setTimeout(() => {
-    const msconst = this.getMessagesArray()
+    const msgs = this.getMessagesArray()
     this.count = msgs.length
     this.data = this.updateNoticeData(msgs)
     // this.data = this.updateNoticeData([
@@ -195,42 +195,42 @@ export class HeaderNotifyComponent implements OnInit {
   }
 
   getMessagesArray() {
-    const leconsth = this.messageList.length;
-    let srconst this.messageList;
-    let deconstany[] = [];
+    const length = this.messageList.length;
+    const src = this.messageList;
+    const des: any[] = [];
     for (const i in src) {
-      let e const id: src[i].id, title: src[i].body, datetime: src[i].datetime, type: '新的合同', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png'
+      const e = { id: src[i].id, title: src[i].body, datetime: src[i].datetime, type: '新的消息', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
+      des.push(e)
     }
-    des.push(e)
-  }
     return des;
   }
 
-getMaxDatetime(list) {
-  const length = liconstlength;
-  let max = "0000-00-00 00:00:00"
-  for (const i in list) const      if (list[i].datetime > max) {
-    max = list[i].datetime;
-  }
-}
-return max
+  getMaxDatetime(list) {
+    const length = list.length;
+    let max = "0000-00-00 00:00:00"
+    for (const i in list) {
+      if (list[i].datetime > max) {
+        max = list[i].datetime;
+      }
+    }
+    return max
   }
 
-clear(type: string) {
-  // 后台需要标记已读
-  if ((this.messageList) && (this.messageList.length)) {
-    const params = { last_constetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
-    this.wsSrv.channel.push("received", params)
+  clear(type: string) {
+    // 后台需要标记已读
+    if ((this.messageList) && (this.messageList.length)) {
+      const params = { last_datetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
+      this.wsSrv.channel.push("received", params)
+    }
+    const data = this.data.slice();
+    data.forEach(i => (i.list = []));
+    this.messageList = [];
+    this.data = data;
+    this.count = 0;
+    this.msg.success(`清空了 ${type}`);
   }
-  const data = this.data.slice();
-  data.forEach(i => (i.list = []));
-  this.messageList = [];
-  this.data = data;
-  this.count = 0;
-  this.msg.success(`清空了 ${type}`);
-}
 
-select(res: any) {
-  this.msg.success(`点击了 ${res.title} 的 ${res.item.title}`);
-}
+  select(res: any) {
+    this.msg.success(`点击了 ${res.title} 的 ${res.item.title}`);
+  }
 }

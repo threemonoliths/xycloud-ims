@@ -136,7 +136,7 @@ export class PurchaseContractFormComponent implements OnInit {
     return this.fb.group({
       issue_name: [null, [Validators.required]],
       invoice_amount: [null, [Validators.required]],
-      actual_payment: [null, [Validators.required]],
+      actual_payment: [null],
       invoice_date: [null, [Validators.required]],
       payment_date: [null],
     });
@@ -164,6 +164,9 @@ export class PurchaseContractFormComponent implements OnInit {
     this.purchase_contract_details.value[index].invoice_date = getFormatDateStr(this.purchase_contract_details.value[index].invoice_date)
     this.purchase_contract_details.value[index].payment_date = (this.purchase_contract_details.value[index].payment_date ?
       getFormatDateStr(this.purchase_contract_details.value[index].payment_date) : null)
+    this.purchase_contract_details.value[index].actual_payment =
+      (this.purchase_contract_details.value[index].actual_payment ? this.purchase_contract_details.value[index].actual_payment : 0)
+
     this.purchase_contract_details.at(index).markAsDirty();
     if (this.purchase_contract_details.at(index).invalid) return;
     this.editIndex = -1;

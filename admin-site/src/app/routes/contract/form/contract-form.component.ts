@@ -136,7 +136,7 @@ export class ContractFormComponent implements OnInit {
     return this.fb.group({
       issue_name: [null, [Validators.required]],
       invoice_amount: [null, [Validators.required]],
-      actual_payment: [null, [Validators.required]],
+      actual_payment: [null],
       invoice_date: [null, [Validators.required]],
       payment_date: [null],
     });
@@ -165,6 +165,9 @@ export class ContractFormComponent implements OnInit {
     this.contract_details.value[index].invoice_date = getFormatDateStr(this.contract_details.value[index].invoice_date)
     this.contract_details.value[index].payment_date =
       (this.contract_details.value[index].payment_date ? getFormatDateStr(this.contract_details.value[index].payment_date) : null)
+    this.contract_details.value[index].actual_payment =
+      (this.contract_details.value[index].actual_payment ? this.contract_details.value[index].actual_payment : 0)
+
     this.contract_details.at(index).markAsDirty();
     console.log(this.contract_details.value[index].payment_date);
     if (this.contract_details.at(index).invalid) return;
