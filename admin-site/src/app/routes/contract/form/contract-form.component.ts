@@ -169,7 +169,7 @@ export class ContractFormComponent implements OnInit {
       (this.contract_details.value[index].actual_payment ? this.contract_details.value[index].actual_payment : 0)
 
     this.contract_details.at(index).markAsDirty();
-    console.log(this.contract_details.value[index].payment_date);
+    console.log(this.contract_details.value[index + 1]);
     if (this.contract_details.at(index).invalid) return;
     this.editIndex = -1;
   }
@@ -200,9 +200,9 @@ export class ContractFormComponent implements OnInit {
         const obj = this.formmatFormValue();
         this.srv.add(obj).subscribe(resp => {
           this.submitting = false;
-          if (resp.data) this.msg.success(`保存成功！`);
+          if (resp["data"]) this.msg.success(`保存成功！`);
           this.wsSrv.channel.push('new_msg', {
-            body: localStorage.getItem('real_name') + ' 创建了 ' + resp.data.cname,
+            body: localStorage.getItem('real_name') + ' 创建了 ' + resp["data"].cname,
           });
           this.router.navigateByUrl('/contract/page');
           this.cdr.detectChanges();
@@ -212,9 +212,9 @@ export class ContractFormComponent implements OnInit {
         this.submitting = true;
         const obj = this.formmatFormValue();
         this.srv.update(this.contract.id, obj).subscribe(resp => {
-          if (resp.data) {
+          if (resp["data"]) {
             this.submitting = false;
-            if (resp.data) this.msg.success(`保存成功！`);
+            if (resp["data"]) this.msg.success(`保存成功！`);
             this.router.navigateByUrl('/contract/page');
             this.cdr.detectChanges();
           }
@@ -272,7 +272,7 @@ export class ContractFormComponent implements OnInit {
       .listAll()
       .pipe()
       .subscribe(resp => {
-        this.project_data = resp.data;
+        this.project_data = resp["data"];
         this.cdr.detectChanges();
       });
     console.log('项目类型', this.project_data);

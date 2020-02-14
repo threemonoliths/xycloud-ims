@@ -15,7 +15,6 @@ export class ContractService {
   excel_url = baseUrl + 'contracts/export';
 
   contract: any = null;
-
   formOperation = 'create';
   // isUpdate = false;
 
@@ -53,30 +52,7 @@ export class ContractService {
     return this.http.get(this.excel_url, setTokenAndParams(q));
   }
 
-  InitformDate(q) {
-    const date = new Date();
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    if (month == 1) {
-      month = 12;
-      year = year - 1;
-    }
-    else
-      month = month - 1;
-    const d = new Date(year, month, 0);
-    const day = d.getDate();
-    console.log(d)
-    if (month < 10) {
-      q.start_time = year + "-" + "0" + month + "-01";
-      q.end_time = year + "-" + "0" + month + "-" + day;
-    }
-    else {
-      q.start_time = year + "-" + month + "-01";
-      q.end_time = year + "-" + month + "-" + day;
-    }
-    console.log(q.start_time)
-    console.log(q.end_time)
-  }
+
 
   formDate(q) {
     const year = q.startDate.getFullYear();
@@ -89,19 +65,15 @@ export class ContractService {
 
     if (month < 10) {
       q.start_time = year + "-" + "0" + month + "-" + day;
-      // q.startDate = year + "-" + "0" + month + "-" + day;
     }
     else
       q.start_time = year + "-" + month + "-" + day;
-    // q.startDate = year + "-" + month + "-" + day;
 
     if (month2 < 10) {
       q.end_time = year2 + "-" + "0" + month2 + "-" + day2;
-      // q.endDate = year2 + "-" + "0" + month2 + "-" + day2;
     }
     else
       q.end_time = year2 + "-" + month2 + "-" + day2;
-    // q.endDate = year2 + "-" + month2 + "-" + day2;
 
     console.log(q.start_time, q.end_time)
   }

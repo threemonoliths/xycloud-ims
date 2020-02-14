@@ -14,5 +14,5 @@ config :api_server, ApiServer.Repo,
   username: "postgres",
   password: "postgres",
   database: "api_server_test",
-  hostname: "192.168.99.100",
+  hostname: "192.168.99.101",
   pool: Ecto.Adapters.SQL.Sandbox

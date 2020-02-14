@@ -26,13 +26,13 @@
               </nz-form-control>
             </nz-form-item>
           </div>
+
           <div nz-col [nzSpan]="12" [class.text-left]="expandForm" class="mb-md">
             <div class="mb-md">
               <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [(nzFileList)]="fileList"
                 [nzBeforeUpload]="beforeUpload">
                 <button nz-button type="button"><i nz-icon nzType="upload"></i><span>添加文件</span></button>
               </nz-upload>
-              <!-- <a *ngIf="showFile">{{tmpl.file_name}}</a> -->
             </div>
             <div class="mb-md">
               <button nz-button type="button" (click)="excelin()" [nzType]="'primary'" [nzLoading]="uploading"
@@ -40,9 +40,23 @@
               <button nz-button type="button" (click)="excelout()" class="mx-sm">导出表格</button>
             </div>
           </div>
-          <div nz-col [nzSpan]="12" [class.text-right]="expandForm" class="mb-md">
-            <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+
+          <div nz-col nzMd="8" nzSm="24" [nzSpan]="12" [class.text-right]="expandForm" class="mb-md">
+            <div nzMd="8" nzSm="12" class="mb-md">
+              <nz-form-item>
+                <nz-form-label nzFor="no">状态</nz-form-label>
+                <nz-form-control>
+                  <nz-select [(ngModel)]="status_flag" nzAllowClear nzPlaceHolder="选择状态" name="status">
+                    <nz-option *ngFor="let option of optionList" [nzValue]="option" [nzLabel]="option">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="mb-md">
+              <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+              <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+            </div>
           </div>
         </div>
       </form>
@@ -75,40 +89,39 @@
             <th nz-th nzShowSort nzSortKey="amount">
               <span>合同总额</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="excuted">
+            <th nz-th nzSortKey="excuted">
               <span>已执行金额</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="next_amount">
+            <th nz-th nzSortKey="next_amount">
               <span>下期金额</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="next_time">
+            <th nz-th nzSortKey="next_date">
               <span>下期时间</span>
+            </th>
+            <th nz-th nzSortKey="status">
+              <span>状态</span>
             </th>
             <th nz-th nzShowSort nzSortKey="comments">
               <span>描述</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="project_id">
-              <span>项目类型</span>
-            </th>
-
             <th nz-th>
               <span>操作</span>
             </th>
           </tr>
         </thead>
-        <tbody nz-tbody>
-          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+        <tbody nz-tbody *ngFor="let i of nzTable.data">
+          <tr nz-tbody-tr *ngIf="!status_flag||i.status==status_flag">
             <td nz-td>{{i.cno}}</td>
             <td nz-td>{{i.cname}}</td>
             <td nz-td>{{i.party_a}}</td>
             <td nz-td>{{i.sign_date}}</td>
             <td nz-td>{{i.expiry_date}}</td>
             <td nz-td>{{i.amount}}</td>
-            <td nz-td>{{i.amount}}</td>
-            <td nz-td>{{i.amount}}</td>
-            <td nz-td>{{i.amount}}</td>
+            <td nz-td>{{i.excuted}}</td>
+            <td nz-td>{{i.next_amount}}</td>
+            <td nz-td>{{i.next_date}}</td>
+            <td nz-td>{{i.status}}</td>
             <td nz-td>{{i.comments}}</td>
-            <td nz-td>{{i.project_id}}</td>
             <td nz-td>
               <a (click)="modify(i.id)">修改</a>
               <span nz-table-divider></span>

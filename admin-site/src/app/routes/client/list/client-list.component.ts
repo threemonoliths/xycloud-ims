@@ -59,7 +59,7 @@ export class ClientListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp.data;
+          this.data = resp["data"];
           this.cdr.detectChanges();
         }
       );
@@ -73,7 +73,7 @@ export class ClientListComponent implements OnInit {
   modify(id) {
     this.srv.isUpdate = true;
     this.srv.getById(id).subscribe(resp => {
-      this.srv.client = resp.data;
+      this.srv.client = resp["data"];
       this.router.navigateByUrl('/client/form');
     });
   }
@@ -86,7 +86,7 @@ export class ClientListComponent implements OnInit {
         this.loading = true;
         this.srv.delete(item.id).subscribe(
           resp => {
-            if (resp.data) this.msg.success(`删除成功！`);
+            if (resp["data"]) this.msg.success(`删除成功！`);
             this.reset();
           }
         );

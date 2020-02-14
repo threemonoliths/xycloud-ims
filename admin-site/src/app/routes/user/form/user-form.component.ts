@@ -64,7 +64,7 @@ export class UserFormComponent implements OnInit {
       const obj = this.formmatFormValue();
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
-        if (resp.data) this.msg.success(`保存成功！`);
+        if (resp["data"]) this.msg.success(`保存成功！`);
         this.router.navigateByUrl('/user/page');
         this.cdr.detectChanges();
       });
@@ -72,9 +72,9 @@ export class UserFormComponent implements OnInit {
       this.submitting = true;
       const obj = this.formmatFormValue();
       this.srv.update(this.user.id, obj).subscribe(resp => {
-        if (resp.data) {
+        if (resp["data"]) {
           this.submitting = false;
-          if (resp.data) this.msg.success(`保存成功！`);
+          if (resp["data"]) this.msg.success(`保存成功！`);
           this.router.navigateByUrl('/user/page');
           this.cdr.detectChanges();
         }
@@ -103,13 +103,13 @@ export class UserFormComponent implements OnInit {
   getAllPerms() {
     this.srv.getAllPermissions().subscribe(resp => {
       if (this.srv.isUpdate) {
-        const permsAll = this.convertPermsToTransferItems(resp.all_perms, "left");
+        const permsAll = this.convertPermsToTransferItems(resp["all_perms"], "left");
         const permsRight = this.convertPermsToTransferItems(this.user.perms_number, "right");
         const permsLeft = permsAll.filter(el => !this.user.perms_number.includes(el.title));
         this.list = permsRight.concat(permsLeft);
         this.selected = permsRight;
       } else {
-        this.list = this.convertPermsToTransferItems(resp.all_perms, "left");
+        this.list = this.convertPermsToTransferItems(resp["all_perms"], "left");
       }
       this.cdr.detectChanges();
     })
@@ -121,11 +121,11 @@ export class UserFormComponent implements OnInit {
 
   change(ret: {}): void {
     let arr = []
-    if ((ret.from == "left") && (ret.to == "right")) {
-      arr = this.selected.concat(ret.list)
+    if ((ret["from"] == "left") && (ret["to"] == "right")) {
+      arr = this.selected.concat(ret["list"])
     }
-    if ((ret.from == "right") && (ret.to == "left")) {
-      arr = this.selected.filter(el => !ret.list.includes(el))
+    if ((ret["from"] == "right") && (ret["to"] == "left")) {
+      arr = this.selected.filter(el => !ret["list"].includes(el))
     }
     this.selected = arr;
   }

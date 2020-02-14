@@ -63,7 +63,7 @@ export class SalesQueryListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp.data;
+          this.data = resp["data"];
           this.cdr.detectChanges();
         }
       );
