@@ -3,11 +3,42 @@ defmodule ApiServer.Repo.Migrations.CreateClients do
 
   def change do
     create table(:clients) do
-      add :cname, :string #客户名称
-      add :contact, :string #联系人
-      add :contact_info, :string #联系方式
-      add :invoice, :string #开票信息
-      add :comments, :text #备注
+      add :no, :string #客商编码
+      add :name, :string #公司名称
+      add :category, :string #客商类型
+      add :legal_representative, :string #法定代表人
+      add :registered_address, :string #注册地址
+      add :registered_capital, :string #注册资金（万元）
+      add :business_scope, :string #经营范围
+      add :industry_involved, :string #所属行业
+      add :project, :string #与祥云开展业务
+      add :registered_place, :string #注册所在地
+      add :id_type, :string #证件类型
+      add :certificate_no, :string #三证合一证件号码
+      add :organization_no, :string #组织机构代码证号码
+      add :business_license_no, :string #营业执照注册号码
+      add :tax_no, :string #税务登记证号码
+      add :taxpayer_type, :string #纳税人类型
+      add :invoice_title, :string #开票抬头
+      add :taxpayer_no, :string #纳税人识别号
+      add :address, :string #地址
+      add :telephone, :string #电话
+      add :bank_name, :string #开户银行名称
+      add :bank_account, :string #开户银行账号
+      add :receiving_bank_name, :string #收款银行名称
+      add :receiving_bank_account, :string #收款银行账号
+      add :remittance_bank_name, :string #汇款银行名称
+      add :remittance_bank_account, :string #汇款银账号
+      add :contact1, :string #联系人1姓名
+      add :mobile1, :string #联系人1手机
+      add :mail1, :string #联系人1电子邮箱
+      add :contact2, :string #联系人2姓名
+      add :mobile2, :string #联系人2手机
+      add :mail2, :string #联系人2电子邮箱
+      add :contact3, :string #联系人3姓名
+      add :mobile3, :string #联系人3手机
+      add :mail3, :string #联系人3电子邮箱
+      add :comments, :text #客商评价
       timestamps()
     end
 

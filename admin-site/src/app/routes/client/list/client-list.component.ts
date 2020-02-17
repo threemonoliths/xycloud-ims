@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
-
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { ClientService } from '../client.service';
 @Component({
   templateUrl: './client-list.component.html',
@@ -16,9 +17,9 @@ export class ClientListComponent implements OnInit {
   q: any = {
     pi: 1,
     ps: 10,
-    sort_field: 'cname',
+    sort_field: 'name',
     sort_direction: 'desc',
-    cname: null,
+    name: null,
   };
 
   datas = [
@@ -35,7 +36,7 @@ export class ClientListComponent implements OnInit {
 
   data: any[] = [];
   loading = false;
-
+  isVisible = false;
   expandForm = false;
 
   constructor(
@@ -49,7 +50,7 @@ export class ClientListComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
-    console.log(this.datas)
+    console.log(this.data)
   }
 
   getData() {
@@ -60,6 +61,7 @@ export class ClientListComponent implements OnInit {
       .subscribe(
         resp => {
           this.data = resp["data"];
+          console.log(this.data, resp)
           this.cdr.detectChanges();
         }
       );
@@ -107,5 +109,23 @@ export class ClientListComponent implements OnInit {
     this.q.sort_field = sort.key;
     this.q.sort_direction = sort.value;
     this.reset();
+  }
+
+  showCard() {
+    this.data.forEach(i => {
+      i.isVisible = false
+    })
+  }
+
+  showModal(i) {
+    i.isVisible = true;
+    console.log(i, i.isVisible);
+  }
+
+  handleOk(i) {
+    i.isVisible = false;
+  }
+  handleCancel(i) {
+    i.isVisible = false;
   }
 }
