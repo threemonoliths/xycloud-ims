@@ -12,7 +12,7 @@ import { ClientService } from '../client.service';
 })
 export class ClientListComponent implements OnInit {
 
-  title = '客户管理';
+  title = '客商管理';
   total = 0;
   q: any = {
     pi: 1,
