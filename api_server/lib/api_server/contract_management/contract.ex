@@ -12,6 +12,7 @@ defmodule ApiServer.ContractManagement.Contract do
     field :expiry_date, :date #终止日期
     field :amount, :float #合同额
     field :comments, :string #备注
+    field :status, :integer, default: 0 # 状态，0表示新建，1表示完成，2表示终止
 
     belongs_to :project, ApiServer.ProjectManagement.Project, on_replace: :nilify
     has_many :contract_details, ApiServer.ContractManagement.ContractDetail, on_delete: :delete_all, on_replace: :delete #父对象删除时，级联删除；操作父对象的changeset时，删除子对象
@@ -22,7 +23,7 @@ defmodule ApiServer.ContractManagement.Contract do
   @doc false
   def changeset(contract, attrs) do
     contract
-    |> cast(attrs, [:cno, :cname, :party_a, :party_b, :sign_date, :expiry_date, :amount, :comments])
+    |> cast(attrs, [:cno, :cname, :party_a, :party_b, :sign_date, :expiry_date, :amount, :status, :comments])
     |> validate_required([:cno])
   end
 end

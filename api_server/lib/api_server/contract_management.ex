@@ -78,9 +78,11 @@ defmodule ApiServer.ContractManagement do
   end
 
   # 获取年度应收款信息
-  def get_receivable_yearly(date) do
+  def get_receivable_yearly(date_str) do
     # date = Timex.now()
     # 取一年的所有合同明细 details
+    date = date_str
+    |> Timex.parse!("%a %b %d %T %z %Y", :strftime)
     start_time = Timex.beginning_of_year(date)
     end_time = Timex.end_of_year(date)
     details = 

@@ -18,6 +18,7 @@ defmodule ApiServerWeb.PurchaseContractController do
   end
 
   def create(conn, %{"purchase_contract" => purchase_contract_params}) do
+    purchase_contract_params = set_status(purchase_contract_params)
     purchase_contract_changeset = PurchaseContract.changeset(%PurchaseContract{}, purchase_contract_params)
     changeset_with_details = Ecto.Changeset.put_assoc(purchase_contract_changeset, :purchase_contract_details, get_details_changesets(purchase_contract_params))
     with {:ok, %PurchaseContract{} = purchase_contract} <- save_create(changeset_with_details) do
@@ -58,6 +59,27 @@ defmodule ApiServerWeb.PurchaseContractController do
       list ->
         list 
         |> Enum.map(fn(el) -> PurchaseContractDetail.changeset(%PurchaseContractDetail{}, el) end)
+    end
+  end
+
+  # 如果时间最大的一条明细完成时间不为空，则需要置合同状态为已完成1，直接在参数中设置
+  defp set_status(contract_params) do
+    case Map.get(contract_params, "contract_details") do
+      nil -> contract_params
+      list ->
+        latest_detail = list 
+        |> Enum.max_by(fn c -> Map.get(c, "invoice_date") end)
+        |> Map.get("payment_date")
+        |> case do
+          nil -> contract_params
+          date -> 
+            c = contract_params
+            |> Map.get("contract")
+            |> Map.put_new("status", 1)
+            contract_params
+            |> Map.update!("contract", c)
+        end
+      
     end
   end
 

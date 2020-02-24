@@ -10,6 +10,7 @@ defmodule ApiServer.Repo.Migrations.CreatePurchaseContracts do
       add :sign_date, :date #签订日期
       add :expiry_date, :date #终止日期
       add :amount, :float #合同额
+      add :status, :integer
       add :comments, :text #备注
 
       add :project_id, references(:projects)

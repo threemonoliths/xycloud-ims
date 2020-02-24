@@ -15,16 +15,11 @@ defmodule ApiServerWeb.ContractController do
 
   def index(conn, params) do
     page = page(params)
-    page_size = Map.get(params, "page_size", "20")
-    date1 = Map.get(params, "date1", "2019-07-01")
-    date2 = Map.get(params, "date2", "2019-08-01")
-    flag = Map.get(params, "flag","0")
     render(conn, "index.json", page: page)
-    IO.puts inspect ("-----------------------")
-    json conn, ContractView.add_data(page_size,page,date1,date2,flag)
   end
 
   def create(conn, %{"contract" => contract_params}) do
+    contract_params = set_status(contract_params)
     contract_changeset = Contract.changeset(%Contract{}, contract_params)
     changeset_with_details = Ecto.Changeset.put_assoc(contract_changeset, :contract_details, get_details_changesets(contract_params))
     with {:ok, %Contract{} = contract} <- save_create(changeset_with_details) do
@@ -86,6 +81,27 @@ defmodule ApiServerWeb.ContractController do
       list ->
         list 
         |> Enum.map(fn(el) -> ContractDetail.changeset(%ContractDetail{}, el) end)
+    end
+  end
+
+  # 如果时间最大的一条明细完成时间不为空，则需要置合同状态为已完成1，直接在参数中设置
+  defp set_status(contract_params) do
+    case Map.get(contract_params, "contract_details") do
+      nil -> contract_params
+      list ->
+        latest_detail = list 
+        |> Enum.max_by(fn c -> Map.get(c, "invoice_date") end)
+        |> Map.get("payment_date")
+        |> case do
+          nil -> contract_params
+          date -> 
+            c = contract_params
+            |> Map.get("contract")
+            |> Map.put_new("status", 1)
+            contract_params
+            |> Map.update!("contract", c)
+        end
+      
     end
   end
 
