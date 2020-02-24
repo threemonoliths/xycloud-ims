@@ -7,7 +7,7 @@
             <nz-form-item>
               <nz-form-label nzFor="no">名称</nz-form-label>
               <nz-form-control>
-                <input nz-input [(ngModel)]="q.cname" name="cname" placeholder="输入名称搜索" id="cname" />
+                <input nz-input [(ngModel)]="q.name" name="name" placeholder="输入名称搜索" id="name" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -29,20 +29,23 @@
         (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
         <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
           <tr>
-            <th nz-th nzShowSort nzSortKey="cname">
-              <span>客户名称</span>
+            <th nz-th nzShowSort nzSortKey="no">
+              <span>客商编码</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="contact">
-              <span>联系人</span>
+            <th nz-th nzShowSort nzSortKey="name">
+              <span>公司名称</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="contact_info">
-              <span>联系方式</span>
+            <th nz-th nzShowSort nzSortKey="category">
+              <span>客商类型</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="invoice">
-              <span>开票信息</span>
+            <th nz-th nzShowSort nzSortKey="contact1">
+              <span>联系人姓名</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="comments">
-              <span>备注</span>
+            <th nz-th nzShowSort nzSortKey="mobile1">
+              <span>联系人手机</span>
+            </th>
+            <th nz-th>
+              <span>详细信息</span>
             </th>
             <th nz-th>
               <span>操作</span>
@@ -51,12 +54,55 @@
         </thead>
         <tbody nz-tbody>
           <tr nz-tbody-tr *ngFor="let i of nzTable.data">
-            <td nz-td>{{i.cname}}</td>
-            <td nz-td>{{i.contact}}</td>
-            <td nz-td>{{i.contact_info}}</td>
-            <td nz-td>{{i.invoice}}</td>
-            <td nz-td>{{i.comments}}</td>
-
+            <td nz-td>{{i.no}}</td>
+            <td nz-td>{{i.name}}</td>
+            <td nz-td>{{i.category}}</td>
+            <td nz-td>{{i.contact1}}</td>
+            <td nz-td>{{i.mobile1}}</td>
+            <td nz-td>
+              <button nz-button [nzType]="'primary'" (click)="showModal(i)"><span>更多信息</span></button>
+              <nz-modal [(nzVisible)]="i.isVisible" nzTitle="{{i.name}}" (nzOnOk)="handleOk(i)"
+                (nzOnCancel)="handleCancel(i)" nzWidth=1040>
+                <nz-descriptions nzBordered>
+                  <nz-descriptions-item nzTitle="客商编码">{{i.no}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="公司名称">{{i.name}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="客商类型">{{i.category}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="法定代表人">{{i.legal_representative}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="注册地址">{{i.registered_address}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="注册资金（万元）">{{i.registered_capital}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="经营范围">{{i.business_scope}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="所属行业">{{i.industry_involved}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="与祥云开展业务">{{i.project}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="注册所在地">{{i.registered_place}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="证件类型">{{i.id_type}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="三证合一证件号码">{{i.certificate_no}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="组织机构代码证号码">{{i.organization_no}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="营业执照注册号码">{{i.business_license_no}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="税务登记证号码">{{i.tax_no}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="纳税人类型">{{i.taxpayer_type}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="开票抬头">{{i.invoice_title}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="纳税人识别号">{{i.taxpayer_no}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="地址">{{i.address}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="电话">{{i.telephone}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="开户银行名称">{{i.bank_name}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="开户银行账号">{{i.bank_account}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="收款银行名称">{{i.receiving_bank_name}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="收款银行账号">{{i.receiving_bank_account}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="汇款银行名称">{{i.remittance_bank_name}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="汇款银行账号">{{i.remittance_bank_account}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人1姓名">{{i.contact1}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人1手机">{{i.mobile1}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人1电子邮箱">{{i.mail1}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人2姓名">{{i.contact2}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人2手机">{{i.mobile2}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人2电子邮箱">{{i.mail2}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人3姓名">{{i.contact3}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人3手机">{{i.mobile3}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="联系人3电子邮箱">{{i.mail3}}</nz-descriptions-item>
+                  <nz-descriptions-item nzTitle="客商评价">{{i.comments}}</nz-descriptions-item>
+                </nz-descriptions>
+              </nz-modal>
+            </td>
             <td nz-td>
               <a (click)="modify(i.id)">修改</a>
               <span nz-table-divider></span>

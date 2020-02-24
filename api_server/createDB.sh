@@ -1,6 +1,6 @@
 #/bin/bash
 
-docker run --name 192.168.99.100 \
+docker run --name xycloud-ims \
 -e POSTGRES_PASSWORD=postgres \
 -e POSTGRES_USER=postgres \
 -e POSTGRES_DB=api_server_dev \

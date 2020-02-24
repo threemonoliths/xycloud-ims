@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
+import { UploadFile } from 'ng-zorro-antd';
 import * as moment from 'moment';
-
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ContractService } from '../contract.service';
 
 @Component({
@@ -22,8 +23,8 @@ export class ContractListComponent implements OnInit {
     sort_field: 'sign_date',
     sort_direction: 'desc',
     cname: null,
-    date1: "",
-    date2: "",
+    start_time: "",
+    end_time: "",
     startDate: null,
     endDate: null,
     flag: 0
@@ -36,6 +37,11 @@ export class ContractListComponent implements OnInit {
 
   expandForm = false;
   flag = false;
+  uploading = false;
+  fileList: UploadFile[] = [];
+  optionList = ['已完成', '进行中'];
+  status_flag = ""
+
 
   constructor(
     private http: _HttpClient,
@@ -57,7 +63,9 @@ export class ContractListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp.data;
+          this.data = resp["data"];
+          this.excuted_cal()
+          console.log(this.data)
           this.cdr.detectChanges();
         }
       );
@@ -81,9 +89,9 @@ export class ContractListComponent implements OnInit {
     // this.srv.isUpdate = true;
     this.srv.formOperation = 'update';
     this.srv.getById(id).subscribe(resp => {
-      this.srv.contract = resp.data;
-      this.srv.contract.contract_details = resp.data.details;
-      console.log(this.srv.contract)
+      this.srv.contract = resp["data"];
+      this.srv.contract.contract_details = resp["data"].details;
+      console.log(this.srv.contract, this.srv.contract.contract_details)
       this.router.navigateByUrl('/contract/form');
     });
   }
@@ -96,7 +104,7 @@ export class ContractListComponent implements OnInit {
         this.loading = true;
         this.srv.delete(item.id).subscribe(
           resp => {
-            if (resp.data) this.msg.success(`删除成功！`);
+            if (resp["data"]) this.msg.success(`删除成功！`);
             this.reset();
           }
         );
@@ -105,7 +113,11 @@ export class ContractListComponent implements OnInit {
   }
 
   reset() {
-    setTimeout(() => this.getData());
+    this.q.startDate = null,
+      this.q.endDate = null,
+      this.q.start_time = "",
+      this.q.end_time = "",
+      setTimeout(() => this.getData());
   }
 
   pageChange(pi: number) {
@@ -130,6 +142,7 @@ export class ContractListComponent implements OnInit {
       this.getData()
     }
   }
+
 
   newArray = (len) => {
     const result = [];
@@ -162,6 +175,71 @@ export class ContractListComponent implements OnInit {
   };
   get _isSameDay() {
     return this.q.startDate && this.q.endDate && moment(this.q.startDate).isSame(this.q.endDate, 'day')
+  }
+
+  //已执行金额
+  excuted_cal() {
+    this.data.forEach(i => {
+      var excuted = 0;
+      var next_amount = 0;
+      var next_date = "暂无记录";
+      var status = "进行中";
+      for (let j = 0; j < i.details.length; j++) {
+        excuted += parseFloat(i.details[j].actual_payment)
+        if (!i.details[j].actual_payment && i.details[j - 1].actual_payment) {
+          next_amount = i.details[j].invoice_amount;
+          next_date = i.details[j].invoice_date;
+        }
+      }
+      if (excuted >= i.amount) {
+        status = "已完成"
+      }
+      i.excuted = excuted;
+      i.next_amount = next_amount;
+      i.next_date = next_date;
+      i.status = status;
+      console.log(excuted, next_amount, next_date)
+    })
+  }
+
+  // 导入
+  beforeUpload = (file: UploadFile): boolean => {
+    console.log(file);
+    this.fileList = [file];
+    return false;
+  };
+  formmatFormValue() {
+    const obj: any = {};
+    if ((this.fileList) && (this.fileList.length > 0))
+      obj.attachment = this.fileList[0]
+    console.log(obj);
+    return obj;
+  }
+  excelin() {
+    this.loading = true;
+    const obj = this.formmatFormValue()
+    this.srv.add(obj).subscribe(resp => {
+      this.loading = false;
+      if (resp["data"]) this.msg.success(`上传成功！`);
+      this.router.navigateByUrl('/contract/page');
+      this.cdr.detectChanges();
+    });
+  }
+  // 导出excel
+  excelout() {
+    this.loading = true;
+    this.q.startDate = null,
+      this.q.endDate = null,
+      this.q.start_time = "",
+      this.q.end_time = "",
+      this.srv.export_excel(this.q)
+        .pipe(tap(() => (this.loading = false)))
+        .subscribe(
+          resp => {
+            this.cdr.detectChanges();
+          }
+        );
+    console.log("excelout")
   }
 
 }

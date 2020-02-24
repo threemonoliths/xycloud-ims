@@ -1,21 +1,122 @@
+<page-header>
+  <button nz-button class="ml-sm" type="return" (click)="goBack()">返回</button>
+</page-header>
 <div nz-row [nzGutter]="24" class="pt-lg">
   <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
     <nz-card [nzBordered]="false" [nzTitle]="title">
       <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
-        <se label="客户名称" error="请输入名称，大于两个字符" required>
-          <input nz-input formControlName="cname" placeholder="请输入客户名称" />
+        <se label="客商编码" error="请输入名称，大于两个字符">
+          <input nz-input formControlName="no" placeholder="请输入客商名称" />
         </se>
-        <se label="联系人" error="请输入联系人，大于两个字符">
-          <input nz-input formControlName="contact" placeholder="请输入联系人" />
+        <se label="公司名称" error="请输入公司名称，大于两个字符" required>
+          <input nz-input formControlName="name" placeholder="请输入公司名称" />
         </se>
-        <se label="联系方式" error="请输入联系方式，大于两个字符">
-          <input nz-input formControlName="contact_info" placeholder="请输入联系方式" />
+        <se label="客商类型" error="请输入客商类型，大于两个字符" required>
+          <nz-form-control>
+            <nz-select formControlName="category" [(ngModel)]="category" nzAllowClear nzPlaceHolder="选择客商类型">
+              <nz-option *ngFor="let option of optionList" [nzValue]="option" [nzLabel]="option">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
         </se>
-        <se label="开票信息" error="请输入开票信息，大于两个字符">
-          <input nz-input formControlName="invoice" placeholder="请输入开票信息" />
+        <se label="法定代表人" error="请输入法定代表人，大于两个字符" required>
+          <input nz-input formControlName="legal_representative" placeholder="请输入法定代表人" />
         </se>
-        <se label="描述">
-          <textarea rows="4" nz-input formControlName="comments" placeholder="请输入描述"></textarea>
+        <se label="注册地址" error="请输入注册地址，大于两个字符" required>
+          <input nz-input formControlName="registered_address" placeholder="请输入注册地址" />
+        </se>
+        <se label="注册资金(万元)" error="请输入注册资金(万元)，大于两个字符" required>
+          <input nz-input formControlName="registered_capital" placeholder="请输入注册资金(万元)" />
+        </se>
+        <se label="经营范围" error="请输入经营范围，大于两个字符" required>
+          <input nz-input formControlName="business_scope" placeholder="请输入经营范围" />
+        </se>
+        <se label="所属行业" error="请输入所属行业，大于两个字符">
+          <input nz-input formControlName="industry_involved" placeholder="请输入所属行业" />
+        </se>
+        <se label="与祥云开展业务" error="请输入与祥云开展业务，大于两个字符" required>
+          <input nz-input formControlName="project" placeholder="请输入与祥云开展业务" />
+        </se>
+        <se label="注册所在地" error="请输入注册所在地，大于两个字符" required>
+          <input nz-input formControlName="registered_place" placeholder="请输入注册所在地" />
+        </se>
+        <se label="证件类型" error="请输入证件类型，大于两个字符" required>
+          <input nz-input formControlName="id_type" placeholder="请输入证件类型" />
+        </se>
+        <se label="三证合一证件号码" error="请输入三证合一证件号码，大于两个字符" required>
+          <input nz-input formControlName="certificate_no" placeholder="请输入三证合一证件号码" />
+        </se>
+        <se label="组织机构代码证号码" error="请输入组织机构代码证号码，大于两个字符" required>
+          <input nz-input formControlName="organization_no" placeholder="请输入组织机构代码证号码" />
+        </se>
+        <se label="营业执照注册号码" error="请输入营业执照注册号码，大于两个字符" required>
+          <input nz-input formControlName="business_license_no" placeholder="请输入营业执照注册号码" />
+        </se>
+        <se label="税务登记证号码" error="请输入税务登记证号码，大于两个字符" required>
+          <input nz-input formControlName="tax_no" placeholder="请输入税务登记证号码" />
+        </se>
+        <se label="纳税人类型" error="请输入纳税人类型，大于两个字符" required>
+          <input nz-input formControlName="taxpayer_type" placeholder="请输入纳税人类型" />
+        </se>
+        <se label="开票抬头" error="请输入开票抬头，大于两个字符" required>
+          <input nz-input formControlName="invoice_title" placeholder="请输入开票抬头" />
+        </se>
+        <se label="纳税人识别号" error="请输入纳税人识别号，大于两个字符" required>
+          <input nz-input formControlName="taxpayer_no" placeholder="请输入纳税人识别号" />
+        </se>
+        <se label="地址" error="请输入地址，大于两个字符" required>
+          <input nz-input formControlName="address" placeholder="请输入地址" />
+        </se>
+        <se label="电话" error="请输入电话，大于两个字符" required>
+          <input nz-input formControlName="telephone" placeholder="请输入电话" />
+        </se>
+        <se label="开户银行名称" error="请输入开户银行名称，大于两个字符" required>
+          <input nz-input formControlName="bank_name" placeholder="请输入开户银行名称" />
+        </se>
+        <se label="开户银行账号" error="请输入开户银行账号，大于两个字符" required>
+          <input nz-input formControlName="bank_account" placeholder="请输入开户银行账号" />
+        </se>
+        <se label="收款银行名称" error="请输入收款银行名称，大于两个字符" required>
+          <input nz-input formControlName="receiving_bank_name" placeholder="请输入收款银行名称" />
+        </se>
+        <se label="收款银行账号" error="请输入收款银行账号，大于两个字符" required>
+          <input nz-input formControlName="receiving_bank_account" placeholder="请输入收款银行账号" />
+        </se>
+        <se label="汇款银行名称" error="请输入汇款银行名称，大于两个字符" required>
+          <input nz-input formControlName="remittance_bank_name" placeholder="请输入汇款银行名称" />
+        </se>
+        <se label="汇款银行账号" error="请输入汇款银行账号，大于两个字符" required>
+          <input nz-input formControlName="remittance_bank_account" placeholder="请输入汇款银行账号" />
+        </se>
+        <se label="联系人1姓名" error="请输入联系人1姓名，大于两个字符" required>
+          <input nz-input formControlName="contact1" placeholder="请输入联系人1姓名" />
+        </se>
+        <se label="联系人1手机" error="请输入联系人1手机，大于两个字符" required>
+          <input nz-input formControlName="mobile1" placeholder="请输入联系人1手机" />
+        </se>
+        <se label="联系人1电子邮箱" error="联系人1电子邮箱，大于两个字符">
+          <input nz-input formControlName="mail1" placeholder="请输入联系人1电子邮箱" />
+        </se>
+        <se label="联系人2姓名" error="请输入联系人2姓名，大于两个字符">
+          <input nz-input formControlName="contact2" placeholder="请输入联系人2姓名" />
+        </se>
+        <se label="联系人2手机" error="请输入联系人2手机，大于两个字符">
+          <input nz-input formControlName="mobile2" placeholder="请输入联系人2手机" />
+        </se>
+        <se label="联系人2电子邮箱" error="联系人2电子邮箱，大于两个字符">
+          <input nz-input formControlName="mail2" placeholder="请输入联系人2电子邮箱" />
+        </se>
+        <se label="联系人3姓名" error="请输入联系人3姓名，大于两个字符">
+          <input nz-input formControlName="contact3" placeholder="请输入联系人1姓名" />
+        </se>
+        <se label="联系人3手机" error="请输入联系人3手机，大于两个字符">
+          <input nz-input formControlName="mobile3" placeholder="请输入联系人1手机" />
+        </se>
+        <se label="联系人3电子邮箱" error="联系人3电子邮箱，大于两个字符">
+          <input nz-input formControlName="mail3" placeholder="请输入联系人1电子邮箱" />
+        </se>
+        <se label="客商评价" error="请输入客商评价，大于两个字符" required>
+          <textarea rows="4" nz-input formControlName="comments" placeholder="请输入客商评价"></textarea>
         </se>
         <se>
           <button nz-button nzType="primary" [disabled]="form.invalid" type="submit"

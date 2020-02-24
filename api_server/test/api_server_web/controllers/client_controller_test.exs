@@ -5,12 +5,12 @@ defmodule ApiServerWeb.ClientControllerTest do
   alias ApiServer.ClientManagement.Client
 
   @create_attrs %{
-    cname: "some cname"
+    name: "some name"
   }
   @update_attrs %{
-    cname: "some updated cname"
+    name: "some updated name"
   }
-  @invalid_attrs %{cname: nil}
+  @invalid_attrs %{name: nil}
 
   def fixture(:client) do
     {:ok, client} = ClientManagement.create_client(@create_attrs)
@@ -37,7 +37,7 @@ defmodule ApiServerWeb.ClientControllerTest do
 
       assert %{
                "id" => id,
-               "cname" => "some cname"
+               "name" => "some name"
              } = json_response(conn, 200)["data"]
     end
 
@@ -58,7 +58,7 @@ defmodule ApiServerWeb.ClientControllerTest do
 
       assert %{
                "id" => id,
-               "cname" => "some updated cname"
+               "name" => "some updated name"
              } = json_response(conn, 200)["data"]
     end
 

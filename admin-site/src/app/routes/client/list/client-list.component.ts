@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
-
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { ClientService } from '../client.service';
 @Component({
   templateUrl: './client-list.component.html',
@@ -11,14 +12,14 @@ import { ClientService } from '../client.service';
 })
 export class ClientListComponent implements OnInit {
 
-  title = '客户管理';
+  title = '客商管理';
   total = 0;
   q: any = {
     pi: 1,
     ps: 10,
-    sort_field: 'cname',
+    sort_field: 'name',
     sort_direction: 'desc',
-    cname: null,
+    name: null,
   };
 
   datas = [
@@ -35,7 +36,7 @@ export class ClientListComponent implements OnInit {
 
   data: any[] = [];
   loading = false;
-
+  isVisible = false;
   expandForm = false;
 
   constructor(
@@ -49,7 +50,7 @@ export class ClientListComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
-    console.log(this.datas)
+    console.log(this.data)
   }
 
   getData() {
@@ -59,7 +60,8 @@ export class ClientListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp.data;
+          this.data = resp["data"];
+          console.log(this.data, resp)
           this.cdr.detectChanges();
         }
       );
@@ -73,7 +75,7 @@ export class ClientListComponent implements OnInit {
   modify(id) {
     this.srv.isUpdate = true;
     this.srv.getById(id).subscribe(resp => {
-      this.srv.client = resp.data;
+      this.srv.client = resp["data"];
       this.router.navigateByUrl('/client/form');
     });
   }
@@ -86,7 +88,7 @@ export class ClientListComponent implements OnInit {
         this.loading = true;
         this.srv.delete(item.id).subscribe(
           resp => {
-            if (resp.data) this.msg.success(`删除成功！`);
+            if (resp["data"]) this.msg.success(`删除成功！`);
             this.reset();
           }
         );
@@ -107,5 +109,23 @@ export class ClientListComponent implements OnInit {
     this.q.sort_field = sort.key;
     this.q.sort_direction = sort.value;
     this.reset();
+  }
+
+  showCard() {
+    this.data.forEach(i => {
+      i.isVisible = false
+    })
+  }
+
+  showModal(i) {
+    i.isVisible = true;
+    console.log(i, i.isVisible);
+  }
+
+  handleOk(i) {
+    i.isVisible = false;
+  }
+  handleCancel(i) {
+    i.isVisible = false;
   }
 }

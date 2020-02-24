@@ -26,13 +26,37 @@
               </nz-form-control>
             </nz-form-item>
           </div>
+
           <div nz-col [nzSpan]="12" [class.text-left]="expandForm" class="mb-md">
-            <button nz-button type="button" (click)="excelin()" [nzType]="'primary'" [nzLoading]="loading">导入</button>
-            <button nz-button type="button" (click)="excelout()" class="mx-sm">导出</button>
+            <div class="mb-md">
+              <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [(nzFileList)]="fileList"
+                [nzBeforeUpload]="beforeUpload">
+                <button nz-button type="button"><i nz-icon nzType="upload"></i><span>添加文件</span></button>
+              </nz-upload>
+            </div>
+            <div class="mb-md">
+              <button nz-button type="button" (click)="excelin()" [nzType]="'primary'" [nzLoading]="uploading"
+                [disabled]="fileList.length == 0">导入表格</button>
+              <button nz-button type="button" (click)="excelout()" class="mx-sm">导出表格</button>
+            </div>
           </div>
-          <div nz-col [nzSpan]="12" [class.text-right]="expandForm" class="mb-md">
-            <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+
+          <div nz-col nzMd="8" nzSm="24" [nzSpan]="12" [class.text-right]="expandForm" class="mb-md">
+            <div nzMd="8" nzSm="12" class="mb-md">
+              <nz-form-item>
+                <nz-form-label nzFor="no">状态</nz-form-label>
+                <nz-form-control>
+                  <nz-select [(ngModel)]="status_flag" nzAllowClear nzPlaceHolder="选择状态" name="status">
+                    <nz-option *ngFor="let option of optionList" [nzValue]="option" [nzLabel]="option">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="mb-md">
+              <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+              <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+            </div>
           </div>
         </div>
       </form>
@@ -47,6 +71,7 @@
         (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
         <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
           <tr>
+            <th nzShowExpand></th>
             <th nz-th nzShowSort nzSortKey="cno">
               <span>编号</span>
             </th>
@@ -56,9 +81,6 @@
             <th nz-th nzShowSort nzSortKey="party_a">
               <span>甲方</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="party_b">
-              <span>乙方</span>
-            </th>
             <th nz-th nzShowSort nzSortKey="sign_date">
               <span>签订日期</span>
             </th>
@@ -66,39 +88,77 @@
               <span>终止日期</span>
             </th>
             <th nz-th nzShowSort nzSortKey="amount">
-              <span>合同额</span>
+              <span>合同总额</span>
+            </th>
+            <th nz-th nzSortKey="excuted">
+              <span>已执行金额</span>
+            </th>
+            <th nz-th nzSortKey="next_amount">
+              <span>下期金额</span>
+            </th>
+            <th nz-th nzSortKey="next_date">
+              <span>下期时间</span>
+            </th>
+            <th nz-th nzSortKey="status">
+              <span>状态</span>
             </th>
             <th nz-th nzShowSort nzSortKey="comments">
               <span>描述</span>
             </th>
-            <th nz-th nzShowSort nzSortKey="project_id">
-              <span>项目类型</span>
-            </th>
-
             <th nz-th>
               <span>操作</span>
             </th>
           </tr>
         </thead>
         <tbody nz-tbody>
-          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
-            <td nz-td>{{i.cno}}</td>
-            <td nz-td>{{i.cname}}</td>
-            <td nz-td>{{i.party_a}}</td>
-            <td nz-td>{{i.party_b}}</td>
-            <td nz-td>{{i.sign_date}}</td>
-            <td nz-td>{{i.expiry_date}}</td>
-            <td nz-td>{{i.amount}}</td>
-            <td nz-td>{{i.comments}}</td>
-            <td nz-td>{{i.project_id}}</td>
-            <td nz-td>
-              <a (click)="modify(i.id)">修改</a>
-              <span nz-table-divider></span>
-              <nz-divider nzType="vertical"></nz-divider>
-              <a (click)="remove(i)">删除</a>
-            </td>
+          <ng-container *ngFor="let i of nzTable.data">
+            <tr nz-tbody-tr *ngIf="!status_flag||i.status==status_flag">
+              <td nzShowExpand [(nzExpand)]="i.expand"></td>
+              <td nz-td>{{i.cno}}</td>
+              <td nz-td>{{i.cname}}</td>
+              <td nz-td>{{i.party_a}}</td>
+              <td nz-td>{{i.sign_date}}</td>
+              <td nz-td>{{i.expiry_date}}</td>
+              <td nz-td>{{i.amount}}</td>
+              <td nz-td>{{i.excuted}}</td>
+              <td nz-td>{{i.next_amount}}</td>
+              <td nz-td>{{i.next_date}}</td>
+              <td nz-td>{{i.status}}</td>
+              <td nz-td>{{i.comments}}</td>
+              <td nz-td>
+                <a (click)="modify(i.id)">修改</a>
+                <span nz-table-divider></span>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="remove(i)">删除</a>
+              </td>
+            </tr>
+            <tr [nzExpand]="i.expand">
+              <td></td>
+              <td colspan="12" style="background-color: #eee;">
+                <nz-table #innerTable [nzData]="i.details" nzSize="middle" [nzShowPagination]="false">
+                  <thead>
+                    <tr>
+                      <th>笔次信息</th>
+                      <th>发票金额</th>
+                      <th>实付金额</th>
+                      <th>发票信息</th>
+                      <th>实付信息</th>
+                    </tr>
+                  </thead>
+        <tbody>
+          <tr *ngFor="let data of innerTable.data">
+            <td>{{ data.issue_name }}</td>
+            <td>{{ data.invoice_amount }}</td>
+            <td>{{ data.actual_payment }}</td>
+            <td>{{ data.invoice_date }}</td>
+            <td>{{ data.payment_date }}</td>
           </tr>
         </tbody>
+      </nz-table>
+      </td>
+      </tr>
+      </ng-container>
+      </tbody>
       </nz-table>
     </nz-card>
   </div>

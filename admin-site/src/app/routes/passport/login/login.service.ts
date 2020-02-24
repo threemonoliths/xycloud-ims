@@ -35,12 +35,12 @@ export class AuthenticationService {
       .pipe(
         map((response: Response) => {
           console.log(response)
-          const error = response && response.error;
-          const token = response && response.jwt;
-          const username = response && response.user && response.user.real_name;
-          const position = response && response.user && response.user.position;
-          const avatar = response && response.user && response.user.avatar;
-          const mobile = response && response.user && response.user.mobile;
+          const error = response && response["error"];
+          const token = response && response["jwt"];
+          const username = response && response["user"] && response["user"].real_name;
+          const position = response && response["user"] && response["user"].position;
+          const avatar = response && response["user"] && response["user"].avatar;
+          const mobile = response && response["user"] && response["user"].mobile;
           if (!error && token) {
             localStorage.clear();
             localStorage.setItem('currentToken', token);

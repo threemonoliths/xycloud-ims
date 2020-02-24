@@ -45,7 +45,7 @@ export class SupplierFormComponent implements OnInit {
       const obj = this.formmatFormValue();
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
-        if (resp.data) this.msg.success(`保存成功！`);
+        if (resp["data"]) this.msg.success(`保存成功！`);
         this.router.navigateByUrl('/supplier/page');
         this.cdr.detectChanges();
       });
@@ -53,9 +53,9 @@ export class SupplierFormComponent implements OnInit {
       this.submitting = true;
       const obj = this.formmatFormValue();
       this.srv.update(this.supplier.id, obj).subscribe(resp => {
-        if (resp.data) {
+        if (resp["data"]) {
           this.submitting = false;
-          if (resp.data) this.msg.success(`保存成功！`);
+          if (resp["data"]) this.msg.success(`保存成功！`);
           this.router.navigateByUrl('/supplier/page');
           this.cdr.detectChanges();
         }
