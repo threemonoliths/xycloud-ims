@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { getFormatDateStr, getDateByDateStr } from '../../../shared/utils/datehandler';
 import { ClientService } from '../client.service';
+import { MessageRemindingService } from '../../../message-reminding.service';
 
 @Component({
   templateUrl: './client-form.component.html',
@@ -14,19 +15,110 @@ export class ClientFormComponent implements OnInit {
   submitting = false;
   title: string;
   client: any = {};
-  optionList = ['客户', '供应商', '客商'];
-
+  optionList1 = ['客户', '供应商', '客商'];
+  optionList2 = ['业务对接人', '合同对接人', '财务对接人'];
+  editIndex = -1;
+  editObj = {};
   constructor(
     private fb: FormBuilder,
     private msg: NzMessageService,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private srv: ClientService,
+    private wsSrv: MessageRemindingService,
   ) { }
 
+  //#region get form fields
+  get no() {
+    return this.form.controls.no;
+  }
+  get name() {
+    return this.form.controls.name;
+  }
+  get category() {
+    return this.form.controls.category;
+  }
+  get legal_representative() {
+    return this.form.controls.legal_representative;
+  }
+  get registered_address() {
+    return this.form.controls.registered_address;
+  }
+  get registered_capital() {
+    return this.form.controls.registered_capital;
+  }
+  get business_scope() {
+    return this.form.controls.business_scope;
+  }
+  get industry_involved() {
+    return this.form.controls.industry_involved;
+  }
+  get project() {
+    return this.form.controls.project;
+  }
+  get registered_place() {
+    return this.form.controls.registered_place;
+  }
+  get id_type() {
+    return this.form.controls.id_type;
+  }
+  get certificate_no() {
+    return this.form.controls.certificate_no;
+  }
+  get organization_no() {
+    return this.form.controls.organization_no;
+  }
+  get business_license_no() {
+    return this.form.controls.business_license_no;
+  }
+  get tax_no() {
+    return this.form.controls.tax_no;
+  }
+  get taxpayer_type() {
+    return this.form.controls.taxpayer_type;
+  }
+  get invoice_title() {
+    return this.form.controls.invoice_title;
+  }
+  get taxpayer_no() {
+    return this.form.controls.taxpayer_no;
+  }
+  get address() {
+    return this.form.controls.address;
+  }
+  get telephone() {
+    return this.form.controls.telephone;
+  }
+  get bank_name() {
+    return this.form.controls.bank_name;
+  }
+  get bank_account() {
+    return this.form.controls.bank_account;
+  }
+  get receiving_bank_name() {
+    return this.form.controls.receiving_bank_name;
+  }
+  get receiving_bank_account() {
+    return this.form.controls.receiving_bank_account;
+  }
+  get remittance_bank_name() {
+    return this.form.controls.remittance_bank_name;
+  }
+  get remittance_bank_account() {
+    return this.form.controls.remittance_bank_account;
+  }
+  get comments() {
+    return this.form.controls.comments;
+  }
+  get client_details() {
+    return this.form.controls.client_details as FormArray;
+  }
+
   ngOnInit(): void {
-    if (this.srv.isUpdate) this.initUpdate();
+    // if (this.srv.isUpdate) this.initUpdate();
     this.setTitle();
+    const op = this.srv.formOperation;
+    if (op == 'update') this.initUpdate();
     this.form = this.fb.group({
       no: [this.client.no ? this.client.no : null, [],],
       name: [
@@ -57,44 +149,133 @@ export class ClientFormComponent implements OnInit {
       receiving_bank_account: [this.client.receiving_bank_account ? this.client.receiving_bank_account : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       remittance_bank_name: [this.client.remittance_bank_name ? this.client.remittance_bank_name : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       remittance_bank_account: [this.client.remittance_bank_account ? this.client.remittance_bank_account : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      contact1: [this.client.contact1 ? this.client.contact1 : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      mobile1: [this.client.mobile1 ? this.client.mobile1 : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      mail1: [this.client.mail1 ? this.client.mail1 : null, [],],
-      contact2: [this.client.contact2 ? this.client.contact2 : null, [],],
-      mobile2: [this.client.mobile2 ? this.client.mobile2 : null, [],],
-      mail2: [this.client.mail2 ? this.client.mail2 : null, [],],
-      contact3: [this.client.contact3 ? this.client.contact3 : null, [],],
-      mobile3: [this.client.mobile3 ? this.client.mobile3 : null, [],],
-      mail3: [this.client.mail3 ? this.client.mail3 : null, [],],
       comments: [this.client.comments ? this.client.comments : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+
+      client_details: this.fb.array([]),
+    });
+    if (op == 'update' || (op == 'audit' || op == 'show')) {
+      this.client.client_details
+        ? this.client.client_details.forEach(i => {
+          const field = this.createDetail();
+          field.patchValue(i);
+          this.client_details.push(field);
+        })
+        : console.log('this client has no client_details.');
+    }
+
+  }
+
+  // 新增明细
+  createDetail(): FormGroup {
+    return this.fb.group({
+      contact: [null, [Validators.required]],
+      mobile: [null, [Validators.required]],
+      mail: [null],
+      qq: [null,],
+      wechat: [null,],
+      position: [null,],
+      character: [null],
+      comments: [null,],
     });
   }
 
-  submit() {
-    if (!this.srv.isUpdate) {
-      console.log("新增客户")
-      this.submitting = true;
-      const obj = this.formmatFormValue();
-      this.srv.add(obj).subscribe(resp => {
-        this.submitting = false;
-        if (resp["data"]) this.msg.success(`保存成功！`);
-        this.router.navigateByUrl('/client/page');
-        this.cdr.detectChanges();
-      });
-    } else {
-      this.submitting = true;
-      const obj = this.formmatFormValue();
-      this.srv.update(this.client.id, obj).subscribe(resp => {
-        if (resp["data"]) {
-          this.submitting = false;
-          if (resp["data"]) this.msg.success(`保存成功！`);
-          this.router.navigateByUrl('/client/page');
-          this.cdr.detectChanges();
-        }
-      });
-    }
+  add() {
+    console.log(this.client_details.length);
+    this.client_details.push(this.createDetail());
+    this.edit(this.client_details.length - 1);
   }
 
+  del(index: number) {
+    this.client_details.removeAt(index);
+  }
+
+  edit(index: number) {
+    if (this.editIndex !== -1 && this.editObj) {
+      this.client_details.at(this.editIndex).patchValue(this.editObj);
+    }
+    this.editObj = { ...this.client_details.at(index).value };
+    this.editIndex = index;
+  }
+
+  save(index: number) {
+    this.client_details.at(index).markAsDirty();
+    if (this.client_details.at(index).invalid) return;
+    this.editIndex = -1;
+  }
+
+  cancel(index: number) {
+    if (!this.client_details.at(index).value.key) {
+      this.del(index);
+    } else {
+      this.client_details.at(index).patchValue(this.editObj);
+    }
+    this.editIndex = -1;
+  }
+
+
+  // 提交
+  // submit() {
+  //   if (!this.srv.isUpdate) {
+  //     console.log("新增客户")
+  //     this.submitting = true;
+  //     const obj = this.formmatFormValue();
+  //     this.srv.add(obj).subscribe(resp => {
+  //       this.submitting = false;
+  //       if (resp["data"]) this.msg.success(`保存成功！`);
+  //       this.router.navigateByUrl('/client/page');
+  //       this.cdr.detectChanges();
+  //     });
+  //   } else {
+  //     this.submitting = true;
+  //     const obj = this.formmatFormValue();
+  //     this.srv.update(this.client.id, obj).subscribe(resp => {
+  //       if (resp["data"]) {
+  //         this.submitting = false;
+  //         if (resp["data"]) this.msg.success(`保存成功！`);
+  //         this.router.navigateByUrl('/client/page');
+  //         this.cdr.detectChanges();
+  //       }
+  //     });
+  //   }
+  // }
+  submit() {
+    console.log('表格提交');
+    for (const i in this.form.controls) {
+      this.form.controls[i].markAsDirty();
+    }
+    if (this.form.invalid) {
+      this.msg.info('ya! this.form.invalid!');
+      return;
+    }
+    if (this.form.valid) {
+      const op = this.srv.formOperation;
+      if (op == 'create') {
+        this.submitting = true;
+        const obj = this.formmatFormValue();
+        this.srv.add(obj).subscribe(resp => {
+          this.submitting = false;
+          if (resp["data"]) this.msg.success(`保存成功！`);
+          this.wsSrv.channel.push('new_msg', {
+            body: localStorage.getItem('real_name') + ' 创建了 ' + resp["data"].cname,
+          });
+          this.router.navigateByUrl('/client/page');
+          this.cdr.detectChanges();
+        });
+      }
+      if (op == 'update') {
+        this.submitting = true;
+        const obj = this.formmatFormValue();
+        this.srv.update(this.client.id, obj).subscribe(resp => {
+          if (resp["data"]) {
+            this.submitting = false;
+            if (resp["data"]) this.msg.success(`保存成功！`);
+            this.router.navigateByUrl('/client/page');
+            this.cdr.detectChanges();
+          }
+        });
+      }
+    }
+  }
   setTitle() {
     if (this.srv.isUpdate) {
       this.title = '修改客户';
@@ -115,4 +296,8 @@ export class ClientFormComponent implements OnInit {
   goBack() {
     this.router.navigateByUrl('/client/page');
   }
+
+
+
+
 }

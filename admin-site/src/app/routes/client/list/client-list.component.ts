@@ -39,6 +39,8 @@ export class ClientListComponent implements OnInit {
   isVisible = false;
   expandForm = false;
 
+  optionList = ['已完成', '进行中'];
+
   constructor(
     private http: _HttpClient,
     public msg: NzMessageService,
@@ -69,13 +71,16 @@ export class ClientListComponent implements OnInit {
 
   add(tpl: TemplateRef<{}>) {
     this.srv.isUpdate = false;
+    this.srv.formOperation = 'create';
     this.router.navigateByUrl('/client/form');
   }
 
   modify(id) {
     this.srv.isUpdate = true;
+    this.srv.formOperation = 'update';
     this.srv.getById(id).subscribe(resp => {
       this.srv.client = resp["data"];
+      this.srv.client.client_details = resp["data"].details;
       this.router.navigateByUrl('/client/form');
     });
   }

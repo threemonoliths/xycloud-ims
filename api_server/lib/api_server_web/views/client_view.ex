@@ -1,6 +1,8 @@
 defmodule ApiServerWeb.ClientView do
   use ApiServerWeb, :view
-  alias ApiServerWeb.ClientView
+  alias ApiServerWeb.{Client,ClientView}
+  import Ecto.Query, only: [from: 2, preload: 3]
+  import Ecto.Query.API, only: [like: 2]
 
   def render("index.json", %{page: page}) do
     %{
@@ -45,16 +47,25 @@ defmodule ApiServerWeb.ClientView do
       receiving_bank_account: client.receiving_bank_account, #收款银行账号
       remittance_bank_name: client.remittance_bank_name, #汇款银行名称
       remittance_bank_account: client.remittance_bank_account, #汇款银账号
-      contact1: client.contact1, #联系人1姓名
-      mobile1: client.mobile1, #联系人1手机
-      mail1: client.mail1, #联系人1电子邮箱
-      contact2: client.contact2, #联系人2姓名
-      mobile2: client.mobile2, #联系人2手机
-      mail2: client.mail2, #联系人2电子邮箱
-      contact3: client.contact3, #联系人3姓名
-      mobile3: client.mobile3, #联系人3手机
-      mail3: client.mail3, #联系人3电子邮箱
       comments: client.comments, #客商评价
+      details: rend_details(client.client_details)
     } 
+  end
+
+  def rend_details(details) do
+    details
+    |> Enum.map(fn el -> 
+      %{
+        contact: el.contact, #联系人姓名
+        mobile: el.mobile, #联系人手机
+        mail: el.mail, #联系人电子邮箱
+        qq: el.qq, #联系人qq
+        wechat: el.wechat, #联系人wx
+        position: el.position, 
+        character: el.character, 
+        comments: el.comments,
+      }
+    end)
+    
   end
 end

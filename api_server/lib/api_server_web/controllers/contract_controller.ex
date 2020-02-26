@@ -81,6 +81,7 @@ defmodule ApiServerWeb.ContractController do
   end
 
   defp get_details_changesets(contract_params) do
+    IO.puts inspect ("-----------------------")
     case Map.get(contract_params, "contract_details") do
       nil -> []
       list ->

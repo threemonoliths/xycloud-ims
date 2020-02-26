@@ -29,16 +29,10 @@ defmodule ApiServer.ClientManagement.Client do
     field :receiving_bank_account, :string #收款银行账号
     field :remittance_bank_name, :string #汇款银行名称
     field :remittance_bank_account, :string #汇款银账号
-    field :contact1, :string #联系人1姓名
-    field :mobile1, :string #联系人1手机
-    field :mail1, :string #联系人1电子邮箱
-    field :contact2, :string #联系人2姓名
-    field :mobile2, :string #联系人2手机
-    field :mail2, :string #联系人2电子邮箱
-    field :contact3, :string #联系人3姓名
-    field :mobile3, :string #联系人3手机
-    field :mail3, :string #联系人3电子邮箱
     field :comments, :string #客商评价
+
+
+    has_many :client_details, ApiServer.ClientManagement.ClientDetail, on_delete: :delete_all, on_replace: :delete #父对象删除时，级联删除；操作父对象的changeset时，删除子对象
 
     timestamps()
   end
@@ -51,8 +45,7 @@ defmodule ApiServer.ClientManagement.Client do
     :project,:registered_place,:id_type,:certificate_no,:organization_no,
     :business_license_no,:tax_no,:taxpayer_type,:invoice_title,:taxpayer_no,
     :address,:telephone,:bank_name,:bank_account,:receiving_bank_name,
-    :receiving_bank_account,:remittance_bank_name,:remittance_bank_account,:contact1,
-    :mobile1,:mail1,:contact2,:mobile2,:mail2,:contact3,:mobile3,:mail3,:comments])
-    |> validate_required([:name])
+    :receiving_bank_account,:remittance_bank_name,:remittance_bank_account,:comments])
+    |> validate_required([:name,])
   end
 end

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
+import { setToken, setTokenAndParams } from '../../shared/utils/formmat';
 import { baseUrl } from '../../shared/app-config';
 import { formmat } from '../../shared/utils/formmat';
 
@@ -12,9 +12,10 @@ export class ClientService {
 
   client: any = null;
   isUpdate = false;
+  formOperation = 'create';
 
   listOnePage(q: any) {
-    return this.http.get(this.url, { params: formmat(q) });
+    return this.http.get(this.url, setTokenAndParams(q));
   }
 
   listAll() {
@@ -22,19 +23,19 @@ export class ClientService {
   }
 
   getById(id) {
-    return this.http.get(this.url + `/${id}`);
+    return this.http.get(this.url + `/${id}`, setToken());
   }
 
   add(obj) {
     console.log("添加")
-    return this.http.post(this.url, obj);
+    return this.http.post(this.url, obj, setToken());
   }
 
   update(id, obj) {
-    return this.http.put(this.url + `/${id}`, obj);
+    return this.http.put(this.url + `/${id}`, obj, setToken());
   }
 
   delete(id) {
-    return this.http.delete(this.url + `/${id}`);
+    return this.http.delete(this.url + `/${id}`, setToken());
   }
 }
