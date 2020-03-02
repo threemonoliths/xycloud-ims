@@ -26,6 +26,7 @@ defmodule ApiServerWeb.PurchaseContractView do
       sign_date: purchase_contract.sign_date,
       expiry_date: purchase_contract.expiry_date,
       amount: purchase_contract.amount,
+      project_id: purchase_contract.project_id,
       comments: purchase_contract.comments,
       details: rend_details(purchase_contract.purchase_contract_details)
     }

@@ -22,7 +22,7 @@ defmodule ApiServer.PurchaseContractManagement.PurchaseContract do
   @doc false
   def changeset(purchase_contract, attrs) do
     purchase_contract
-    |> cast(attrs, [:cno, :cname, :party_a, :party_b, :sign_date, :expiry_date, :amount, :comments])
+    |> cast(attrs, [:cno, :cname, :party_a, :party_b, :sign_date, :expiry_date, :amount, :comments, :project_id])
     |> validate_required([:cno])
   end
 end

@@ -214,6 +214,7 @@ export class ContractFormComponent implements OnInit {
         this.srv.update(this.contract.id, obj).subscribe(resp => {
           if (resp["data"]) {
             this.submitting = false;
+            console.log(obj);
             if (resp["data"]) this.msg.success(`保存成功！`);
             this.router.navigateByUrl('/contract/page');
             this.cdr.detectChanges();

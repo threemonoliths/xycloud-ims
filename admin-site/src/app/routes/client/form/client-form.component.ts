@@ -15,8 +15,8 @@ export class ClientFormComponent implements OnInit {
   submitting = false;
   title: string;
   client: any = {};
-  optionList1 = ['客户', '供应商', '客商'];
-  optionList2 = ['业务对接人', '合同对接人', '财务对接人'];
+  optionList1 = [{ id: 1, type: '客户' }, { id: 2, type: '供应商' }, { id: 3, type: '客商' }];
+  optionList2 = [{ id: 1, type: '业务对接人' }, { id: 2, type: '合同对接人' }, { id: 3, type: '财务对接人' }];
   editIndex = -1;
   editObj = {};
   constructor(

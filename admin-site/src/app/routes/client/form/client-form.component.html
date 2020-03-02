@@ -14,9 +14,9 @@
           </se>
           <se label="客商类型" error="请输入客商类型，大于两个字符" required>
             <nz-form-control>
-              <nz-select formControlName="category" [(ngModel)]="selectedOption" nzAllowClear nzPlaceHolder="选择客商类型"
-                [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
-                <nz-option *ngFor="let option of optionList1" [nzValue]="option" [nzLabel]="option"
+              <nz-select formControlName="category" nzAllowClear nzPlaceHolder="选择客商类型" [nzShowSearch]="true"
+                [nzNotFoundContent]="'无匹配'">
+                <nz-option *ngFor="let option of optionList1" [nzValue]="option.type" [nzLabel]="option.type"
                   [nzDisabled]="option.disabled">
                 </nz-option>
               </nz-select>
@@ -154,9 +154,9 @@
                     <nz-form-item>
                       <nz-form-label>角色</nz-form-label>
                       <nz-form-control>
-                        <nz-select formControlName="character" [(ngModel)]="selectedcharacter" nzAllowClear
-                          nzPlaceHolder="请选择角色" [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
-                          <nz-option *ngFor="let option of optionList2" [nzValue]="option" [nzLabel]="option"
+                        <nz-select formControlName="character" nzAllowClear nzPlaceHolder="请选择角色" [nzShowSearch]="true"
+                          [nzNotFoundContent]="'无匹配'">
+                          <nz-option *ngFor="let option of optionList2" [nzValue]="option.type" [nzLabel]="option.type"
                             [nzDisabled]="option.disabled">
                           </nz-option>
                         </nz-select>
