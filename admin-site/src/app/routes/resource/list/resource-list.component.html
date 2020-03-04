@@ -1,0 +1,150 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+    <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+        <nz-card [nzBordered]="false" [nzTitle]="title">
+            <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+                <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+                    <div nz-col nzMd="8" nzSm="24">
+                        <nz-form-item>
+                            <nz-form-label nzFor="no">系统名称</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="q.name" name="name" placeholder="输入应用系统名称搜索" id="name" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+                        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+                        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+                    </div>
+                </div>
+            </form>
+            <div class="mb-md">
+                <button nz-button (click)="add()" [nzType]="'primary'">
+                    <i nz-icon nzType="plus"></i>
+                    <span>新建</span>
+                </button>
+            </div>
+
+            <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
+                (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
+                <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+                    <tr>
+                        <th nzShowExpand></th>
+                        <th nz-th nzShowSort nzSortKey="name">
+                            <span>应用系统名称</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="server_name">
+                            <span>用途</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="class">
+                            <span>重要等级</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="product_type">
+                            <span>产品类型</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="cpu">
+                            <span>CPU</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="memory">
+                            <span>内存</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="storage">
+                            <span>存储</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="bandwidth">
+                            <span>带宽</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="storage_type">
+                            <span>存储类型</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="ip">
+                            <span>虚拟机IP</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="client_id">
+                            <span>申请单位</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="applicant">
+                            <span>申请人</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="application_time">
+                            <span>申请时间</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="opening_time">
+                            <span>开通时间</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="security_service">
+                            <span>安全服务</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="backup_service">
+                            <span>备份服务</span>
+                        </th>
+                        <th nz-th nzShowSort nzSortKey="contract_id">
+                            <span>对应合同</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <ng-container *ngFor="let i of nzTable.data">
+                        <tr nz-tbody-tr>
+                            <td nzShowExpand [(nzExpand)]="i.expand"></td>
+                            <td nz-td>{{i.name}}</td>
+                            <td nz-td>{{i.server_name}}</td>
+                            <td nz-td>{{i.class}}</td>
+                            <td nz-td>{{i.product_type}}</td>
+                            <td nz-td>{{i.cpu}}</td>
+                            <td nz-td>{{i.memory}}</td>
+                            <td nz-td>{{i.storage}}</td>
+                            <td nz-td>{{i.bandwidth}}</td>
+                            <td nz-td>{{i.storage_type}}</td>
+                            <td nz-td>{{i.ip}}</td>
+                            <td nz-td>{{i.client_id}}</td>
+                            <td nz-td>{{i.applicant}}</td>
+                            <td nz-td>{{i.application_time}}</td>
+                            <td nz-td>{{i.opening_time}}</td>
+                            <td nz-td>{{i.security_service}}</td>
+                            <td nz-td>{{i.backup_service}}</td>
+                            <td nz-td>{{i.contract_id}}</td>
+                            <td nz-td>
+                                <a (click)="modify(i.id)">修改</a>
+                                <span nz-table-divider></span>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a (click)="remove(i)">删除</a>
+                            </td>
+                        </tr>
+
+                        <tr [nzExpand]="i.expand">
+                            <td></td>
+                            <td colspan="12" style="background-color: #eee;">
+                                <nz-table #innerTable [nzData]="i.details" nzSize="middle" [nzShowPagination]="false">
+                                    <thead>
+                                        <tr>
+                                            <th>申请日期</th>
+                                            <th>完成日期</th>
+                                            <th>变更项</th>
+                                            <th>原配置</th>
+                                            <th>目标配置</th>
+                                            <th>备注</th>
+                                        </tr>
+                                    </thead>
+                <tbody>
+                    <tr *ngFor="let data of innerTable.data">
+                        <td>{{ data.application_date }}</td>
+                        <td>{{ data.finish_date }}</td>
+                        <td>{{ data.change }}</td>
+                        <td>{{ data.original_configuration }}</td>
+                        <td>{{ data.target_configuration }}</td>
+                        <td>{{ data.comments }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            </td>
+            </tr>
+            </ng-container>
+            </tbody>
+            </nz-table>
+        </nz-card>
+    </div>
+</div>

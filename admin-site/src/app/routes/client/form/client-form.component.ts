@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
-import { getFormatDateStr, getDateByDateStr } from '../../../shared/utils/datehandler';
 import { ClientService } from '../client.service';
 import { MessageRemindingService } from '../../../message-reminding.service';
 
@@ -115,7 +114,6 @@ export class ClientFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // if (this.srv.isUpdate) this.initUpdate();
     this.setTitle();
     const op = this.srv.formOperation;
     if (op == 'update') this.initUpdate();
@@ -212,32 +210,6 @@ export class ClientFormComponent implements OnInit {
     this.editIndex = -1;
   }
 
-
-  // 提交
-  // submit() {
-  //   if (!this.srv.isUpdate) {
-  //     console.log("新增客户")
-  //     this.submitting = true;
-  //     const obj = this.formmatFormValue();
-  //     this.srv.add(obj).subscribe(resp => {
-  //       this.submitting = false;
-  //       if (resp["data"]) this.msg.success(`保存成功！`);
-  //       this.router.navigateByUrl('/client/page');
-  //       this.cdr.detectChanges();
-  //     });
-  //   } else {
-  //     this.submitting = true;
-  //     const obj = this.formmatFormValue();
-  //     this.srv.update(this.client.id, obj).subscribe(resp => {
-  //       if (resp["data"]) {
-  //         this.submitting = false;
-  //         if (resp["data"]) this.msg.success(`保存成功！`);
-  //         this.router.navigateByUrl('/client/page');
-  //         this.cdr.detectChanges();
-  //       }
-  //     });
-  //   }
-  // }
   submit() {
     console.log('表格提交');
     for (const i in this.form.controls) {
@@ -289,7 +261,6 @@ export class ClientFormComponent implements OnInit {
 
   formmatFormValue() {
     const obj = this.form.value;
-    // obj.date = getFormatDateStr(obj.date);
     return { client: obj };
   }
 

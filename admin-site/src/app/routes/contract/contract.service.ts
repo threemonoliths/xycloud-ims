@@ -22,6 +22,10 @@ export class ContractService {
     return this.http.get(this.url, setTokenAndParams(q));
   }
 
+  listAll() {
+    return this.http.get(this.url)
+  }
+
   // 获取合同明细页面
   listDetailPage(q: any) {
     return this.http.get(this.detail_url, setTokenAndParams(q));

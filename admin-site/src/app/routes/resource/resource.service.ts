@@ -6,11 +6,12 @@ import { formmat } from '../../shared/utils/formmat';
 
 
 @Injectable()
-export class ClientService {
+export class ResourceService {
   constructor(private http: HttpClient) { }
-  url = baseUrl + 'clients';
+  url = baseUrl + 'resources';
 
-  client: any = null;
+  resource: any = null;
+  resource_details: any = null;
   isUpdate = false;
   formOperation = 'create';
 
@@ -19,7 +20,7 @@ export class ClientService {
   }
 
   listAll() {
-    return this.http.get(this.url);
+    return this.http.get(this.url)
   }
 
   getById(id) {

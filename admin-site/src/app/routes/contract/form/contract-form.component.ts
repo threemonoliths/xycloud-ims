@@ -162,9 +162,9 @@ export class ContractFormComponent implements OnInit {
   }
 
   save(index: number) {
-    this.contract_details.value[index].invoice_date = getFormatDateStr(this.contract_details.value[index].invoice_date)
+    this.contract_details.value[index].invoice_date = getDateByDateStr(this.contract_details.value[index].invoice_date)
     this.contract_details.value[index].payment_date =
-      (this.contract_details.value[index].payment_date ? getFormatDateStr(this.contract_details.value[index].payment_date) : null)
+      (this.contract_details.value[index].payment_date ? getDateByDateStr(this.contract_details.value[index].payment_date) : null)
     this.contract_details.value[index].actual_payment =
       (this.contract_details.value[index].actual_payment ? this.contract_details.value[index].actual_payment : 0)
 
@@ -256,11 +256,6 @@ export class ContractFormComponent implements OnInit {
     this.contract = this.srv.contract;
   }
 
-  /* setTitle() {
-    if (this.srv.isUpdate) {
-      this.title = '修改合同';
-    } else this.title = '创建合同';
-  }*/
 
   formmatFormValue() {
     const obj = this.form.value;

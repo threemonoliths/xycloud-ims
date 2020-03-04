@@ -1,0 +1,167 @@
+<page-header>
+  <button nz-button class="ml-sm" type="return" (click)="goBack()">返回</button>
+</page-header>
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false">
+      <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+
+        <nz-card [nzBordered]="false" nzTitle="资源管理">
+          <se label="应用系统名称" error="请输入应用系统名称，大于两个字符" required>
+            <input nz-input formControlName="name" placeholder="请输入应用系统名称" />
+          </se>
+          <se label="用途" error="请输入用途，大于两个字符" required>
+            <input nz-input formControlName="server_name" placeholder="请输入用途" />
+          </se>
+          <!-- 后期改为下拉列表 -->
+          <se label="重要等级" error="请输入重要等级，大于两个字符" required>
+            <nz-select formControlName="class" nzAllowClear nzPlaceHolder="选择重要等级" [nzShowSearch]="true"
+              [nzNotFoundContent]="'无匹配'">
+              <nz-option *ngFor="let option of alphabet" [nzValue]="option" [nzLabel]="option"
+                [nzDisabled]="option.disabled">
+              </nz-option>
+            </nz-select>
+          </se>
+          <se label="产品类型" error="请输入产品类型，大于两个字符" required>
+            <input nz-input formControlName="product_type" placeholder="请输入产品类型" />
+          </se>
+          <se label="CPU" error="请输入CPU，大于两个字符" required>
+            <input nz-input formControlName="cpu" placeholder="请输入CPU" />
+          </se>
+          <se label="内存（G）" error="请输入内存，大于两个字符" required>
+            <input nz-input formControlName="memory" placeholder="请输入内存" />
+          </se>
+          <se label="存储（G）" error="请输入存储，大于两个字符" required>
+            <input nz-input formControlName="storage" placeholder="请输入存储" />
+          </se>
+          <se label="带宽" error="请输入带宽，大于两个字符">
+            <input nz-input formControlName="bandwidth" placeholder="请输入带宽" />
+          </se>
+          <se label="存储类型" error="请输入存储类型，大于两个字符" required>
+            <input nz-input formControlName="storage_type" placeholder="请输入存储类型" />
+          </se>
+          <se label="虚拟机IP" error="请输入虚拟机IP，大于两个字符" required>
+            <input nz-input formControlName="ip" placeholder="请输入虚拟机IP" />
+          </se>
+          <se label="申请单位" error="请选择申请单位" required>
+            <nz-form-control>
+              <nz-select formControlName="client_id" nzAllowClear nzPlaceHolder="选择申请单位" [nzShowSearch]="true"
+                [nzNotFoundContent]="'无匹配'">
+                <nz-option *ngFor="let option of client_data" [nzValue]="option.id" [nzLabel]="option.name"
+                  [nzDisabled]="option.disabled">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </se>
+          <se label="申请人" error="请输入申请人，大于两个字符" required>
+            <input nz-input formControlName="applicant" placeholder="请输入申请人" />
+          </se>
+          <se label="申请时间" error="请选择申请时间" required>
+            <nz-date-picker formControlName="application_time" style="width: 100%"></nz-date-picker>
+          </se>
+          <se label="开通时间" error="请选择开通时间" required>
+            <nz-date-picker formControlName="opening_time" style="width: 100%"></nz-date-picker>
+          </se>
+          <se label="安全服务" error="请输入安全服务，大于两个字符">
+            <input nz-input formControlName="security_service" placeholder="请输入安全服务" />
+          </se>
+          <se label="备份服务" error="请输入备份服务，大于两个字符">
+            <input nz-input formControlName="backup_service" placeholder="请输入备份服务" />
+          </se>
+          <se label="对应合同" error="请选择对应合同" required>
+            <nz-form-control>
+              <nz-select formControlName="contract_id" nzAllowClear nzPlaceHolder="选择对应合同" [nzShowSearch]="true"
+                [nzNotFoundContent]="'无匹配'">
+                <nz-option *ngFor="let option of contract_data" [nzValue]="option.id" [nzLabel]="option.cname"
+                  [nzDisabled]="option.disabled">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </se>
+        </nz-card>
+        <!-- 变更记录子表 -->
+        <nz-card [nzBordered]="false" nzTitle="变更记录子表">
+          <nz-table formArrayName="resource_details" [nzData]="resource_details.value" [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th>申请日期</th>
+                <th>完成日期</th>
+                <th>变更项</th>
+                <th>原配置</th>
+                <th>目标配置</th>
+                <th>备注</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of resource_details.controls; let i = index" [formGroupName]="i">
+                <td>
+                  <span *ngIf="editIndex !== i">{{ resource_details.value[i].application_date }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入申请日期">
+                    <nz-date-picker formControlName="application_date" [nzFormat]="dateFormat"></nz-date-picker>
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ resource_details.value[i].finish_date }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入完成日期">
+                    <nz-date-picker formControlName="finish_date"></nz-date-picker>
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ resource_details.value[i].change }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入变更项">
+                    <input nz-input formControlName="change" placeholder="请输入变更项" />
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ resource_details.value[i].original_configuration }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入原配置">
+                    <input nz-input formControlName="original_configuration" placeholder="请输入原配置" />
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ resource_details.value[i].target_configuration }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入目标配置">
+                    <input nz-input formControlName="target_configuration" placeholder="请输入目标配置" />
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ resource_details.value[i].comments }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入备注">
+                    <textarea rows="4" nz-input formControlName="comments" placeholder="请输入备注"></textarea>
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">
+                    <a (click)="edit(i)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <nz-popconfirm (nzOnConfirm)="del(i)" [nzTitle]="'是否要删除此行？'">
+                      <a nz-popconfirm>删除</a>
+                    </nz-popconfirm>
+                  </span>
+                  <span *ngIf="editIndex === i">
+                    <a (click)="save(i)">保存</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <nz-popconfirm (nzOnConfirm)="cancel(i)" [nzTitle]="'是否要取消操作？'">
+                      <a nz-popconfirm>取消</a>
+                    </nz-popconfirm>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <button *ngIf="editIndex === -1" nz-button [nzType]="'dashed'" (click)="add()" nzBlock class="mt-md">
+            <i nz-icon nzType="plus"></i>
+            <span>新增变更记录</span>
+          </button>
+        </nz-card>
+
+        <footer-toolbar errorCollect>
+          <button nz-button class="ml-sm" type="reset">重置</button>
+          <button nz-button type="submit" nzType="primary" [disabled]="form.invalid"
+            [nzLoading]="submitting">提交</button>
+        </footer-toolbar>
+      </form>
+    </nz-card>
+  </div>
+</div>

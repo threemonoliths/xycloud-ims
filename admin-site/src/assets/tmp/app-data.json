@@ -106,6 +106,16 @@
               "link": "/client/page"
             }
           ]
+        }, 
+        {
+          "text": "资源管理",
+          "icon": "anticon-edit",
+          "children": [
+            {
+              "text": "资源管理",
+              "link": "/resource/page"
+            }
+          ]
         }
         
         

@@ -1,54 +1,41 @@
 import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
-
-import { SupplierService } from '../supplier.service';
+import { ResourceService } from '../resource.service';
 
 @Component({
-  templateUrl: './supplier-list.component.html',
+  templateUrl: './resource-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SupplierListComponent implements OnInit {
-  title = '供应商管理';
+export class ResourceListComponent implements OnInit {
+
+  title = '资源管理';
   total = 0;
   q: any = {
     pi: 1,
     ps: 10,
-    sort_field: 'sname',
+    sort_field: 'name',
     sort_direction: 'desc',
-    sname: null,
+    name: null,
   };
-
-  datas = [
-    {
-      sname: 'xycloud',
-      comments: '123',
-    },
-    {
-      sname: 'masteel',
-      comments: '456',
-    },
-  ];
 
   data: any[] = [];
   loading = false;
-
+  isVisible = false;
   expandForm = false;
 
   constructor(
-    private http: _HttpClient,
     public msg: NzMessageService,
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
-    private srv: SupplierService,
+    private srv: ResourceService,
     private router: Router,
   ) { }
 
   ngOnInit() {
     this.getData();
-    // console.log(this.datas)
+    console.log(this.data)
   }
 
   getData() {
@@ -58,27 +45,31 @@ export class SupplierListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(resp => {
         this.data = resp["data"];
+        console.log(this.data, resp)
         this.cdr.detectChanges();
       });
   }
 
   add(tpl: TemplateRef<{}>) {
     this.srv.isUpdate = false;
-    this.router.navigateByUrl('/supplier/form');
+    this.srv.formOperation = 'create';
+    this.router.navigateByUrl('/resource/form');
   }
 
   modify(id) {
     this.srv.isUpdate = true;
+    this.srv.formOperation = 'update';
     this.srv.getById(id).subscribe(resp => {
-      this.srv.supplier = resp["data"];
-      this.router.navigateByUrl('/supplier/form');
+      this.srv.resource = resp["data"];
+      this.srv.resource.resource_details = resp["data"].details;
+      this.router.navigateByUrl('/resource/form');
     });
   }
 
   remove(item) {
     this.modalSrv.create({
       nzTitle: '确认删除',
-      nzContent: '确认要删除供应商：' + item.pname + ' 吗?',
+      nzContent: '确认要删除此条信息：' + item.name + ' 吗?',
       nzOnOk: () => {
         this.loading = true;
         this.srv.delete(item.id).subscribe(resp => {
@@ -102,5 +93,23 @@ export class SupplierListComponent implements OnInit {
     this.q.sort_field = sort.key;
     this.q.sort_direction = sort.value;
     this.reset();
+  }
+
+  showCard() {
+    this.data.forEach(i => {
+      i.isVisible = false
+    })
+  }
+
+  showModal(i) {
+    i.isVisible = true;
+    console.log(i, i.isVisible);
+  }
+
+  handleOk(i) {
+    i.isVisible = false;
+  }
+  handleCancel(i) {
+    i.isVisible = false;
   }
 }

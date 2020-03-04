@@ -3,9 +3,8 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { ClientService } from '../client.service';
+
 @Component({
   templateUrl: './client-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,23 +21,10 @@ export class ClientListComponent implements OnInit {
     name: null,
   };
 
-  datas = [
-    {
-      "pname": "祥云公司",
-      "comments": "123"
-
-    },
-    {
-      "pname": "马钢",
-      "comments": "456"
-    }
-  ];
-
   data: any[] = [];
   loading = false;
   isVisible = false;
   expandForm = false;
-
   optionList = ['已完成', '进行中'];
 
   constructor(

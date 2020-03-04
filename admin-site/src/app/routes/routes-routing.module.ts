@@ -46,8 +46,8 @@ const routes: Routes = [
       { path: 'tmpl', loadChildren: () => import('./tmpl/tmpl.module').then(m => m.TmplModule) },
       // client
       { path: 'client', loadChildren: () => import('./client/client.module').then(m => m.ClientModule) },
-      // supplier
-      { path: 'supplier', loadChildren: () => import('./supplier/supplier.module').then(m => m.SupplierModule) },
+      // resource
+      { path: 'resource', loadChildren: () => import('./resource/resource.module').then(m => m.ResourceModule) },
       // sales_query
       { path: 'sales_query', loadChildren: () => import('./sales_query/sales_query.module').then(m => m.SalesQueryModule) },
       // purchase_query

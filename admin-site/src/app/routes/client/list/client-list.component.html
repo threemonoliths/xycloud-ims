@@ -39,12 +39,6 @@
             <th nz-th nzShowSort nzSortKey="category">
               <span>客商类型</span>
             </th>
-            <!-- <th nz-th nzShowSort nzSortKey="contact1">
-              <span>联系人姓名</span>
-            </th>
-            <th nz-th nzShowSort nzSortKey="mobile1">
-              <span>联系人手机</span>
-            </th> -->
             <th nz-th>
               <span>详细信息</span>
             </th>
@@ -60,8 +54,6 @@
               <td nz-td>{{i.no}}</td>
               <td nz-td>{{i.name}}</td>
               <td nz-td>{{i.category}}</td>
-              <!-- <td nz-td>{{i.contact1}}</td>
-            <td nz-td>{{i.mobile1}}</td> -->
               <td nz-td>
                 <button nz-button [nzType]="'primary'" (click)="showModal(i)"><span>更多信息</span></button>
                 <nz-modal [(nzVisible)]="i.isVisible" nzTitle="{{i.name}}" (nzOnOk)="handleOk(i)"
@@ -93,15 +85,6 @@
                     <nz-descriptions-item nzTitle="收款银行账号">{{i.receiving_bank_account}}</nz-descriptions-item>
                     <nz-descriptions-item nzTitle="汇款银行名称">{{i.remittance_bank_name}}</nz-descriptions-item>
                     <nz-descriptions-item nzTitle="汇款银行账号">{{i.remittance_bank_account}}</nz-descriptions-item>
-                    <!-- <nz-descriptions-item nzTitle="联系人1姓名">{{i.contact1}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人1手机">{{i.mobile1}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人1电子邮箱">{{i.mail1}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人2姓名">{{i.contact2}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人2手机">{{i.mobile2}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人2电子邮箱">{{i.mail2}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人3姓名">{{i.contact3}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人3手机">{{i.mobile3}}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="联系人3电子邮箱">{{i.mail3}}</nz-descriptions-item> -->
                     <nz-descriptions-item nzTitle="客商评价">{{i.comments}}</nz-descriptions-item>
                   </nz-descriptions>
                 </nz-modal>
