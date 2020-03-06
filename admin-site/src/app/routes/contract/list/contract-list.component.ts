@@ -186,7 +186,7 @@ export class ContractListComponent implements OnInit {
       var status = "进行中";
       for (let j = 0; j < i.details.length; j++) {
         excuted += parseFloat(i.details[j].actual_payment)
-        if (!i.details[j].actual_payment && i.details[j - 1].actual_payment) {
+        if (!i.details[j].actual_payment && !next_amount) {
           next_amount = i.details[j].invoice_amount;
           next_date = i.details[j].invoice_date;
         }

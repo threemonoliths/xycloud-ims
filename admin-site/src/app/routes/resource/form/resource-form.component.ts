@@ -229,6 +229,8 @@ export class ResourceFormComponent implements OnInit {
 
   formmatFormValue() {
     const obj = this.form.value;
+    obj.application_time = getFormatDateStr(obj.application_time);
+    obj.opening_time = getFormatDateStr(obj.opening_time);
     return { resource: obj };
   }
 

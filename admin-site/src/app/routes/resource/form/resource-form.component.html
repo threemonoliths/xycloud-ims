@@ -98,13 +98,14 @@
                 <td>
                   <span *ngIf="editIndex !== i">{{ resource_details.value[i].application_date }}</span>
                   <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入申请日期">
-                    <nz-date-picker formControlName="application_date" [nzFormat]="dateFormat"></nz-date-picker>
+                    <nz-date-picker formControlName="application_date" [nzFormat]="YYYY-MM-DD">
+                    </nz-date-picker>
                   </span>
                 </td>
                 <td>
                   <span *ngIf="editIndex !== i">{{ resource_details.value[i].finish_date }}</span>
                   <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请输入完成日期">
-                    <nz-date-picker formControlName="finish_date"></nz-date-picker>
+                    <nz-date-picker formControlName="finish_date" nzFormat="YYYY-MM-DD"></nz-date-picker>
                   </span>
                 </td>
                 <td>
