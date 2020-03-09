@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { tap } from 'rxjs/operators';
 import { ResourceService } from '../resource.service';
+import { ClientService } from '../../client/client.service';
+import { ContractService } from '../../contract/contract.service';
 
 @Component({
   templateUrl: './resource-list.component.html',
@@ -18,6 +20,9 @@ export class ResourceListComponent implements OnInit {
     sort_field: 'name',
     sort_direction: 'desc',
     name: null,
+    ip: null,
+    client_id: null,
+    contract_id: null
   };
 
   data: any[] = [];
@@ -25,17 +30,23 @@ export class ResourceListComponent implements OnInit {
   isVisible = false;
   expandForm = false;
 
+  client_data: any[] = [];
+  contract_data: any[] = [];
+
   constructor(
     public msg: NzMessageService,
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
     private srv: ResourceService,
     private router: Router,
+    private clientService: ClientService,
+    private contractService: ContractService,
   ) { }
 
   ngOnInit() {
     this.getData();
-    console.log(this.data)
+    this.getContractData();
+    this.getClientData();
   }
 
   getData() {
@@ -45,7 +56,6 @@ export class ResourceListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(resp => {
         this.data = resp["data"];
-        console.log(this.data, resp)
         this.cdr.detectChanges();
       });
   }
@@ -80,6 +90,10 @@ export class ResourceListComponent implements OnInit {
     });
   }
 
+  search() {
+    console.log(this.q)
+  }
+
   reset() {
     setTimeout(() => this.getData());
   }
@@ -95,21 +109,25 @@ export class ResourceListComponent implements OnInit {
     this.reset();
   }
 
-  showCard() {
-    this.data.forEach(i => {
-      i.isVisible = false
-    })
+  // 获取客户和合同下拉列表信息
+  getClientData() {
+    this.clientService
+      .listAll()
+      .pipe()
+      .subscribe(resp => {
+        this.client_data = resp["data"];
+        console.log('顾客类型', this.client_data);
+        this.cdr.detectChanges();
+      });
   }
-
-  showModal(i) {
-    i.isVisible = true;
-    console.log(i, i.isVisible);
-  }
-
-  handleOk(i) {
-    i.isVisible = false;
-  }
-  handleCancel(i) {
-    i.isVisible = false;
+  getContractData() {
+    this.contractService
+      .listAll()
+      .pipe()
+      .subscribe(resp => {
+        this.contract_data = resp["data"];
+        console.log('项目类型', this.contract_data);
+        this.cdr.detectChanges();
+      });
   }
 }

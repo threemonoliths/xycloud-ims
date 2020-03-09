@@ -36,7 +36,7 @@ defmodule ApiServerWeb.ResourceController do
         render(conn, "show.json", resource: resource)
       end
     end
-  end
+  end 
  
   def delete(conn, %{"id" => id}) do
     with {:ok, %Resource{} = resource} <- delete_by_id(Resource, id, [:resource_details]) do

@@ -21,10 +21,22 @@ defmodule ApiServer.ResourceManagement do
 
   def page(params) do  
     Resource
-    |> query_like(params, "name")
+    |> query_like(params, "ip")
+    |> query_equal(params, "client_id")
+    |> query_equal(params, "contract_id")
     |> query_order_desc_by(params, "inserted_at")
     |> query_preload([:resource_details])
     |> get_pagination(params)
   end
+
+  # def find_all(params) do 
+  #   Contract
+  #   |> query_like(params, "ip")
+  #   |> query_like(params, "client_id")
+  #   |> query_like(params, "contract_id")
+  #   |> query_order_desc_by(params, "inserted_at")
+  #   |> query_preload([:contract_details])
+  #   |> Repo.all
+  # end
   
 end

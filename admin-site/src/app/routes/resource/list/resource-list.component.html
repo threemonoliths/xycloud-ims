@@ -5,16 +5,44 @@
                 <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
                     <div nz-col nzMd="8" nzSm="24">
                         <nz-form-item>
-                            <nz-form-label nzFor="no">系统名称</nz-form-label>
+                            <nz-form-label nzFor="no">合同名称</nz-form-label>
                             <nz-form-control>
-                                <input nz-input [(ngModel)]="q.name" name="name" placeholder="输入应用系统名称搜索" id="name" />
+                                <nz-select [(ngModel)]="q.contract_id" nzAllowClear nzPlaceHolder="选择关联合同名称"
+                                    name="contract_id" [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
+                                    <nz-option *ngFor="let option of contract_data" [nzValue]="option.id"
+                                        [nzLabel]="option.cname">
+                                    </nz-option>
+                                </nz-select>
                             </nz-form-control>
                         </nz-form-item>
                     </div>
 
-                    <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
-                        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-                        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+                    <div nz-col nzMd="8" nzSm="24">
+                        <nz-form-item>
+                            <nz-form-label nzFor="no">申请单位</nz-form-label>
+                            <nz-form-control>
+                                <nz-select [(ngModel)]="q.client_id" nzAllowClear nzPlaceHolder="选择申请单位"
+                                    name="client_id" [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
+                                    <nz-option *ngFor="let option of client_data" [nzValue]="option.id"
+                                        [nzLabel]="option.name">
+                                    </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="8" nzSm="24">
+                        <nz-form-item>
+                            <nz-form-label nzFor="no">IP地址</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="q.ip" name="ip" placeholder="输入IP地址搜索" id="ip" />
+                            </nz-form-control>
+                        </nz-form-item>
+                        <div class="mb-md">
+                            <button nz-button type="submit" (click)="search()" [nzType]="'primary'"
+                                [nzLoading]="loading">查询</button>
+                            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -33,9 +61,9 @@
                         <th nz-th nzShowSort nzSortKey="name">
                             <span>应用系统名称</span>
                         </th>
-                        <th nz-th nzShowSort nzSortKey="server_name">
+                        <!-- <th nz-th nzShowSort nzSortKey="server_name">
                             <span>用途</span>
-                        </th>
+                        </th> -->
                         <th nz-th nzShowSort nzSortKey="class">
                             <span>重要等级</span>
                         </th>
@@ -57,18 +85,18 @@
                         <th nz-th nzShowSort nzSortKey="storage_type">
                             <span>存储类型</span>
                         </th>
-                        <th nz-th nzShowSort nzSortKey="ip">
+                        <!-- <th nz-th nzShowSort nzSortKey="ip">
                             <span>虚拟机IP</span>
-                        </th>
+                        </th> -->
                         <th nz-th nzShowSort nzSortKey="client_id">
                             <span>申请单位</span>
                         </th>
-                        <th nz-th nzShowSort nzSortKey="applicant">
+                        <!-- <th nz-th nzShowSort nzSortKey="applicant">
                             <span>申请人</span>
-                        </th>
-                        <th nz-th nzShowSort nzSortKey="application_time">
+                        </th> -->
+                        <!-- <th nz-th nzShowSort nzSortKey="application_time">
                             <span>申请时间</span>
-                        </th>
+                        </th> -->
                         <th nz-th nzShowSort nzSortKey="opening_time">
                             <span>开通时间</span>
                         </th>
@@ -91,7 +119,7 @@
                         <tr nz-tbody-tr>
                             <td nzShowExpand [(nzExpand)]="i.expand"></td>
                             <td nz-td>{{i.name}}</td>
-                            <td nz-td>{{i.server_name}}</td>
+                            <!-- <td nz-td>{{i.server_name}}</td> -->
                             <td nz-td>{{i.class}}</td>
                             <td nz-td>{{i.product_type}}</td>
                             <td nz-td>{{i.cpu}}</td>
@@ -99,14 +127,21 @@
                             <td nz-td>{{i.storage}}</td>
                             <td nz-td>{{i.bandwidth}}</td>
                             <td nz-td>{{i.storage_type}}</td>
-                            <td nz-td>{{i.ip}}</td>
-                            <td nz-td>{{i.client_id}}</td>
-                            <td nz-td>{{i.applicant}}</td>
-                            <td nz-td>{{i.application_time}}</td>
+                            <!-- <td nz-td>{{i.ip}}</td> -->
+
+                            <ng-container *ngFor="let client of client_data">
+                                <td nz-td *ngIf="i.client_id==client.id">{{client.name}}</td>
+                            </ng-container>
+                            <!-- <td nz-td>{{i.applicant}}</td>
+                            <td nz-td>{{i.application_time}}</td> -->
                             <td nz-td>{{i.opening_time}}</td>
                             <td nz-td>{{i.security_service}}</td>
                             <td nz-td>{{i.backup_service}}</td>
-                            <td nz-td>{{i.contract_id}}</td>
+
+                            <ng-container *ngFor="let contract of contract_data">
+                                <td nz-td *ngIf="i.contract_id==contract.id">{{contract.cname}}</td>
+                            </ng-container>
+
                             <td nz-td>
                                 <a (click)="modify(i.id)">修改</a>
                                 <span nz-table-divider></span>
