@@ -5,8 +5,8 @@ import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { UploadFile } from 'ng-zorro-antd';
 import * as moment from 'moment';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ContractService } from '../contract.service';
+import { saveAs } from "file-saver";
 
 @Component({
   templateUrl: './contract-list.component.html',
@@ -216,10 +216,8 @@ export class ContractListComponent implements OnInit {
     return obj;
   }
   excelin() {
-    this.loading = true;
     const obj = this.formmatFormValue()
     this.srv.add(obj).subscribe(resp => {
-      this.loading = false;
       if (resp["data"]) this.msg.success(`上传成功！`);
       this.router.navigateByUrl('/contract/page');
       this.cdr.detectChanges();
@@ -227,19 +225,18 @@ export class ContractListComponent implements OnInit {
   }
   // 导出excel
   excelout() {
-    this.loading = true;
     this.q.startDate = null,
       this.q.endDate = null,
       this.q.start_time = "",
       this.q.end_time = "",
       this.srv.export_excel(this.q)
-        .pipe(tap(() => (this.loading = false)))
         .subscribe(
           resp => {
             this.cdr.detectChanges();
+            saveAs(resp, "销售合同.xlsx");
           }
         );
-    console.log("excelout")
+    console.log("导出")
   }
 
 }

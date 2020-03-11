@@ -38,12 +38,20 @@
                                 <input nz-input [(ngModel)]="q.ip" name="ip" placeholder="输入IP地址搜索" id="ip" />
                             </nz-form-control>
                         </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="8" nzSm="24">
                         <div class="mb-md">
-                            <button nz-button type="submit" (click)="search()" [nzType]="'primary'"
-                                [nzLoading]="loading">查询</button>
-                            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+                            <button nz-button type="button" (click)="excelout()" class="mx-sm">导出表格</button>
                         </div>
                     </div>
+
+                    <div nz-col nzMd="8" nzSm="24">
+                        <button nz-button type="submit" (click)="search()" [nzType]="'primary'"
+                            [nzLoading]="loading">查询</button>
+                        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+                    </div>
+
                 </div>
             </form>
             <div class="mb-md">
@@ -128,7 +136,7 @@
                             <td nz-td>{{i.bandwidth}}</td>
                             <td nz-td>{{i.storage_type}}</td>
                             <!-- <td nz-td>{{i.ip}}</td> -->
-
+                            <!-- <td nz-td>{{i.client}}</td> -->
                             <ng-container *ngFor="let client of client_data">
                                 <td nz-td *ngIf="i.client_id==client.id">{{client.name}}</td>
                             </ng-container>
@@ -137,7 +145,7 @@
                             <td nz-td>{{i.opening_time}}</td>
                             <td nz-td>{{i.security_service}}</td>
                             <td nz-td>{{i.backup_service}}</td>
-
+                            <!-- <td nz-td>{{i.contract}}</td> -->
                             <ng-container *ngFor="let contract of contract_data">
                                 <td nz-td *ngIf="i.contract_id==contract.id">{{contract.cname}}</td>
                             </ng-container>

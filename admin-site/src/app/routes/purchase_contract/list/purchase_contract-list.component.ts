@@ -5,7 +5,7 @@ import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { UploadFile } from 'ng-zorro-antd';
 import * as moment from 'moment';
-
+import { saveAs } from "file-saver";
 import { PurchaseContractService } from '../purchase_contract.service';
 
 @Component({
@@ -224,18 +224,17 @@ export class PurchaseContractListComponent implements OnInit {
   }
   // 导出excel
   excelout() {
-    this.loading = true;
     this.q.startDate = null,
       this.q.endDate = null,
       this.q.start_time = "",
       this.q.end_time = "",
       this.srv.export_excel(this.q)
-        .pipe(tap(() => (this.loading = false)))
         .subscribe(
           resp => {
             this.cdr.detectChanges();
+            saveAs(resp, "采购合同.xlsx");
           }
         );
-    console.log("excelout")
+    console.log("导出")
   }
 }

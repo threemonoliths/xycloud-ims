@@ -1,11 +1,11 @@
-defmodule ApiServerWeb.ContractExporter do
+defmodule ApiServerWeb.PurchaseContractExporter do
   require Elixlsx
 
   alias Elixlsx.Sheet
   alias Elixlsx.Workbook
 
   @path "priv/static/exports/"
-  @name "export_contract.xlsx"
+  @name "export_purchase_contract.xlsx"
   @header [ "编号", "名称", "甲方", "乙方", "签订日期", "终止日期", "金额", "备注", 
             "笔次", "发票金额", "实付金额", "发票时间", "实付时间", 
             "笔次", "发票金额", "实付金额", "发票时间", "实付时间", 
@@ -19,12 +19,12 @@ defmodule ApiServerWeb.ContractExporter do
     @path
   end
   
-  def export(contracts) do
+  def export(purchase_contracts) do
     IO.puts("#######11111#######")
     sheet1 =
       %Sheet{
-        name: "销售合同",
-        rows: contracts |> get_rows
+        name: "采购合同",
+        rows: purchase_contracts |> get_rows
       }
       |> Sheet.set_row_height(3, 40)
 
@@ -32,18 +32,18 @@ defmodule ApiServerWeb.ContractExporter do
     |> Elixlsx.write_to(@path <> @name)
   end
 
-  defp get_rows(contracts) do
-    [@header] ++  parse_contracts(contracts)
+  defp get_rows(purchase_contracts) do
+    [@header] ++  parse_purchase_contracts(purchase_contracts)
   end
 
   # 解析合同数组，新的数组中每个合同为一个list
-  defp parse_contracts(contracts) do
-    contracts
-    |> Enum.map(fn c -> c |> parse_contract end)
+  defp parse_purchase_contracts(purchase_contracts) do
+    purchase_contracts
+    |> Enum.map(fn c -> c |> parse_purchase_contract end)
   end
 
   # 将每个合同解析到一个list内，包含明细
-  defp parse_contract(c) do
+  defp parse_purchase_contract(c) do
     IO.puts("#######44444#######")
     list = [ 
       c.cno, 
@@ -55,7 +55,7 @@ defmodule ApiServerWeb.ContractExporter do
       c.amount,
       c.comments
     ]
-    c.contract_details
+    c.purchase_contract_details
     |> Enum.reduce(list, fn d, acc -> 
       list ++ [ d.issue_name, 
       d.invoice_amount, 

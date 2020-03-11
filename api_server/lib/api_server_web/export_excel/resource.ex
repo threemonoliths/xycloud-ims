@@ -1,15 +1,14 @@
-defmodule ApiServerWeb.ContractExporter do
+defmodule ApiServerWeb.ResourceExporter do
   require Elixlsx
 
   alias Elixlsx.Sheet
   alias Elixlsx.Workbook
 
   @path "priv/static/exports/"
-  @name "export_contract.xlsx"
-  @header [ "编号", "名称", "甲方", "乙方", "签订日期", "终止日期", "金额", "备注", 
-            "笔次", "发票金额", "实付金额", "发票时间", "实付时间", 
-            "笔次", "发票金额", "实付金额", "发票时间", "实付时间", 
-            "笔次", "发票金额", "实付金额", "发票时间", "实付时间" ]
+  @name "export_resource.xlsx"
+  @header [ "应用系统名称", "用途", "重要等级", "产品类型", "CPU", "内存", "存储", "带宽",
+            "存储类型","虚拟机IP", "申请单位", "申请人", "申请时间", 
+            "开通时间","安全服务", "备份服务",  "关联合同" ]
 
   def get_name() do
     @name
@@ -19,12 +18,12 @@ defmodule ApiServerWeb.ContractExporter do
     @path
   end
   
-  def export(contracts) do
+  def export(resources) do
     IO.puts("#######11111#######")
     sheet1 =
       %Sheet{
-        name: "销售合同",
-        rows: contracts |> get_rows
+        name: "资源台帐",
+        rows: resources |> get_rows
       }
       |> Sheet.set_row_height(3, 40)
 
@@ -32,37 +31,49 @@ defmodule ApiServerWeb.ContractExporter do
     |> Elixlsx.write_to(@path <> @name)
   end
 
-  defp get_rows(contracts) do
-    [@header] ++  parse_contracts(contracts)
+  defp get_rows(resources) do
+    [@header] ++  parse_resources(resources)
   end
 
   # 解析合同数组，新的数组中每个合同为一个list
-  defp parse_contracts(contracts) do
-    contracts
-    |> Enum.map(fn c -> c |> parse_contract end)
+  defp parse_resources(resources) do
+    resources
+    |> Enum.map(fn c -> c |> parse_resource end)
   end
 
   # 将每个合同解析到一个list内，包含明细
-  defp parse_contract(c) do
+  defp parse_resource(c) do
     IO.puts("#######44444#######")
     list = [ 
-      c.cno, 
-      c.cname, 
-      c.party_a, 
-      c.party_b, 
-      c.sign_date |> ApiServer.Utils.DatetimeHandler.get_date_str, 
-      c.expiry_date |> ApiServer.Utils.DatetimeHandler.get_date_str,
-      c.amount,
-      c.comments
+      c.name, 
+      c.server_name, 
+      c.class, 
+      c.product_type,
+      c.cpu,
+      c.memory,
+      c.storage,
+      c.bandwidth,
+      c.storage_type,
+      c.ip,
+      c.client.name,
+      c.applicant,
+      c.application_time |> ApiServer.Utils.DatetimeHandler.get_date_str,
+      c.opening_time |> ApiServer.Utils.DatetimeHandler.get_date_str,
+      c.security_service,
+      c.backup_service,
+      c.contract.cname
     ]
-    c.contract_details
-    |> Enum.reduce(list, fn d, acc -> 
-      list ++ [ d.issue_name, 
-      d.invoice_amount, 
-      d.actual_payment, 
-      d.invoice_date |> ApiServer.Utils.DatetimeHandler.get_date_str , 
-      d.payment_date |> ApiServer.Utils.DatetimeHandler.get_date_str ]
-    end)
+    # c.resource_details
+    # |> Enum.reduce(list, fn d, acc -> 
+    #   list ++ [ 
+    #   d.application_date |> ApiServer.Utils.DatetimeHandler.get_date_str , 
+    #   d.finish_date |> ApiServer.Utils.DatetimeHandler.get_date_str ,
+    #   d.change, 
+    #   d.original_configuration, 
+    #   d.target_configuration, 
+    #   d.comments 
+    # ]
+    # end)
   end
 
   # 参考：

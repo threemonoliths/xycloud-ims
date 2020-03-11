@@ -21,6 +21,8 @@ defmodule ApiServerWeb.Router do
     get "/contracts/receivable_yearly", ContractController, :get_receivable_by_year
     get "/purchase_contracts/payable_yearly", PurchaseContractController, :get_payable_by_year
     get "/contracts/export",ContractController, :export_excel
+    get "/purchase_contracts/export",PurchaseContractController, :export_excel
+    get "/resources/export",ResourceController, :export_excel
   end
 
   scope "/api/v1", ApiServerWeb do 

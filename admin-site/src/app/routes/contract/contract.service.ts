@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { getFormatDateStr, getDateByDateStr } from '../../shared/utils/datehandler';
 import { baseUrl } from '../../shared/app-config';
-import { setToken, setTokenAndParams } from '../../shared/utils/formmat';
+import { setToken, setTokenAndParams, formmat } from '../../shared/utils/formmat';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 
@@ -53,7 +53,11 @@ export class ContractService {
 
   export_excel(q: any) {
     console.log("导出")
-    return this.http.get(this.excel_url, setTokenAndParams(q));
+    return this.http.get(this.excel_url, {
+      responseType: "blob",
+      headers: new HttpHeaders().append("Content-Type", "application/json"),
+      params: formmat(q)
+    });
   }
 
 

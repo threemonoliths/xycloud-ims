@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { ResourceService } from '../resource.service';
 import { ClientService } from '../../client/client.service';
 import { ContractService } from '../../contract/contract.service';
+import { saveAs } from "file-saver";
 
 @Component({
   templateUrl: './resource-list.component.html',
@@ -56,6 +57,7 @@ export class ResourceListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(resp => {
         this.data = resp["data"];
+        console.log("测试", this.data)
         this.cdr.detectChanges();
       });
   }
@@ -72,6 +74,7 @@ export class ResourceListComponent implements OnInit {
     this.srv.getById(id).subscribe(resp => {
       this.srv.resource = resp["data"];
       this.srv.resource.resource_details = resp["data"].details;
+      console.log("更改", this.srv.resource.contract.name)
       this.router.navigateByUrl('/resource/form');
     });
   }
@@ -116,7 +119,7 @@ export class ResourceListComponent implements OnInit {
       .pipe()
       .subscribe(resp => {
         this.client_data = resp["data"];
-        console.log('顾客类型', this.client_data);
+        // console.log('顾客类型', this.client_data);
         this.cdr.detectChanges();
       });
   }
@@ -126,8 +129,22 @@ export class ResourceListComponent implements OnInit {
       .pipe()
       .subscribe(resp => {
         this.contract_data = resp["data"];
-        console.log('项目类型', this.contract_data);
+        // console.log('项目类型', this.contract_data);
         this.cdr.detectChanges();
       });
   }
+
+  // 导出excel
+  excelout() {
+    this.srv.export_excel(this.q)
+      .subscribe(
+        resp => {
+          this.cdr.detectChanges();
+          saveAs(resp, "资源台帐.xlsx");
+          console.log("导出", resp)
+        }
+      );
+    console.log("导出")
+  }
+
 }

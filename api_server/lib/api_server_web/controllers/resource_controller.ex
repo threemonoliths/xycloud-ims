@@ -5,11 +5,13 @@ defmodule ApiServerWeb.ResourceController do
   import ApiServerWeb.Permissions, only: [need_perms: 1] 
   alias Guardian.Permissions.Bitwise
   use Ecto.Schema
+  alias ApiServerWeb.{ResourceView,DateTimeHandler, Repo, ResolveAssociationRecursion}
+
   action_fallback ApiServerWeb.FallbackController
  
   
   def index(conn, params) do
-    page = page(params)
+    page = page(params) 
     render(conn, "index.json", page: page)
   end
 
@@ -44,6 +46,26 @@ defmodule ApiServerWeb.ResourceController do
     end
   end
 
+  # 将合同导出excel
+  def export_excel(conn, params) do
+    
+    file_name = ApiServerWeb.ResourceExporter.get_name
+    path = ApiServerWeb.ResourceExporter.get_path <> file_name
+    IO.puts("##########################")
+    find_all(params)
+    |> ApiServerWeb.ResourceExporter.export
+    |> case do
+      { :ok, _ } ->
+        conn
+        |> put_resp_content_type("application/octet-stream")
+        |> put_resp_header("content-disposition", "attachment; filename=\"#{file_name}\"")
+        |> Plug.Conn.send_file(200, path)
+        |> halt()
+      { _ , _ } ->
+        json conn, %{error: "export failed!"}
+    end
+    
+  end
 
   defp get_details_changesets(resource_params) do
     case Map.get(resource_params, "resource_details") do

@@ -32,6 +32,14 @@ defmodule ApiServer.PurchaseContractManagement do
     |> get_pagination(params)
   end
 
+  def find_all(params) do 
+    PurchaseContract
+    |> query_like(params, "cname")
+    |> query_order_desc_by(params, "inserted_at")
+    |> query_preload([:purchase_contract_details])
+    |> Repo.all
+  end
+
   # 定时执行，获取应收款信息（提前7天提醒），以供发送消息提醒
   def get_payable_message() do
     # 获取符合条件的明细:details
