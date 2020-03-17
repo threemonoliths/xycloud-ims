@@ -100,4 +100,26 @@ defmodule ApiServerWeb.ContractController do
     IO.puts("#######import2#######")
   end
 
+  # 如果时间最大的一条明细完成时间不为空，则需要置合同状态为已完成1，直接在参数中设置
+  defp set_status(contract_params) do
+    case Map.get(contract_params, "contract_details") do
+      nil -> contract_params
+      list ->
+        latest_detail = list 
+        |> Enum.max_by(fn c -> Map.get(c, "invoice_date") end)
+        |> Map.get("payment_date")
+        |> case do
+          nil -> contract_params
+          date -> 
+            c = contract_params
+            |> Map.get("contract")
+            |> Map.put_new("status", 1)
+            contract_params
+            |> Map.update!("contract", c)
+        end
+      
+    end
+  end
+
+
 end
