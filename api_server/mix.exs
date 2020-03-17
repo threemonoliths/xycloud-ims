@@ -52,7 +52,9 @@ defmodule ApiServer.MixProject do
       {:arc_ecto, "~> 0.11.1"},
       {:quantum, "~> 2.3"},
       {:timex, "~> 3.5"},
-      {:elixlsx, "~> 0.4.1"}
+      {:elixlsx, "~> 0.4.1"},
+      {:excellent, "~> 0.0.1"}, 
+      {:xlsxir, "~> 1.6.4"}
     ]
   end
 
