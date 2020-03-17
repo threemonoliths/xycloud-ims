@@ -6,7 +6,7 @@ defmodule ApiServerWeb.ContractController do
   alias Guardian.Permissions.Bitwise
   alias ApiServerWeb.{ContractView,DateTimeHandler, Repo, ResolveAssociationRecursion}
   import ApiServerWeb.Permissions, only: [need_perms: 1]
-
+  import Plug.Conn
   action_fallback ApiServerWeb.FallbackController
 
   # plug Bitwise, need_perms([:delete]) when action in [:delete]
@@ -26,6 +26,7 @@ defmodule ApiServerWeb.ContractController do
 
   def create(conn, %{"contract" => contract_params}) do
     contract_changeset = Contract.changeset(%Contract{}, contract_params)
+    IO.inspect contract_changeset
     changeset_with_details = Ecto.Changeset.put_assoc(contract_changeset, :contract_details, get_details_changesets(contract_params))
     with {:ok, %Contract{} = contract} <- save_create(changeset_with_details) do
       conn
@@ -60,9 +61,18 @@ defmodule ApiServerWeb.ContractController do
     json conn, get_receivable_yearly(date)
   end
 
+  defp get_details_changesets(contract_params) do
+    IO.puts inspect ("-----------------------")
+    case Map.get(contract_params, "contract_details") do
+      nil -> []
+      list ->
+        list 
+        |> Enum.map(fn(el) -> ContractDetail.changeset(%ContractDetail{}, el) end)
+    end
+  end
+
   # 将合同导出excel
   def export_excel(conn, params) do
-    
     file_name = ApiServerWeb.ContractExporter.get_name
     path = ApiServerWeb.ContractExporter.get_path <> file_name
     find_all(params)
@@ -80,15 +90,19 @@ defmodule ApiServerWeb.ContractController do
     
   end
 
-  defp get_details_changesets(contract_params) do
-    IO.puts inspect ("-----------------------")
-    case Map.get(contract_params, "contract_details") do
-      nil -> []
-      list ->
-        list 
-        |> Enum.map(fn(el) -> ContractDetail.changeset(%ContractDetail{}, el) end)
-    end
+  #将合同excel导入
+  def import_excel(conn,params) do
+    IO.puts("#######import#######")
+    attachment = Map.get(params, "attachment")
+    path = String.replace(Path.join(attachment.path,attachment.filename),"/","\\")
+    # IO.inspect :filelib.ensure_dir(path)
+    # {:ok, file} = File.open(path, [:write])
+    IO.inspect File.open("C:\\scb\\xycloud-ims\\api_server\\resourceexport_resource.xlsx", [:write])
+    IO.inspect Excellent.parse("C:\\scb\\xycloud-ims\\api_server\\resourceexport_resource.xlsx", 0)
+    # {:ok, pid} =  Xlsxir.multi_extract(path, 0)
+    # result = Xlsxir.get_list(pid)
+    # IO.inspect result
+    IO.puts("#######import2#######")
   end
-
 
 end

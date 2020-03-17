@@ -201,7 +201,7 @@ export class PurchaseContractListComponent implements OnInit {
 
   // 导入
   beforeUpload = (file: UploadFile): boolean => {
-    console.log(file);
+    console.log("文件名", file);
     this.fileList = [file];
     return false;
   };
@@ -213,10 +213,9 @@ export class PurchaseContractListComponent implements OnInit {
     return obj;
   }
   excelin() {
-    this.loading = true;
     const obj = this.formmatFormValue()
-    this.srv.add(obj).subscribe(resp => {
-      this.loading = false;
+    console.log("测试", obj)
+    this.srv.import_excel(obj).subscribe(resp => {
       if (resp["data"]) this.msg.success(`上传成功！`);
       this.router.navigateByUrl('/contract/page');
       this.cdr.detectChanges();

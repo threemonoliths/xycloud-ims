@@ -81,4 +81,14 @@ defmodule ApiServerWeb.PurchaseContractController do
     
   end
 
+  def import_excel(conn,params) do
+    IO.puts("#######import#######")
+    attachment = Map.get(params, "attachment")
+    path = attachment.path <> "/" <> attachment.filename
+    {:ok, pid} =  Xlsxir.multi_extract(path, 0)
+    result = Xlsxir.get_list(pid)
+    IO.inspect result
+    IO.puts("#######import2#######")
+  end
+
 end
