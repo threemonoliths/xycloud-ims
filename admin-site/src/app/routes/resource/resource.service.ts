@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { setToken, setTokenAndParams } from '../../shared/utils/formmat';
+import { setToken, setTokenAndParams, formmat } from '../../shared/utils/formmat';
 import { baseUrl } from '../../shared/app-config';
-import { formmat } from '../../shared/utils/formmat';
 
 
 @Injectable()
-export class ClientService {
+export class ResourceService {
   constructor(private http: HttpClient) { }
-  url = baseUrl + 'clients';
+  url = baseUrl + 'resources';
+  excel_url = baseUrl + 'resources/export';
 
-  client: any = null;
+  resource: any = null;
+  resource_details: any = null;
   isUpdate = false;
   formOperation = 'create';
 
@@ -19,7 +20,7 @@ export class ClientService {
   }
 
   listAll() {
-    return this.http.get(this.url);
+    return this.http.get(this.url)
   }
 
   getById(id) {
@@ -37,5 +38,14 @@ export class ClientService {
 
   delete(id) {
     return this.http.delete(this.url + `/${id}`, setToken());
+  }
+
+  export_excel(q: any) {
+    console.log("导出")
+    return this.http.get(this.excel_url, {
+      responseType: "blob",
+      headers: new HttpHeaders().append("Content-Type", "application/json"),
+      params: formmat(q)
+    });
   }
 }

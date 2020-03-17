@@ -28,6 +28,7 @@ defmodule ApiServerWeb.ContractView do
       sign_date: contract.sign_date,
       expiry_date: contract.expiry_date,
       amount: contract.amount,
+      project_id: contract.project_id,
       comments: contract.comments,
       details: rend_details(contract.contract_details)
     }

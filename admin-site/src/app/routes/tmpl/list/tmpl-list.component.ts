@@ -106,6 +106,7 @@ export class TmplListComponent implements OnInit {
     this.srv.download(url).subscribe(
       data => {
         saveAs(data, i.file_name);
+        console.log(data)
       }
     );
   }

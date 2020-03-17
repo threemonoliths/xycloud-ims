@@ -87,7 +87,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         // }
         break;
       case 401:
-        this.notification.error(`无操作权限或登录已过期，请尝试重新登录。`, ``);
+        // this.notification.error(`无操作权限或登录已过期，请尝试重新登录。`, ``);
         // 清空 token 信息
         (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
         // this.goTo('/passport/login');

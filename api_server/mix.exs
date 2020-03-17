@@ -20,7 +20,7 @@ defmodule ApiServer.MixProject do
   def application do
     [
       mod: {ApiServer.Application, []},
-      extra_applications: [:logger, :runtime_tools, :scrivener_ecto]
+      extra_applications: [:logger, :runtime_tools, :scrivener_ecto,:xlsxir]
     ]
   end
 
@@ -53,7 +53,6 @@ defmodule ApiServer.MixProject do
       {:quantum, "~> 2.3"},
       {:timex, "~> 3.5"},
       {:elixlsx, "~> 0.4.1"},
-      {:excellent, "~> 0.0.1"}, 
       {:xlsxir, "~> 1.6.4"}
     ]
   end

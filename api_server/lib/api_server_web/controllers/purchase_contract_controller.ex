@@ -2,8 +2,9 @@ defmodule ApiServerWeb.PurchaseContractController do
   use ApiServerWeb, :controller
 
   use ApiServer.PurchaseContractManagement
-
+  use Ecto.Schema
   alias Guardian.Permissions.Bitwise
+  alias ApiServerWeb.{PurchaseContractView,DateTimeHandler, Repo, ResolveAssociationRecursion}
   import ApiServerWeb.Permissions, only: [need_perms: 1]
 
   action_fallback ApiServerWeb.FallbackController
@@ -83,5 +84,33 @@ defmodule ApiServerWeb.PurchaseContractController do
     end
   end
 
+
+  def export_excel(conn, params) do
+    file_name = ApiServerWeb.PurchaseContractExporter.get_name
+    path = ApiServerWeb.PurchaseContractExporter.get_path <> file_name
+    find_all(params)
+    |> ApiServerWeb.PurchaseContractExporter.export
+    |> case do
+      { :ok, _ } ->
+        conn
+        |> put_resp_content_type("application/octet-stream")
+        |> put_resp_header("content-disposition", "attachment; filename=\"#{file_name}\"")
+        |> Plug.Conn.send_file(200, path)
+        |> halt()
+      { _ , _ } ->
+        json conn, %{error: "export failed!"}
+    end
+    
+  end
+
+  def import_excel(conn,params) do
+    IO.puts("#######import#######")
+    attachment = Map.get(params, "attachment")
+    path = attachment.path <> "/" <> attachment.filename
+    {:ok, pid} =  Xlsxir.multi_extract(path, 0)
+    result = Xlsxir.get_list(pid)
+    IO.inspect result
+    IO.puts("#######import2#######")
+  end
 
 end

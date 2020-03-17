@@ -10,7 +10,6 @@ defmodule ApiServer.ContractManagement do
   alias ApiServer.ContractManagement.ContractDetail
   alias ApiServer.MessageReminding.Message
   use ApiServer.BaseContext
-
   
   defmacro __using__(_opts) do
     quote do

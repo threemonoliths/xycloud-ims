@@ -21,6 +21,13 @@ defmodule ApiServerWeb.Router do
     get "/contracts/receivable_yearly", ContractController, :get_receivable_by_year
     get "/purchase_contracts/payable_yearly", PurchaseContractController, :get_payable_by_year
     get "/contracts/export",ContractController, :export_excel
+    post "/contracts/import", ContractController, :import_excel
+    get "/purchase_contracts/export",PurchaseContractController, :export_excel
+    post "/purchase_contracts/import", PurchaseContractController, :import_excel
+    get "/resources/export",ResourceController, :export_excel
+    post "/resources/import",ResourceController, :import_excel
+    
+    
   end
 
   scope "/api/v1", ApiServerWeb do 
@@ -32,7 +39,7 @@ defmodule ApiServerWeb.Router do
     resources "/purchase_contracts", PurchaseContractController, except: [:new, :edit]
 
     resources "/clients", ClientController, except: [:new, :edit]
-    resources "/suppliers", SupplierController, except: [:new, :edit]
+    resources "/resources", ResourceController, except: [:new, :edit]
 
     get "/tmpls/attachment/:id", TmplController, :download_attachment
     put "/user/info", UserController, :set_self

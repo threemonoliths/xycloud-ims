@@ -29,15 +29,6 @@ defmodule ApiServer.Repo.Migrations.CreateClients do
       add :receiving_bank_account, :string #收款银行账号
       add :remittance_bank_name, :string #汇款银行名称
       add :remittance_bank_account, :string #汇款银账号
-      add :contact1, :string #联系人1姓名
-      add :mobile1, :string #联系人1手机
-      add :mail1, :string #联系人1电子邮箱
-      add :contact2, :string #联系人2姓名
-      add :mobile2, :string #联系人2手机
-      add :mail2, :string #联系人2电子邮箱
-      add :contact3, :string #联系人3姓名
-      add :mobile3, :string #联系人3手机
-      add :mail3, :string #联系人3电子邮箱
       add :comments, :text #客商评价
       timestamps()
     end

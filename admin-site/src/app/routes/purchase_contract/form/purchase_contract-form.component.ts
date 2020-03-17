@@ -262,6 +262,7 @@ export class PurchaseContractFormComponent implements OnInit {
   formmatFormValue() {
     const obj = this.form.value;
     obj.sign_date = getFormatDateStr(obj.sign_date);
+    obj.expiry_date = getFormatDateStr(obj.expiry_date);
     return { purchase_contract: obj };
   }
 

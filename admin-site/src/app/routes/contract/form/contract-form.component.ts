@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@ang
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { UploadFile } from 'ng-zorro-antd';
-import { getFormatDateStr, getDateByDateStr } from '../../../shared/utils/datehandler';
+import { getFormatDateStr, getDateByDateStr, getTimeStrByDate } from '../../../shared/utils/datehandler';
 import { ContractService } from '../contract.service';
 import { ProjectService } from '../../project/project.service';
 import { MessageRemindingService } from '../../../message-reminding.service';
@@ -133,6 +133,7 @@ export class ContractFormComponent implements OnInit {
 
   // 新增明细
   createDetail(): FormGroup {
+    console.log("子表", this.contract_details.value)
     return this.fb.group({
       issue_name: [null, [Validators.required]],
       invoice_amount: [null, [Validators.required]],
@@ -144,7 +145,7 @@ export class ContractFormComponent implements OnInit {
 
   //#endregion
   add() {
-    console.log(this.contract_details.length);
+    console.log("新增")
     this.contract_details.push(this.createDetail());
     this.edit(this.contract_details.length - 1);
   }
@@ -154,6 +155,7 @@ export class ContractFormComponent implements OnInit {
   }
 
   edit(index: number) {
+    console.log("编辑", index)
     if (this.editIndex !== -1 && this.editObj) {
       this.contract_details.at(this.editIndex).patchValue(this.editObj);
     }
@@ -162,14 +164,18 @@ export class ContractFormComponent implements OnInit {
   }
 
   save(index: number) {
-    this.contract_details.value[index].invoice_date = getFormatDateStr(this.contract_details.value[index].invoice_date)
-    this.contract_details.value[index].payment_date =
-      (this.contract_details.value[index].payment_date ? getFormatDateStr(this.contract_details.value[index].payment_date) : null)
+    console.log("编辑", index)
+    // console.log(this.contract_details.value[index].invoice_date, getDateByDateStr(this.contract_details.value[index].invoice_date))
+    // this.contract_details.value[index].invoice_date =
+    //   (this.contract_details.value[index].invoice_date ? getFormatDateStr(this.contract_details.value[index].invoice_date) : null)
+
+    // this.contract_details.value[index].payment_date =
+    //   (this.contract_details.value[index].payment_date ? getFormatDateStr(this.contract_details.value[index].payment_date) : null)
+
     this.contract_details.value[index].actual_payment =
       (this.contract_details.value[index].actual_payment ? this.contract_details.value[index].actual_payment : 0)
 
     this.contract_details.at(index).markAsDirty();
-    console.log(this.contract_details.value[index + 1]);
     if (this.contract_details.at(index).invalid) return;
     this.editIndex = -1;
   }
@@ -214,6 +220,7 @@ export class ContractFormComponent implements OnInit {
         this.srv.update(this.contract.id, obj).subscribe(resp => {
           if (resp["data"]) {
             this.submitting = false;
+            console.log(obj);
             if (resp["data"]) this.msg.success(`保存成功！`);
             this.router.navigateByUrl('/contract/page');
             this.cdr.detectChanges();
@@ -255,15 +262,11 @@ export class ContractFormComponent implements OnInit {
     this.contract = this.srv.contract;
   }
 
-  /* setTitle() {
-    if (this.srv.isUpdate) {
-      this.title = '修改合同';
-    } else this.title = '创建合同';
-  }*/
-
+  //阻止日期提前一天
   formmatFormValue() {
     const obj = this.form.value;
     obj.sign_date = getFormatDateStr(obj.sign_date);
+    obj.expiry_date = getFormatDateStr(obj.expiry_date);
     return { contract: obj };
   }
 
@@ -277,4 +280,10 @@ export class ContractFormComponent implements OnInit {
       });
     console.log('项目类型', this.project_data);
   }
+
+  onChange(result: Date): void {
+    result = getDateByDateStr(result);
+    console.log('onChange: ', result);
+  }
+
 }

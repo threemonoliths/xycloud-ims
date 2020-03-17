@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { getFormatDateStr, getDateByDateStr } from '../../shared/utils/datehandler';
 import { baseUrl } from '../../shared/app-config';
-import { setToken, setTokenAndParams } from '../../shared/utils/formmat';
+import { setToken, setTokenAndParams, formmat, getFormData } from '../../shared/utils/formmat';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 
@@ -12,7 +12,8 @@ export class ContractService {
   url = baseUrl + 'contracts';
   project_url = baseUrl + 'projects';
   detail_url = baseUrl + 'contract_details';
-  excel_url = baseUrl + 'contracts/export';
+  excel_export_url = this.url + '/export';
+  excel_import_url = this.url + '/import';
 
   contract: any = null;
   formOperation = 'create';
@@ -20,6 +21,10 @@ export class ContractService {
 
   listOnePage(q: any) {
     return this.http.get(this.url, setTokenAndParams(q));
+  }
+
+  listAll() {
+    return this.http.get(this.url)
   }
 
   // 获取合同明细页面
@@ -49,10 +54,17 @@ export class ContractService {
 
   export_excel(q: any) {
     console.log("导出")
-    return this.http.get(this.excel_url, setTokenAndParams(q));
+    return this.http.get(this.excel_export_url, {
+      responseType: "blob",
+      headers: new HttpHeaders().append("Content-Type", "application/json"),
+      params: formmat(q)
+    });
   }
 
-
+  import_excel(obj) {
+    console.log("导入")
+    return this.http.post(this.excel_import_url, getFormData(obj));
+  }
 
   formDate(q) {
     const year = q.startDate.getFullYear();

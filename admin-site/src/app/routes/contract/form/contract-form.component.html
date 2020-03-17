@@ -27,8 +27,8 @@
               <nz-form-item>
                 <nz-form-label>项目类型</nz-form-label>
                 <nz-form-control nzErrorTip="请选择项目类型" required>
-                  <nz-select formControlName="project_id" placeholder="请选择项目类型" [(ngModel)]="selectedOption"
-                    [nzPlaceHolder]="'myPlaceHolder'" nzAllowClear [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
+                  <nz-select formControlName="project_id" placeholder="请选择项目类型" nzAllowClear [nzShowSearch]="true"
+                    [nzNotFoundContent]="'无匹配'">
                     <nz-option *ngFor="let option of project_data" [nzLabel]="option.pname" [nzValue]="option.id"
                       [nzDisabled]="option.disabled">
                     </nz-option>

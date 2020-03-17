@@ -5,7 +5,7 @@ import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { UploadFile } from 'ng-zorro-antd';
 import * as moment from 'moment';
-
+import { saveAs } from "file-saver";
 import { PurchaseContractService } from '../purchase_contract.service';
 
 @Component({
@@ -201,7 +201,7 @@ export class PurchaseContractListComponent implements OnInit {
 
   // 导入
   beforeUpload = (file: UploadFile): boolean => {
-    console.log(file);
+    console.log("文件名", file);
     this.fileList = [file];
     return false;
   };
@@ -213,10 +213,9 @@ export class PurchaseContractListComponent implements OnInit {
     return obj;
   }
   excelin() {
-    this.loading = true;
     const obj = this.formmatFormValue()
-    this.srv.add(obj).subscribe(resp => {
-      this.loading = false;
+    console.log("测试", obj)
+    this.srv.import_excel(obj).subscribe(resp => {
       if (resp["data"]) this.msg.success(`上传成功！`);
       this.router.navigateByUrl('/contract/page');
       this.cdr.detectChanges();
@@ -224,18 +223,17 @@ export class PurchaseContractListComponent implements OnInit {
   }
   // 导出excel
   excelout() {
-    this.loading = true;
     this.q.startDate = null,
       this.q.endDate = null,
       this.q.start_time = "",
       this.q.end_time = "",
       this.srv.export_excel(this.q)
-        .pipe(tap(() => (this.loading = false)))
         .subscribe(
           resp => {
             this.cdr.detectChanges();
+            saveAs(resp, "采购合同.xlsx");
           }
         );
-    console.log("excelout")
+    console.log("导出")
   }
 }
