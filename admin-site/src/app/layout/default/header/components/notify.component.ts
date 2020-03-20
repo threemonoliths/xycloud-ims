@@ -195,53 +195,31 @@ export class HeaderNotifyComponent implements OnInit {
   }
 
   getMessagesArray() {
-<<<<<<< HEAD
-    let length = this.messageList.length;
-    let src = this.messageList;
-    let des: any[] = [];
-    for (var i in src) {
-      let e = { id: src[i]['id'], title: src[i]['body'], datetime: src[i]['datetime'], type: '新的消息', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
-=======
     const length = this.messageList.length;
     const src = this.messageList;
     const des: any[] = [];
     for (const i in src) {
       const e = { id: src[i].id, title: src[i].body, datetime: src[i].datetime, type: '新的消息', avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png' }
->>>>>>> 6f62feec5b1dc92a65a1f1d096b12fd5b0784edc
       des.push(e)
     }
     return des;
   }
 
   getMaxDatetime(list) {
-<<<<<<< HEAD
-    let length = list.length;
-    let max = "0000-00-00 00:00:00"
-    for (let i in list) {
-      if (list[i]['datetime'] > max) {
-        max = list[i]['datetime'];
-=======
     const length = list.length;
     let max = "0000-00-00 00:00:00"
     for (const i in list) {
       if (list[i].datetime > max) {
         max = list[i].datetime;
->>>>>>> 6f62feec5b1dc92a65a1f1d096b12fd5b0784edc
       }
     }
     return max
   }
 
   clear(type: string) {
-<<<<<<< HEAD
-    //后台需要标记已读
-    if ((this.messageList) && (this.messageList.length)) {
-      let params = { last_datetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
-=======
     // 后台需要标记已读
     if ((this.messageList) && (this.messageList.length)) {
       const params = { last_datetime: this.getMaxDatetime(this.messageList), token: localStorage.getItem("currentToken") }
->>>>>>> 6f62feec5b1dc92a65a1f1d096b12fd5b0784edc
       this.wsSrv.channel.push("received", params)
     }
     const data = this.data.slice();

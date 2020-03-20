@@ -46,8 +46,8 @@
               <nz-form-item>
                 <nz-form-label nzFor="no">状态</nz-form-label>
                 <nz-form-control>
-                  <nz-select [(ngModel)]="status_flag" nzAllowClear nzPlaceHolder="选择状态" name="status">
-                    <nz-option *ngFor="let option of optionList" [nzValue]="option" [nzLabel]="option">
+                  <nz-select nzAllowClear nzPlaceHolder="选择状态" name="status" [(ngModel)]="q.status">
+                    <nz-option *ngFor="let option of optionList" [nzValue]="option.value" [nzLabel]="option.lable">
                     </nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -112,7 +112,7 @@
         </thead>
         <tbody nz-tbody>
           <ng-container *ngFor="let i of nzTable.data">
-            <tr nz-tbody-tr *ngIf="!status_flag||i.status==status_flag">
+            <tr nz-tbody-tr>
               <td nzShowExpand [(nzExpand)]="i.expand"></td>
               <td nz-td>{{i.cno}}</td>
               <td nz-td>{{i.cname}}</td>

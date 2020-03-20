@@ -24,6 +24,7 @@ defmodule ApiServer.ContractManagement do
     Contract
     |> query_like(params, "cname")
     |> query_like(params, "comments")
+    |> query_equal(params, "status")
     |> query_by_start_time(params)
     |> query_by_end_time(params)
     |> query_order_desc_by(params, "inserted_at")

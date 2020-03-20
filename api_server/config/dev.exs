@@ -52,8 +52,6 @@ config :api_server, ApiServer.Repo,
   username: "postgres",
   password: "postgres",
   database: "api_server_dev",
-  #hostname: "xycloud-ims",
-
-  hostname: "localhost",
-  # hostname: "192.168.99.101",
+  # hostname: "xycloud-ims",
+  hostname: "192.168.99.101",
   pool_size: 10

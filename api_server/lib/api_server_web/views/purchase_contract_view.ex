@@ -28,6 +28,7 @@ defmodule ApiServerWeb.PurchaseContractView do
       amount: purchase_contract.amount,
       project_id: purchase_contract.project_id,
       comments: purchase_contract.comments,
+      status: purchase_contract.status,
       details: rend_details(purchase_contract.purchase_contract_details)
     }
   end

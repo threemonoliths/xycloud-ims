@@ -30,6 +30,7 @@ defmodule ApiServerWeb.ContractView do
       amount: contract.amount,
       project_id: contract.project_id,
       comments: contract.comments,
+      status: contract.status,
       details: rend_details(contract.contract_details)
     }
   end

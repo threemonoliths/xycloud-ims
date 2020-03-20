@@ -92,11 +92,9 @@ defmodule ApiServerWeb.ContractController do
     path = String.replace(Path.join(attachment.path,attachment.filename),"/","\\")
     # IO.inspect :filelib.ensure_dir(path)
     # {:ok, file} = File.open(path, [:write])
-    IO.inspect File.open("C:\\scb\\xycloud-ims\\api_server\\resourceexport_resource.xlsx", [:write])
-    IO.inspect Excellent.parse("C:\\scb\\xycloud-ims\\api_server\\resourceexport_resource.xlsx", 0)
-    # {:ok, pid} =  Xlsxir.multi_extract(path, 0)
-    # result = Xlsxir.get_list(pid)
-    # IO.inspect result
+    IO.inspect File.open("C:\\scb\\xycloud-ims\\api_server\\test.xlsx", [:write])
+    {:ok, pid} =  Xlsxir.multi_extract("C:\\scb\\xycloud-ims\\api_server\\test.xlsx", 0)
+    IO.inspect pid |> Xlsxir.get_map
     IO.puts("#######import2#######")
   end
 

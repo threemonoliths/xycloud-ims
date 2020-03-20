@@ -49,7 +49,7 @@
         </thead>
         <tbody nz-tbody>
           <ng-container *ngFor="let i of nzTable.data">
-            <tr nz-tbody-tr *ngIf="!status_flag||i.status==status_flag">
+            <tr nz-tbody-tr>
               <td nzShowExpand [(nzExpand)]="i.expand"></td>
               <td nz-td>{{i.no}}</td>
               <td nz-td>{{i.name}}</td>

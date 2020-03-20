@@ -27,7 +27,8 @@ export class PurchaseContractListComponent implements OnInit {
     end_time: "",
     startDate: null,
     endDate: null,
-    flag: 0
+    flag: 0,
+    status: ""
   };
 
   data: any[] = [];
@@ -39,8 +40,12 @@ export class PurchaseContractListComponent implements OnInit {
   flag = false;
   uploading = false;
   fileList: UploadFile[] = [];
-  optionList = ['已完成', '进行中'];
-  status_flag = ""
+  optionList = [
+    { lable: '进行中', value: 0 },
+    { lable: '已完成', value: 1 },
+    { lable: '已终止', value: 2 }
+  ];
+  // status_flag = ""
 
   constructor(
     private http: _HttpClient,
@@ -180,7 +185,7 @@ export class PurchaseContractListComponent implements OnInit {
       var excuted = 0;
       var next_amount = 0;
       var next_date = "暂无记录";
-      var status = "进行中";
+      // var status = "进行中";
       for (let j = 0; j < i.details.length; j++) {
         excuted += parseFloat(i.details[j].actual_payment)
         if (!i.details[j].actual_payment && i.details[j - 1].actual_payment) {
@@ -188,13 +193,13 @@ export class PurchaseContractListComponent implements OnInit {
           next_date = i.details[j].invoice_date;
         }
       }
-      if (excuted >= i.amount) {
-        status = "已完成"
-      }
+      // if (excuted >= i.amount) {
+      //   status = "已完成"
+      // }
       i.excuted = excuted;
       i.next_amount = next_amount;
       i.next_date = next_date;
-      i.status = status;
+      // i.status = status;
       console.log(excuted, next_amount, next_date)
     })
   }
