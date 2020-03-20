@@ -46,4 +46,8 @@ defmodule ApiServerWeb.PurchaseContractView do
     end)
     
   end
+
+  def render("error.json", %{msg: msg}) do
+    %{error: msg}
+  end
 end

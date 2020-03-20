@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { ResourceService } from '../resource.service';
 import { ClientService } from '../../client/client.service';
 import { ContractService } from '../../contract/contract.service';
+import { UploadFile } from 'ng-zorro-antd';
 import { saveAs } from "file-saver";
 
 @Component({
@@ -33,6 +34,10 @@ export class ResourceListComponent implements OnInit {
 
   client_data: any[] = [];
   contract_data: any[] = [];
+
+  flag = false;
+  uploading = false;
+  fileList: UploadFile[] = [];
 
   constructor(
     public msg: NzMessageService,
@@ -74,7 +79,6 @@ export class ResourceListComponent implements OnInit {
     this.srv.getById(id).subscribe(resp => {
       this.srv.resource = resp["data"];
       this.srv.resource.resource_details = resp["data"].details;
-      console.log("更改", this.srv.resource.contract.name)
       this.router.navigateByUrl('/resource/form');
     });
   }
@@ -145,6 +149,29 @@ export class ResourceListComponent implements OnInit {
         }
       );
     console.log("导出")
+  }
+
+  // 导入
+  beforeUpload = (file: UploadFile): boolean => {
+    console.log("文件名", file);
+    this.fileList = [file];
+    return false;
+  };
+  formmatFormValue() {
+    const obj: any = {};
+    if ((this.fileList) && (this.fileList.length > 0))
+      obj.attachment = this.fileList[0]
+    console.log(obj);
+    return obj;
+  }
+  excelin() {
+    const obj = this.formmatFormValue()
+    this.srv.import_excel(obj).subscribe(resp => {
+      if (resp["error"]) this.msg.error(`导入失败请上传xlsx文件！`);
+      this.cdr.detectChanges();
+      this.getData()
+      this.fileList = [];
+    });
   }
 
 }

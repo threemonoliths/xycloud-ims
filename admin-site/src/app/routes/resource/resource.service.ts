@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { setToken, setTokenAndParams, formmat } from '../../shared/utils/formmat';
+import { setToken, setTokenAndParams, formmat, getFormData } from '../../shared/utils/formmat';
 import { baseUrl } from '../../shared/app-config';
 
 
@@ -8,7 +8,8 @@ import { baseUrl } from '../../shared/app-config';
 export class ResourceService {
   constructor(private http: HttpClient) { }
   url = baseUrl + 'resources';
-  excel_url = baseUrl + 'resources/export';
+  excel_export_url = this.url + '/export';
+  excel_import_url = this.url + '/import';
 
   resource: any = null;
   resource_details: any = null;
@@ -42,10 +43,15 @@ export class ResourceService {
 
   export_excel(q: any) {
     console.log("导出")
-    return this.http.get(this.excel_url, {
+    return this.http.get(this.excel_export_url, {
       responseType: "blob",
       headers: new HttpHeaders().append("Content-Type", "application/json"),
       params: formmat(q)
     });
+  }
+
+  import_excel(obj) {
+    console.log("导入")
+    return this.http.post(this.excel_import_url, getFormData(obj));
   }
 }

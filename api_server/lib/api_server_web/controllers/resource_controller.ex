@@ -64,7 +64,34 @@ defmodule ApiServerWeb.ResourceController do
       { _ , _ } ->
         json conn, %{error: "export failed!"}
     end
-    
+  end
+
+   #将合同excel导入
+   def import_excel(conn,params) do
+    IO.puts("#######import#######")
+    attachment = Map.get(params, "attachment")
+    path = String.replace(attachment.path,"/","\\")
+    th = [:name, :server_name, :class, :product_type, :cpu, :memory, :storage, :bandwidth, :storage_type, :ip, :client_id,:applicant, 
+          :application_time, :opening_time, :security_service, :backup_service, :contract_id]
+    Xlsxir.multi_extract(path, 0)
+    |>case do
+      {:ok, pid} ->
+        [head | tail] = pid |> Xlsxir.get_list
+        IO.inspect pid |> Xlsxir.get_list
+        resource = Enum.map(tail,fn c ->
+            resource_params = Enum.zip(th,c) |> Enum.into(%{})
+            resource_changeset = Resource.changeset(%Resource{}, resource_params)
+            changeset_with_details = Ecto.Changeset.put_assoc(resource_changeset, :resource_details, get_details_changesets(resource_params))
+            {:ok,  %Resource{} = resource} = save_create(changeset_with_details)
+          end)
+            |> List.last |> Tuple.to_list |> List.last
+        conn
+          |> render("show.json", resource: resource)
+      { :error , _ } ->
+        msg = "请上传xlsx格式文件!"
+        render(conn, "error.json", %{msg: msg})
+    end
+    IO.puts("#######import2#######")
   end
 
   defp get_details_changesets(resource_params) do

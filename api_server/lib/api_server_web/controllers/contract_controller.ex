@@ -4,7 +4,7 @@ defmodule ApiServerWeb.ContractController do
   use ApiServer.ContractManagement
   use Ecto.Schema
   alias Guardian.Permissions.Bitwise
-  alias ApiServerWeb.{ContractView,DateTimeHandler, Repo, ResolveAssociationRecursion}
+  alias ApiServerWeb.{ContractView,DateTimeHandler, Repo, ResolveAssociationRecursion,ChangesetView}
   import ApiServerWeb.Permissions, only: [need_perms: 1]
   import Plug.Conn
   action_fallback ApiServerWeb.FallbackController
@@ -21,7 +21,6 @@ defmodule ApiServerWeb.ContractController do
   def create(conn, %{"contract" => contract_params}) do
     contract_params = set_status(contract_params)
     contract_changeset = Contract.changeset(%Contract{}, contract_params)
-    IO.inspect contract_changeset
     changeset_with_details = Ecto.Changeset.put_assoc(contract_changeset, :contract_details, get_details_changesets(contract_params))
     with {:ok, %Contract{} = contract} <- save_create(changeset_with_details) do
       conn
@@ -66,6 +65,16 @@ defmodule ApiServerWeb.ContractController do
     end
   end
 
+  defp get_details_changesets_import(contract_params) do
+    IO.puts inspect ("-----------------------")
+    case Map.get(contract_params, :contract_details) do
+      nil -> []
+      list ->
+        list 
+        |> Enum.map(fn(el) -> ContractDetail.changeset(%ContractDetail{}, el) end)
+    end
+  end
+
   # 将合同导出excel
   def export_excel(conn, params) do
     file_name = ApiServerWeb.ContractExporter.get_name
@@ -89,12 +98,31 @@ defmodule ApiServerWeb.ContractController do
   def import_excel(conn,params) do
     IO.puts("#######import#######")
     attachment = Map.get(params, "attachment")
-    path = String.replace(Path.join(attachment.path,attachment.filename),"/","\\")
-    # IO.inspect :filelib.ensure_dir(path)
-    # {:ok, file} = File.open(path, [:write])
-    IO.inspect File.open("C:\\scb\\xycloud-ims\\api_server\\test.xlsx", [:write])
-    {:ok, pid} =  Xlsxir.multi_extract("C:\\scb\\xycloud-ims\\api_server\\test.xlsx", 0)
-    IO.inspect pid |> Xlsxir.get_map
+    path = String.replace(attachment.path,"/","\\")
+    th = [:cno,:cname,:party_a,:party_b,:sign_date,:expiry_date,:amount,:comments]
+    th_details = [:issue_name, :invoice_amount, :actual_payment, :invoice_date, :payment_date]
+    Xlsxir.multi_extract(path, 0)
+    |>case do
+      {:ok, pid} ->
+        [head | tail] = pid |> Xlsxir.get_list
+        contract = Enum.map(tail,fn c ->
+            # 组装detail为map
+            details_list = c -- hd Enum.chunk_every(c,8)
+            details_map = details_list |> Enum.chunk_every(5) |> Enum.map(fn el ->
+              Enum.zip(th_details,el) |> Enum.into(%{})
+            end)
+            contract_params = Enum.zip(th,c) |> Enum.into(%{}) |> Map.put(:contract_details, details_map)
+            contract_changeset = Contract.changeset(%Contract{}, contract_params)
+            changeset_with_details = Ecto.Changeset.put_assoc(contract_changeset, :contract_details, get_details_changesets_import(contract_params))
+            {:ok,  %Contract{} = contract} = save_create(changeset_with_details)
+          end)
+            |> List.last |> Tuple.to_list |> List.last
+        conn
+          |> render("show.json", contract: contract)
+      { :error , _ } ->
+        msg = "请上传xlsx格式文件!"
+        render(conn, "error.json", %{msg: msg})
+    end
     IO.puts("#######import2#######")
   end
 

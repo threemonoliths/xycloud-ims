@@ -12,7 +12,7 @@
 
 
 IO.inspect File.open("test.xlsx")
-{:ok, t_id} = Xlsxir.multi_extract("C:\\scb\\xycloud-ims\\api_server\\销售合同.xlsx", 0) 
+{:ok, t_id} = Xlsxir.multi_extract("C:\\scb\\xycloud-ims\\api_server\\sales.xlsx", 0) 
 IO.inspect t_id |> Xlsxir.get_map
 
 # alias ApiServer.Accounts.User

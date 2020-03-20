@@ -63,22 +63,31 @@ defmodule ApiServerWeb.PurchaseContractController do
     end
   end
 
+  defp get_details_changesets_import(purchase_contract_params) do
+    case Map.get(purchase_contract_params, :purchase_contract_details) do
+      nil -> []
+      list ->
+        list 
+        |> Enum.map(fn(el) -> PurchaseContractDetail.changeset(%PurchaseContractDetail{}, el) end)
+    end
+  end
+
   # 如果时间最大的一条明细完成时间不为空，则需要置合同状态为已完成1，直接在参数中设置
-  defp set_status(contract_params) do
-    case Map.get(contract_params, "contract_details") do
-      nil -> contract_params
+  defp set_status(purchase_contract_params) do
+    case Map.get(purchase_contract_params, "purchase_contract_details") do
+      nil -> purchase_contract_params
       list ->
         latest_detail = list 
         |> Enum.max_by(fn c -> Map.get(c, "invoice_date") end)
         |> Map.get("payment_date")
         |> case do
-          nil -> contract_params
+          nil -> purchase_contract_params
           date -> 
-            c = contract_params
-            |> Map.get("contract")
+            c = purchase_contract_params
+            |> Map.get("purchase_contract")
             |> Map.put_new("status", 1)
-            contract_params
-            |> Map.update!("contract", c)
+            purchase_contract_params
+            |> Map.update!("purchase_contract", c)
         end
       
     end
@@ -103,13 +112,35 @@ defmodule ApiServerWeb.PurchaseContractController do
     
   end
 
+  #将合同excel导入
   def import_excel(conn,params) do
     IO.puts("#######import#######")
     attachment = Map.get(params, "attachment")
-    path = attachment.path <> "/" <> attachment.filename
-    {:ok, pid} =  Xlsxir.multi_extract(path, 0)
-    result = Xlsxir.get_list(pid)
-    IO.inspect result
+    path = String.replace(attachment.path,"/","\\")
+    th = [:cno,:cname,:party_a,:party_b,:sign_date,:expiry_date,:amount,:comments]
+    th_details = [:issue_name, :invoice_amount, :actual_payment, :invoice_date, :payment_date]
+    Xlsxir.multi_extract(path, 0)
+    |>case do
+      {:ok, pid} ->
+        [head | tail] = pid |> Xlsxir.get_list
+        purchase_contract = Enum.map(tail,fn c ->
+            # 组装detail为map
+            details_list = c -- hd Enum.chunk_every(c,8)
+            details_map = details_list |> Enum.chunk_every(5) |> Enum.map(fn el ->
+              Enum.zip(th_details,el) |> Enum.into(%{})
+            end)
+            purchase_contract_params = Enum.zip(th,c) |> Enum.into(%{}) |> Map.put(:purchase_contract_details, details_map)
+            purchase_contract_changeset = PurchaseContract.changeset(%PurchaseContract{}, purchase_contract_params)
+            changeset_with_details = Ecto.Changeset.put_assoc(purchase_contract_changeset, :purchase_contract_details, get_details_changesets_import(purchase_contract_params))
+            {:ok, %PurchaseContract{} = purchase_contract} = save_create(changeset_with_details)
+          end)
+            |> List.last |> Tuple.to_list |> List.last
+        conn
+          |> render("show.json", purchase_contract: purchase_contract)
+      { :error , _ } ->
+        msg = "请上传xlsx格式文件!"
+        render(conn, "error.json", %{msg: msg})
+    end
     IO.puts("#######import2#######")
   end
 

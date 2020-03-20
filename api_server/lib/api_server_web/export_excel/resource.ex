@@ -55,13 +55,13 @@ defmodule ApiServerWeb.ResourceExporter do
       c.bandwidth,
       c.storage_type,
       c.ip,
-      c.client.name,
+      c.client_id,
       c.applicant,
       c.application_time |> ApiServer.Utils.DatetimeHandler.get_date_str,
       c.opening_time |> ApiServer.Utils.DatetimeHandler.get_date_str,
       c.security_service,
       c.backup_service,
-      c.contract.cname
+      c.contract_id
     ]
     # c.resource_details
     # |> Enum.reduce(list, fn d, acc -> 

@@ -56,7 +56,7 @@ defmodule ApiServerWeb.PurchaseContractExporter do
       c.comments
     ]
     c.purchase_contract_details
-    |> Enum.reduce(list, fn d, acc -> 
+    |> Enum.reduce(list, fn d, list -> 
       list ++ [ d.issue_name, 
       d.invoice_amount, 
       d.actual_payment, 

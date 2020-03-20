@@ -116,11 +116,12 @@ export class PurchaseContractListComponent implements OnInit {
   }
 
   reset() {
-    this.q.startDate = null,
-      this.q.endDate = null,
-      this.q.start_time = "",
-      this.q.end_time = "",
-      setTimeout(() => this.getData());
+    this.q.startDate = null;
+    this.q.endDate = null;
+    this.q.start_time = "";
+    this.q.end_time = "";
+    this.fileList = [];
+    setTimeout(() => this.getData());
   }
 
   pageChange(pi: number) {
@@ -188,7 +189,7 @@ export class PurchaseContractListComponent implements OnInit {
       // var status = "进行中";
       for (let j = 0; j < i.details.length; j++) {
         excuted += parseFloat(i.details[j].actual_payment)
-        if (!i.details[j].actual_payment && i.details[j - 1].actual_payment) {
+        if (!i.details[j].actual_payment && !next_amount) {
           next_amount = i.details[j].invoice_amount;
           next_date = i.details[j].invoice_date;
         }
@@ -219,11 +220,11 @@ export class PurchaseContractListComponent implements OnInit {
   }
   excelin() {
     const obj = this.formmatFormValue()
-    console.log("测试", obj)
     this.srv.import_excel(obj).subscribe(resp => {
-      if (resp["data"]) this.msg.success(`上传成功！`);
-      this.router.navigateByUrl('/contract/page');
+      if (resp["error"]) this.msg.error(`导入失败请上传xlsx文件！`);
       this.cdr.detectChanges();
+      this.getData()
+      this.fileList = [];
     });
   }
   // 导出excel
