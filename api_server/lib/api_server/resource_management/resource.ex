@@ -5,6 +5,7 @@ defmodule ApiServer.ResourceManagement.Resource do
   schema "resources" do
     field :name, :string
     field :server_name, :string
+    field :opening_type, :string
     field :class, :string
     field :product_type, :string
     field :cpu, :integer 
@@ -13,7 +14,8 @@ defmodule ApiServer.ResourceManagement.Resource do
     field :bandwidth, :integer
     field :ip, :string 
     field :applicant, :string
-    field :application_time, :date 
+    field :application_time, :date
+    field :final_client, :string 
     field :opening_time, :date
     field :security_service, :string
     field :backup_service, :string 
@@ -28,8 +30,8 @@ defmodule ApiServer.ResourceManagement.Resource do
   @doc false
   def changeset(resource, attrs) do
     resource
-    |> cast(attrs, [:name, :server_name, :class, :product_type, :cpu, :memory, :storage, :bandwidth, :ip, :applicant, 
-                    :application_time, :opening_time, :security_service, :backup_service, :storage_type, :client_id, :contract_id])
+    |> cast(attrs, [:name, :server_name, :opening_type, :class, :product_type, :cpu, :memory, :storage, :bandwidth, :ip, :applicant, 
+                    :application_time, :final_client, :opening_time, :security_service, :backup_service, :storage_type, :client_id, :contract_id])
     |> validate_required([:name])
   end
 end

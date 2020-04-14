@@ -7,15 +7,16 @@
           <div nz-col [nzSpan]="12" class="mb-md">
             <nz-form-item class="d-flex">
               <nz-form-label nzFor="no">按月查询应收</nz-form-label>
-              <nz-form-control [nzValidateStatus]="'invoice_date'" class="flex-1">
-                <nz-month-picker style="width: 40%;" (ngModelChange)="q.date=$event;" [ngModel]="q.date"
-                  name="invoice_date" [nzFormat]="'YYYY-MM'" [nzPlaceHolder]="'Start Month'"></nz-month-picker>
+              <nz-form-control [nzValidateStatus]="'date'" class="flex-1">
+                <nz-month-picker style="width: 40%;" [(ngModel)]="q.date" (ngModelChange)="pick($event)" name="date"
+                  [nzFormat]="'YYYY-MM'" [nzPlaceHolder]="'选择月份'"></nz-month-picker>
               </nz-form-control>
             </nz-form-item>
           </div>
 
           <div nz-col [nzSpan]="12" [class.text-left]="expandForm" class="mb-md">
-            <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+            <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading"
+              [disabled]="!q.date">查询</button>
             <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
           </div>
         </div>
@@ -25,8 +26,8 @@
         (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
         <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
           <tr>
-            <th nz-th nzShowSort nzSortKey="invoice_date">
-              <span>应付日期</span>
+            <th nz-th nzShowSort nzSortKey="month">
+              <span>月份</span>
             </th>
             <th nz-th nzShowSort nzSortKey="amount">
               <span>合同总额</span>
@@ -34,9 +35,9 @@
           </tr>
         </thead>
         <tbody nz-tbody>
-          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
-            <td nz-td>{{i.invoice_date}}</td>
-            <td nz-td>{{i.amount}}</td>
+          <tr nz-tbody-tr>
+            <td nz-td>{{data.month}}</td>
+            <td nz-td>{{data.amount}}</td>
           </tr>
         </tbody>
       </nz-table>

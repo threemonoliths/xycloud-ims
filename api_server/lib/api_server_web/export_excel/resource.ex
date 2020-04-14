@@ -47,6 +47,7 @@ defmodule ApiServerWeb.ResourceExporter do
     list = [ 
       c.name, 
       c.server_name, 
+      c.opening_type,
       c.class, 
       c.product_type,
       c.cpu,
@@ -56,6 +57,7 @@ defmodule ApiServerWeb.ResourceExporter do
       c.storage_type,
       c.ip,
       c.client_id,
+      c.final_client,
       c.applicant,
       c.application_time |> ApiServer.Utils.DatetimeHandler.get_date_str,
       c.opening_time |> ApiServer.Utils.DatetimeHandler.get_date_str,

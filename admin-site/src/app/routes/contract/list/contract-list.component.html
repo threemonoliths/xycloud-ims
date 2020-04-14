@@ -4,16 +4,15 @@
       <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
         <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }" nzGutter="16">
 
-          <div nz-col nzMd="8" nzSm="12" class="mb-md">
-            <nz-form-item class="d-flex">
-              <nz-form-label nzFor="no">订单日期</nz-form-label>
-              <nz-form-control [nzValidateStatus]="'sign_date'" class="flex-1">
-                <nz-date-picker style="width: 40%;" (ngModelChange)="q.startDate=$event;_startValueChange()"
-                  [ngModel]="q.startDate" name="sign_date" [nzDisabledDate]="_disabledStartDate"
-                  [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'Start date'"></nz-date-picker>
-                <nz-date-picker style="width: 40%;" (ngModelChange)="q.endDate=$event;_endValueChange()"
-                  [ngModel]="q.endDate" name="sign_date" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'"
-                  [nzPlaceHolder]="'End date'"></nz-date-picker>
+          <div nz-col nzMd="8" nzSm="12">
+            <nz-form-item>
+              <nz-form-label nzFor="no">项目类型</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="q.project_id" nzAllowClear nzPlaceHolder="选择项目类型" name="project_id"
+                  [nzShowSearch]="true" [nzNotFoundContent]="'无匹配'">
+                  <nz-option *ngFor="let option of project_data" [nzValue]="option.id" [nzLabel]="option.pname">
+                  </nz-option>
+                </nz-select>
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -39,31 +38,48 @@
             </nz-form-item>
           </div>
 
-          <div nz-col [nzSpan]="12" [class.text-left]="expandForm" class="mb-md">
-            <div class="mb-md">
-              <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [(nzFileList)]="fileList"
-                [nzBeforeUpload]="beforeUpload">
-                <button nz-button type="button"><i nz-icon nzType="upload"></i><span>添加文件</span></button>
-              </nz-upload>
-            </div>
-            <div class="mb-md">
-              <button nz-button type="button" (click)="excelin()" [nzType]="'primary'" [nzLoading]="uploading"
-                [disabled]="fileList.length == 0">导入表格</button>
-              <button nz-button type="button" (click)="excelout()" class="mx-sm">导出表格</button>
-            </div>
+          <div nz-col nzMd="8" nzSm="24" class="mb-md">
+            <nz-form-item class="d-flex">
+              <nz-form-label nzFor="no">订单日期</nz-form-label>
+              <nz-form-control [nzValidateStatus]="'sign_date'" class="flex-1">
+                <nz-date-picker (ngModelChange)="q.startDate=$event;_startValueChange()" [ngModel]="q.startDate"
+                  name="sign_date" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'"
+                  [nzPlaceHolder]="'Start date'"></nz-date-picker>
+                <nz-date-picker (ngModelChange)="q.endDate=$event;_endValueChange()" [ngModel]="q.endDate"
+                  name="sign_date" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'"
+                  [nzPlaceHolder]="'End date'"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
           </div>
 
-          <div nz-col [nzSpan]="12" [class.text-right]="expandForm" class="mb-md">
+          <div nz-col [nzSpan]="8" class="mb-md">
             <button nz-button type="submit" (click)="search()" [nzType]="'primary'" [nzLoading]="loading">查询</button>
             <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
           </div>
         </div>
       </form>
-      <div class="mb-md">
+
+      <div>
         <button nz-button (click)="add()" [nzType]="'primary'">
           <i nz-icon nzType="plus"></i>
           <span>新建</span>
         </button>
+        <!-- 导入导出 -->
+        <button nz-button [nzType]="'default'" (click)="showModal()" class="mx-sm"><i nz-icon
+            nzType="download"></i>导入导出</button>
+        <nz-modal [(nzVisible)]="isVisible" nzTitle="导入导出" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+          <div class="mb-md">
+            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [(nzFileList)]="fileList"
+              [nzBeforeUpload]="beforeUpload">
+              <button nz-button type="button"><i nz-icon nzType="upload"></i><span>添加文件</span></button>
+            </nz-upload>
+          </div>
+          <div class="mb-md">
+            <button nz-button type="button" (click)="excelin()" [nzType]="'primary'" [nzLoading]="uploading"
+              [disabled]="fileList.length == 0">导入表格</button>
+            <button nz-button type="button" (click)="excelout()" class="mx-sm">导出表格</button>
+          </div>
+        </nz-modal>
       </div>
 
       <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
@@ -104,6 +120,9 @@
             <th nz-th nzShowSort nzSortKey="comments">
               <span>描述</span>
             </th>
+            <!-- <th nz-th nzShowSort nzSortKey="project_id">
+              <span>项目</span>
+            </th> -->
             <th nz-th>
               <span>操作</span>
             </th>
@@ -124,6 +143,9 @@
               <td nz-td>{{i.next_date}}</td>
               <td nz-td>{{i.status}}</td>
               <td nz-td>{{i.comments}}</td>
+              <!-- <ng-container *ngFor="let project of project_data">
+                <td nz-td *ngIf="i.project_id==project.id">{{project.pname}}</td>
+              </ng-container> -->
               <td nz-td>
                 <a (click)="modify(i.id)">修改</a>
                 <span nz-table-divider></span>

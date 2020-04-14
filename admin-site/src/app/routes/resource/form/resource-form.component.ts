@@ -23,6 +23,7 @@ export class ResourceFormComponent implements OnInit {
   client_data: any[] = [];
   contract_data: any[] = [];
   alphabet = ["A", "B", "C", "D", "E", "F", "G"];
+  openingtype = ["自签", "股份维保", "集团维保", "待签定"];
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +42,9 @@ export class ResourceFormComponent implements OnInit {
   }
   get server_name() {
     return this.form.controls.server_name;
+  }
+  get opening_type() {
+    return this.form.controls.opening_type;
   }
   get class() {
     return this.form.controls.class;
@@ -68,6 +72,9 @@ export class ResourceFormComponent implements OnInit {
   }
   get client_id() {
     return this.form.controls.client_id;
+  }
+  get final_client() {
+    return this.form.controls.final_client;
   }
   get applicant() {
     return this.form.controls.applicant;
@@ -103,6 +110,7 @@ export class ResourceFormComponent implements OnInit {
         Validators.compose([Validators.required, Validators.minLength(2)]),
       ],
       server_name: [this.resource.server_name ? this.resource.server_name : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+      opening_type: [this.resource.opening_type ? this.resource.opening_type : null, [Validators.required]],
       class: [this.resource.class ? this.resource.class : null, [Validators.required]],
       product_type: [this.resource.product_type ? this.resource.product_type : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       cpu: [this.resource.cpu ? this.resource.cpu : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
@@ -111,6 +119,7 @@ export class ResourceFormComponent implements OnInit {
       bandwidth: [this.resource.bandwidth ? this.resource.bandwidth : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       storage_type: [this.resource.storage_type ? this.resource.storage_type : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       ip: [this.resource.ip ? this.resource.ip : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+      final_client: [this.resource.final_client ? this.resource.final_client : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       applicant: [this.resource.applicant ? this.resource.applicant : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       application_time: [this.resource.application_time ? getDateByDateStr(this.resource.application_time) : null, [Validators.required]],
       opening_time: [this.resource.opening_time ? getDateByDateStr(this.resource.opening_time) : null, [Validators.required]],

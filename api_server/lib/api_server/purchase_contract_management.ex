@@ -26,10 +26,12 @@ defmodule ApiServer.PurchaseContractManagement do
     |> query_like(params, "cname")
     |> query_like(params, "comments")
     |> query_equal(params, "status")
+    |> query_equal(params, "project_id")
     |> query_by_start_time(params)
     |> query_by_end_time(params)
     |> query_order_desc_by(params, "inserted_at")
     |> query_preload([:purchase_contract_details])
+    |> query_preload([:project])
     |> get_pagination(params)
   end
 
@@ -77,19 +79,20 @@ defmodule ApiServer.PurchaseContractManagement do
     end)
   end
 
-  # 获取年度应收款信息
-  def get_payable_yearly(date_str) do
+   # 获取年度应收款信息
+   def get_receivable_yearly(date_str) do
     # date = Timex.now()
     # 取一年的所有合同明细 details
+    date_str
     date = date_str
-    |> Timex.parse!("%a %b %d %T %z %Y", :strftime)
-    start_time = Timex.beginning_of_year(date)
-    end_time = Timex.end_of_year(date)
+    |> Timex.parse!("%Y-%m-%d", :strftime)
+    start_time = Timex.beginning_of_month(date)
+    end_time = Timex.end_of_month(date)
     details = 
     PurchaseContractDetail
     |> query_greater_or_equal_than("invoice_date", start_time)
     |> query_less_or_equal_than("invoice_date", end_time)
-    |> query_preload([:contract])
+    |> query_preload([:purchase_contract])
     |> Repo.all
     # 分月统计
     |> Enum.group_by(fn d -> d.invoice_date.month end )
@@ -97,7 +100,10 @@ defmodule ApiServer.PurchaseContractManagement do
       {k, Enum.reduce(v, 0, fn d, acc -> d.invoice_amount + acc end)} 
     end)
     |> Enum.map(fn {k,v} -> {k, Float.to_string(v, decimals: 2)} end)
-
+    |> Enum.map(fn el->
+      el|>Tuple.to_list()
+    end)
+    |>List.first()
   end
 
 

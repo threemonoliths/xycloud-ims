@@ -14,7 +14,7 @@ defmodule ApiServerWeb.ContractController do
   # plug Bitwise, need_perms([:write]) when action in [:create, :update]
 
   def index(conn, params) do
-    page = page(params)
+    IO.inspect page = page(params)
     render(conn, "index.json", page: page)
   end
 
@@ -52,7 +52,13 @@ defmodule ApiServerWeb.ContractController do
 
   # 查询年度中每个月应收金额
   def get_receivable_by_year(conn, %{ "date" => date}) do
-    json conn, get_receivable_yearly(date)
+    th=[:month, :amount]
+    case get_receivable_yearly(date) do
+      nil -> json conn, %{error: "无信息"}
+      list ->
+        details = Enum.zip(th,get_receivable_yearly(date)) |> Enum.into(%{})
+        json conn, details
+    end
   end
 
   defp get_details_changesets(contract_params) do

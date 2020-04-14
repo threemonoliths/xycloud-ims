@@ -5,6 +5,7 @@ import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { PurchaseQueryService } from '../purchase_query.service';
 import * as moment from 'moment';
+import { getFormatDateStr } from '../../../shared/utils/datehandler';
 
 @Component({
   templateUrl: './purchase_query-list.component.html',
@@ -22,13 +23,11 @@ export class PurchaseQueryListComponent implements OnInit {
     date: null,
   };
 
-  data: any[] = [];
+  data: any = {};
   idExpand: any;
   loading = false;
 
   expandForm = false;
-  flag = false;
-
   constructor(
     private http: _HttpClient,
     public msg: NzMessageService,
@@ -49,7 +48,10 @@ export class PurchaseQueryListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp["data"];
+          if (resp["error"]) this.msg.error(`无信息`);
+          this.data.month = resp["month"];
+          this.data.amount = resp["amount"];
+          console.log("数据", this.data)
           this.cdr.detectChanges();
         }
       );
@@ -60,6 +62,7 @@ export class PurchaseQueryListComponent implements OnInit {
   reset() {
     this.q.date = null,
       this.loading = false;
+    this.data = {};
   }
 
   pageChange(pi: number) {
@@ -75,6 +78,15 @@ export class PurchaseQueryListComponent implements OnInit {
 
   search() {
     console.log(this.q.date)
+    if (this.q.date == null) {
+      this.loading = false
+      this.reset();
+    }
+    else {
+      this.q.date = getFormatDateStr(this.q.date);
+      console.log(this.q.date)
+      this.getData();
+    }
   }
 
 

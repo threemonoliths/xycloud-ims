@@ -50,8 +50,15 @@ defmodule ApiServerWeb.PurchaseContractController do
     end
   end
 
-  def get_payable_by_year(conn, %{ "date" => date}) do
-    json conn, get_payable_yearly(date)
+   # 查询年度中每个月应收金额
+   def get_payable_by_year(conn, %{ "date" => date}) do
+    th=[:month, :amount]
+    case get_receivable_yearly(date) do
+      nil -> json conn, %{error: "无信息"}
+      list ->
+        details = Enum.zip(th,get_receivable_yearly(date)) |> Enum.into(%{})
+        json conn, details
+    end
   end
 
   defp get_details_changesets(purchase_contract_params) do

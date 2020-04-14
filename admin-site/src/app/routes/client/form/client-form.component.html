@@ -7,7 +7,7 @@
       <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
         <nz-card [nzBordered]="false" nzTitle="客商管理">
           <se label="客商编码" error="请输入名称，大于两个字符">
-            <input nz-input formControlName="no" placeholder="请输入客商名称" />
+            <input nz-input formControlName="no" placeholder="请输入客商编码" disabled="true" />
           </se>
           <se label="公司名称" error="请输入公司名称，大于两个字符" required>
             <input nz-input formControlName="name" placeholder="请输入公司名称" />
@@ -22,13 +22,13 @@
               </nz-select>
             </nz-form-control>
           </se>
-          <se label="法定代表人" error="请输入法定代表人，大于两个字符" required>
+          <!-- <se label="法定代表人" error="请输入法定代表人，大于两个字符" required>
             <input nz-input formControlName="legal_representative" placeholder="请输入法定代表人" />
-          </se>
+          </se> -->
           <se label="注册地址" error="请输入注册地址，大于两个字符" required>
             <input nz-input formControlName="registered_address" placeholder="请输入注册地址" />
           </se>
-          <se label="注册资金(万元)" error="请输入注册资金(万元)，大于两个字符" required>
+          <!-- <se label="注册资金(万元)" error="请输入注册资金(万元)，大于两个字符" required>
             <input nz-input formControlName="registered_capital" placeholder="请输入注册资金(万元)" />
           </se>
           <se label="经营范围" error="请输入经营范围，大于两个字符" required>
@@ -36,7 +36,7 @@
           </se>
           <se label="所属行业" error="请输入所属行业，大于两个字符">
             <input nz-input formControlName="industry_involved" placeholder="请输入所属行业" />
-          </se>
+          </se> -->
           <se label="与祥云开展业务" error="请输入与祥云开展业务，大于两个字符" required>
             <input nz-input formControlName="project" placeholder="请输入与祥云开展业务" />
           </se>
@@ -48,15 +48,6 @@
           </se>
           <se label="三证合一证件号码" error="请输入三证合一证件号码，大于两个字符" required>
             <input nz-input formControlName="certificate_no" placeholder="请输入三证合一证件号码" />
-          </se>
-          <se label="组织机构代码证号码" error="请输入组织机构代码证号码，大于两个字符" required>
-            <input nz-input formControlName="organization_no" placeholder="请输入组织机构代码证号码" />
-          </se>
-          <se label="营业执照注册号码" error="请输入营业执照注册号码，大于两个字符" required>
-            <input nz-input formControlName="business_license_no" placeholder="请输入营业执照注册号码" />
-          </se>
-          <se label="税务登记证号码" error="请输入税务登记证号码，大于两个字符" required>
-            <input nz-input formControlName="tax_no" placeholder="请输入税务登记证号码" />
           </se>
           <se label="纳税人类型" error="请输入纳税人类型，大于两个字符" required>
             <input nz-input formControlName="taxpayer_type" placeholder="请输入纳税人类型" />
@@ -79,16 +70,16 @@
           <se label="开户银行账号" error="请输入开户银行账号，大于两个字符" required>
             <input nz-input formControlName="bank_account" placeholder="请输入开户银行账号" />
           </se>
-          <se label="收款银行名称" error="请输入收款银行名称，大于两个字符" required>
+          <se label="收款银行名称" error="请输入收款银行名称，大于两个字符">
             <input nz-input formControlName="receiving_bank_name" placeholder="请输入收款银行名称" />
           </se>
-          <se label="收款银行账号" error="请输入收款银行账号，大于两个字符" required>
+          <se label="收款银行账号" error="请输入收款银行账号，大于两个字符">
             <input nz-input formControlName="receiving_bank_account" placeholder="请输入收款银行账号" />
           </se>
-          <se label="汇款银行名称" error="请输入汇款银行名称，大于两个字符" required>
+          <se label="汇款银行名称" error="请输入汇款银行名称，大于两个字符">
             <input nz-input formControlName="remittance_bank_name" placeholder="请输入汇款银行名称" />
           </se>
-          <se label="汇款银行账号" error="请输入汇款银行账号，大于两个字符" required>
+          <se label="汇款银行账号" error="请输入汇款银行账号，大于两个字符">
             <input nz-input formControlName="remittance_bank_account" placeholder="请输入汇款银行账号" />
           </se>
           <se label="客商评价" error="请输入客商评价，大于两个字符" required>
@@ -106,8 +97,9 @@
                 <th>QQ</th>
                 <th>微信</th>
                 <th>职务</th>
-                <th>角色</th>
+                <th style="width: 140px;">角色</th>
                 <th>评价</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -152,8 +144,7 @@
                   <span *ngIf="editIndex !== i">{{ client_details.value[i].character }}</span>
                   <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择角色">
                     <nz-form-item>
-                      <nz-form-label>角色</nz-form-label>
-                      <nz-form-control>
+                      <nz-form-control style="margin-top: 25px;">
                         <nz-select formControlName="character" nzAllowClear nzPlaceHolder="请选择角色" [nzShowSearch]="true"
                           [nzNotFoundContent]="'无匹配'">
                           <nz-option *ngFor="let option of optionList2" [nzValue]="option.type" [nzLabel]="option.type"

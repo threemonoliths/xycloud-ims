@@ -38,4 +38,8 @@ export class ClientService {
   delete(id) {
     return this.http.delete(this.url + `/${id}`, setToken());
   }
+
+  getNoData() {
+    return this.http.get(baseUrl + `no`, setToken())
+  }
 }

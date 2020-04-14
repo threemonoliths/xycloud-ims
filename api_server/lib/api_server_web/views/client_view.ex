@@ -24,18 +24,15 @@ defmodule ApiServerWeb.ClientView do
       no: client.no, #客商编码
       name: client.name, #公司名称
       category: client.category, #客商类型
-      legal_representative: client.legal_representative, #法定代表人
+      # legal_representative: client.legal_representative, #法定代表人
       registered_address: client.registered_address, #注册地址
-      registered_capital: client.registered_capital, #注册资金（万元）
-      business_scope: client.business_scope, #经营范围
-      industry_involved: client.industry_involved, #所属行业
+      # registered_capital: client.registered_capital, #注册资金（万元）
+      # business_scope: client.business_scope, #经营范围
+      # industry_involved: client.industry_involved, #所属行业
       project: client.project, #与祥云开展业务
       registered_place: client.registered_place, #注册所在地
       id_type: client.id_type, #证件类型
       certificate_no: client.certificate_no, #三证合一证件号码
-      organization_no: client.organization_no, #组织机构代码证号码
-      business_license_no: client.business_license_no, #营业执照注册号码
-      tax_no: client.tax_no, #税务登记证号码
       taxpayer_type: client.taxpayer_type, #纳税人类型
       invoice_title: client.invoice_title, #开票抬头
       taxpayer_no: client.taxpayer_no, #纳税人识别号

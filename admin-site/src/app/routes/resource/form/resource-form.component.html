@@ -13,6 +13,14 @@
           <se label="用途" error="请输入用途，大于两个字符" required>
             <input nz-input formControlName="server_name" placeholder="请输入用途" />
           </se>
+          <se label="开通类型" error="请输入开通类型，大于两个字符" required>
+            <nz-select formControlName="opening_type" nzAllowClear nzPlaceHolder="选择开通类型" [nzShowSearch]="true"
+              [nzNotFoundContent]="'无匹配'">
+              <nz-option *ngFor="let option of openingtype" [nzValue]="option" [nzLabel]="option"
+                [nzDisabled]="option.disabled">
+              </nz-option>
+            </nz-select>
+          </se>
           <se label="重要等级" error="请输入重要等级，大于两个字符" required>
             <nz-select formControlName="class" nzAllowClear nzPlaceHolder="选择重要等级" [nzShowSearch]="true"
               [nzNotFoundContent]="'无匹配'">
@@ -51,6 +59,9 @@
                 </nz-option>
               </nz-select>
             </nz-form-control>
+          </se>
+          <se label="最终使用客户" error="请输入最终使用客户，大于两个字符" required>
+            <input nz-input formControlName="final_client" placeholder="请输入最终使用客户" />
           </se>
           <se label="申请人" error="请输入申请人，大于两个字符" required>
             <input nz-input formControlName="applicant" placeholder="请输入申请人" />

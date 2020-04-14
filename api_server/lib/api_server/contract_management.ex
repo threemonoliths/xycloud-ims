@@ -10,6 +10,7 @@ defmodule ApiServer.ContractManagement do
   alias ApiServer.ContractManagement.ContractDetail
   alias ApiServer.MessageReminding.Message
   use ApiServer.BaseContext
+  use Timex
   
   defmacro __using__(_opts) do
     quote do
@@ -25,10 +26,12 @@ defmodule ApiServer.ContractManagement do
     |> query_like(params, "cname")
     |> query_like(params, "comments")
     |> query_equal(params, "status")
+    |> query_equal(params, "project_id")
     |> query_by_start_time(params)
     |> query_by_end_time(params)
     |> query_order_desc_by(params, "inserted_at")
     |> query_preload([:contract_details])
+    |> query_preload([:project])
     |> get_pagination(params)
   end
 
@@ -39,6 +42,58 @@ defmodule ApiServer.ContractManagement do
     |> query_order_desc_by(params, "inserted_at")
     |> query_preload([:contract_details])
     |> Repo.all
+  end
+
+  # 获取年度应收款信息
+  def get_receivable_yearly(date_str) do
+    # date = Timex.now()
+    # 取一年的所有合同明细 details
+    date_str
+    date = date_str
+    |> Timex.parse!("%Y-%m-%d", :strftime)
+    start_time = Timex.beginning_of_month(date)
+    end_time = Timex.end_of_month(date)
+    details = 
+    ContractDetail
+    |> query_greater_or_equal_than("invoice_date", start_time)
+    |> query_less_or_equal_than("invoice_date", end_time)
+    |> query_preload([:contract])
+    |> Repo.all
+    # 分月统计
+    |> Enum.group_by(fn d -> d.invoice_date.month end )
+    |> Enum.map(fn {k, v} -> 
+      {k, Enum.reduce(v, 0, fn d, acc -> d.invoice_amount + acc end)} 
+    end)
+    |> Enum.map(fn {k,v} -> {k, Float.to_string(v, decimals: 2)} end)
+    |> Enum.map(fn el->
+      el|>Tuple.to_list()
+    end)
+    |>List.first()
+  end
+
+  # 通过起始时间设置查询条件
+  defp query_by_start_time(query, params) do 
+    params
+    |> Map.get("start_time")
+    |> case do
+      nil -> query
+      start_time -> 
+        query
+        |> query_greater_or_equal_than("sign_date", start_time)
+    end
+
+  end
+
+  # 通过结束时间设置查询条件
+  defp query_by_end_time(query, params) do
+    params
+    |> Map.get("end_time")
+    |> case do
+      nil -> query
+      start_time -> 
+        query
+        |> query_less_or_equal_than("sign_date", start_time)
+    end
   end
 
   # 定时执行，获取应收款信息（提前7天提醒），以供发送消息提醒
@@ -75,53 +130,5 @@ defmodule ApiServer.ContractManagement do
         true -> nil
       end
     end)
-  end
-
-  # 获取年度应收款信息
-  def get_receivable_yearly(date_str) do
-    # date = Timex.now()
-    # 取一年的所有合同明细 details
-    date = date_str
-    |> Timex.parse!("%a %b %d %T %z %Y", :strftime)
-    start_time = Timex.beginning_of_year(date)
-    end_time = Timex.end_of_year(date)
-    details = 
-    ContractDetail
-    |> query_greater_or_equal_than("invoice_date", start_time)
-    |> query_less_or_equal_than("invoice_date", end_time)
-    |> query_preload([:contract])
-    |> Repo.all
-    # 分月统计
-    |> Enum.group_by(fn d -> d.invoice_date.month end )
-    |> Enum.map(fn {k, v} -> 
-      {k, Enum.reduce(v, 0, fn d, acc -> d.invoice_amount + acc end)} 
-    end)
-    |> Enum.map(fn {k,v} -> {k, Float.to_string(v, decimals: 2)} end)
-
-  end
-
-  # 通过起始时间设置查询条件
-  defp query_by_start_time(query, params) do 
-    params
-    |> Map.get("start_time")
-    |> case do
-      nil -> query
-      start_time -> 
-        query
-        |> query_greater_or_equal_than("sign_date", start_time)
-    end
-
-  end
-
-  # 通过结束时间设置查询条件
-  defp query_by_end_time(query, params) do
-    params
-    |> Map.get("end_time")
-    |> case do
-      nil -> query
-      start_time -> 
-        query
-        |> query_less_or_equal_than("sign_date", start_time)
-    end
   end
 end

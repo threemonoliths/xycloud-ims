@@ -6,6 +6,7 @@ defmodule ApiServer.Repo.Migrations.CreateResources do
 
       add :name, :string
       add :server_name, :string
+      add :opening_type, :string
       add :class, :string
       add :product_type, :string
       add :cpu, :integer 
@@ -13,6 +14,7 @@ defmodule ApiServer.Repo.Migrations.CreateResources do
       add :storage, :integer
       add :bandwidth, :integer
       add :ip, :string 
+      add :final_client, :string
       add :applicant, :string
       add :application_time, :date 
       add :opening_time, :date

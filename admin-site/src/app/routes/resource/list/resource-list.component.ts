@@ -24,7 +24,8 @@ export class ResourceListComponent implements OnInit {
     name: null,
     ip: null,
     client_id: null,
-    contract_id: null
+    contract_id: null,
+    opening_type: null
   };
 
   data: any[] = [];
@@ -34,6 +35,7 @@ export class ResourceListComponent implements OnInit {
 
   client_data: any[] = [];
   contract_data: any[] = [];
+  openingtype = ["自签", "股份维保", "集团维保", "待签定"];
 
   flag = false;
   uploading = false;
@@ -172,6 +174,20 @@ export class ResourceListComponent implements OnInit {
       this.getData()
       this.fileList = [];
     });
+  }
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isVisible = false;
   }
 
 }

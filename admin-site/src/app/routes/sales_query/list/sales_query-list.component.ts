@@ -5,7 +5,7 @@ import { _HttpClient } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { SalesQueryService } from '../sales_query.service';
 import * as moment from 'moment';
-import { getFormatDateStr, getDateByDateStr } from '../../../shared/utils/datehandler';
+import { getFormatDateStr } from '../../../shared/utils/datehandler';
 
 @Component({
   templateUrl: './sales_query-list.component.html',
@@ -18,17 +18,17 @@ export class SalesQueryListComponent implements OnInit {
   q: any = {
     pi: 1,
     ps: 10,
-    sort_field: 'invoice_date',
+    sort_field: 'date',
     sort_direction: 'desc',
-    date: null,
+    date: null
   };
 
-  data: any[] = [];
+  data: any = {};
   idExpand: any;
   loading = false;
+  flag = false;
 
   expandForm = false;
-  flag = false;
 
   constructor(
     private http: _HttpClient,
@@ -43,19 +43,6 @@ export class SalesQueryListComponent implements OnInit {
     // this.getData();
   }
 
-  // getData() {
-  //   this.loading = true;
-  //   this.srv
-  //     .listOnePage(this.q)
-  //     .pipe(tap(() => (this.loading = false)))
-  //     .subscribe(
-  //       resp => {
-  //         this.data = resp['data'];
-  //         this.cdr.detectChanges();
-  //       }
-  //     );
-  // }
-
   getData() {
     this.loading = true;
     this.srv
@@ -63,17 +50,19 @@ export class SalesQueryListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         resp => {
-          this.data = resp["data"];
+          if (resp["error"]) this.msg.error(`无信息`);
+          this.data.month = resp["month"];
+          this.data.amount = resp["amount"];
+          console.log("数据", this.data)
           this.cdr.detectChanges();
         }
       );
   }
 
-
-
   reset() {
     this.q.date = null,
       this.loading = false;
+    this.data = {};
   }
 
   pageChange(pi: number) {
@@ -89,7 +78,20 @@ export class SalesQueryListComponent implements OnInit {
 
   search() {
     console.log(this.q.date)
+    if (this.q.date == null) {
+
+      this.loading = false
+      this.reset();
+    }
+    else {
+      this.q.date = getFormatDateStr(this.q.date);
+      console.log(this.q.date)
+      this.getData();
+    }
   }
 
-
+  pick(e) {
+    this.flag = true;
+    console.log("选择日期", this.q.date)
+  }
 }

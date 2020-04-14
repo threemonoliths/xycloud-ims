@@ -6,11 +6,11 @@ import { tap } from 'rxjs/operators';
 import { UploadFile } from 'ng-zorro-antd';
 import * as moment from 'moment';
 import { ContractService } from '../contract.service';
+import { ProjectService } from '../../project/project.service';
 import { saveAs } from "file-saver";
 
 @Component({
   templateUrl: './contract-list.component.html',
-  // styleUrls: ['./contract-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
@@ -28,15 +28,16 @@ export class ContractListComponent implements OnInit {
     startDate: null,
     endDate: null,
     flag: 0,
-    status: ""
+    status: "",
+    project_id: null
   };
 
   data: any[] = [];
   detailData: any[] = [];
   idExpand: any;
   loading = false;
+  project_data: any[] = [];
 
-  expandForm = false;
   flag = false;
   uploading = false;
   fileList: UploadFile[] = [];
@@ -45,7 +46,7 @@ export class ContractListComponent implements OnInit {
     { lable: '已完成', value: 1 },
     { lable: '已终止', value: 2 }
   ];
-  // status_flag = ""
+  isVisible = false;
 
 
   constructor(
@@ -54,11 +55,13 @@ export class ContractListComponent implements OnInit {
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
     private srv: ContractService,
+    private projectService: ProjectService,
     private router: Router,
   ) { }
 
   ngOnInit() {
     this.getData();
+    this.getProjectData()
   }
 
   getData() {
@@ -70,19 +73,22 @@ export class ContractListComponent implements OnInit {
         resp => {
           this.data = resp["data"];
           this.excuted_cal()
-          console.log(this.data)
+          console.log(resp)
           this.cdr.detectChanges();
         }
       );
   }
 
-  // getDetailData(id) {
-  //   console.log(this.idExpand + "===" + id);
-  //   this.idExpand = id;
-  //   this.srv
-  //     .getById(id)
-  //     .then(result => { this.detailData = result.contract_details })
-  // }
+  // 获取项目信息
+  getProjectData() {
+    this.projectService
+      .listAll()
+      .pipe()
+      .subscribe(resp => {
+        this.project_data = resp["data"];
+        this.cdr.detectChanges();
+      });
+  }
 
   add(tpl: TemplateRef<{}>) {
     // this.srv.isUpdate = false;
@@ -244,6 +250,20 @@ export class ContractListComponent implements OnInit {
           }
         );
     console.log("导出")
+  }
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isVisible = false;
   }
 
 }

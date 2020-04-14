@@ -22,6 +22,7 @@ defmodule ApiServer.ResourceManagement do
   def page(params) do  
     Resource
     |> query_like(params, "ip")
+    |> query_like(params, "opening_type")
     |> query_equal(params, "client_id")
     |> query_equal(params, "contract_id")
     |> query_order_desc_by(params, "inserted_at")

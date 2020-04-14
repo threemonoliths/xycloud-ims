@@ -35,11 +35,11 @@ defmodule ApiServerWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     resources "/projects", ProjectController, except: [:new, :edit]
     resources "/contracts", ContractController, except: [:new, :edit]
-
     resources "/purchase_contracts", PurchaseContractController, except: [:new, :edit]
-
     resources "/clients", ClientController, except: [:new, :edit]
     resources "/resources", ResourceController, except: [:new, :edit]
+
+    get "/no", ClientController, :no
 
     get "/tmpls/attachment/:id", TmplController, :download_attachment
     put "/user/info", UserController, :set_self

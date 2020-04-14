@@ -29,13 +29,10 @@ defmodule ApiServer.ClientManagement do
     |> get_pagination(params)
   end
 
-  # def find_all(params) do 
-  #   Client
-  #   |> query_like(params, "name")
-  #   |> query_like(params, "comments")
-  #   |> query_order_desc_by(params, "inserted_at")
-  #   |> query_preload([:client_details])
-  #   |> Repo.all
-  # end
+  def getno() do
+    query = from u in Client,
+        select: max(u.no)
+    Repo.one(query)
+  end
 
 end

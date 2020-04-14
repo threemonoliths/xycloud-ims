@@ -13,12 +13,10 @@ export class PurchaseQueryService {
   purchase_query: any = null;
 
   formOperation = 'create';
-  // isUpdate = false;
 
   listpayable(q: any) {
-    return this.http.get(this.url + `/${q.date}`, setToken());
+    return this.http.get(this.url, setTokenAndParams(q))
   }
-
 
   getDate(v) {
     v.date = getFormatDateStr(v.date)

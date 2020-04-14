@@ -8,7 +8,7 @@ defmodule ApiServer.TmplAttachment do
   
 
   @versions [:original]
-  @extension_whitelist ~w(.jpg .jpeg .gif .png .doc .docx .pdf)
+  @extension_whitelist ~w(.jpg .jpeg .gif .png .doc .docx .pdf .xlsx)
 
   # To add a thumbnail version:
   # @versions [:original, :thumb]

@@ -37,21 +37,21 @@ export class ClientFormComponent implements OnInit {
   get category() {
     return this.form.controls.category;
   }
-  get legal_representative() {
-    return this.form.controls.legal_representative;
-  }
+  // get legal_representative() {
+  //   return this.form.controls.legal_representative;
+  // }
   get registered_address() {
     return this.form.controls.registered_address;
   }
-  get registered_capital() {
-    return this.form.controls.registered_capital;
-  }
-  get business_scope() {
-    return this.form.controls.business_scope;
-  }
-  get industry_involved() {
-    return this.form.controls.industry_involved;
-  }
+  // get registered_capital() {
+  //   return this.form.controls.registered_capital;
+  // }
+  // get business_scope() {
+  //   return this.form.controls.business_scope;
+  // }
+  // get industry_involved() {
+  //   return this.form.controls.industry_involved;
+  // }
   get project() {
     return this.form.controls.project;
   }
@@ -63,15 +63,6 @@ export class ClientFormComponent implements OnInit {
   }
   get certificate_no() {
     return this.form.controls.certificate_no;
-  }
-  get organization_no() {
-    return this.form.controls.organization_no;
-  }
-  get business_license_no() {
-    return this.form.controls.business_license_no;
-  }
-  get tax_no() {
-    return this.form.controls.tax_no;
   }
   get taxpayer_type() {
     return this.form.controls.taxpayer_type;
@@ -116,26 +107,25 @@ export class ClientFormComponent implements OnInit {
   ngOnInit(): void {
     this.setTitle();
     const op = this.srv.formOperation;
+    if (op == 'create') this.getNoData();
     if (op == 'update') this.initUpdate();
     this.form = this.fb.group({
-      no: [this.client.no ? this.client.no : null, [],],
+      no: [this.client.no ? this.client.no : '', [Validators.required, , Validators.maxLength(30), Validators.minLength(4),
+      Validators.pattern('[\u4E00-\u9FA5-a-zA-Z0-9_]*$')]],
       name: [
         this.client.name ? this.client.name : null,
         Validators.compose([Validators.required, Validators.minLength(2)]),
       ],
       category: [this.client.category ? this.client.category : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      legal_representative: [this.client.legal_representative ? this.client.legal_representative : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+      // legal_representative: [this.client.legal_representative ? this.client.legal_representative : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       registered_address: [this.client.registered_address ? this.client.registered_address : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      registered_capital: [this.client.registered_capital ? this.client.registered_capital : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      business_scope: [this.client.business_scope ? this.client.business_scope : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      industry_involved: [this.client.industry_involved ? this.client.industry_involved : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+      // registered_capital: [this.client.registered_capital ? this.client.registered_capital : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+      // business_scope: [this.client.business_scope ? this.client.business_scope : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+      // industry_involved: [this.client.industry_involved ? this.client.industry_involved : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       project: [this.client.project ? this.client.project : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       registered_place: [this.client.registered_place ? this.client.registered_place : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       id_type: [this.client.id_type ? this.client.id_type : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       certificate_no: [this.client.certificate_no ? this.client.certificate_no : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      organization_no: [this.client.organization_no ? this.client.organization_no : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      business_license_no: [this.client.business_license_no ? this.client.business_license_no : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      tax_no: [this.client.tax_no ? this.client.tax_no : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       taxpayer_type: [this.client.taxpayer_type ? this.client.taxpayer_type : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       invoice_title: [this.client.invoice_title ? this.client.invoice_title : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       taxpayer_no: [this.client.taxpayer_no ? this.client.taxpayer_no : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
@@ -143,10 +133,10 @@ export class ClientFormComponent implements OnInit {
       telephone: [this.client.telephone ? this.client.telephone : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       bank_name: [this.client.bank_name ? this.client.bank_name : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
       bank_account: [this.client.bank_account ? this.client.bank_account : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      receiving_bank_name: [this.client.receiving_bank_name ? this.client.receiving_bank_name : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      receiving_bank_account: [this.client.receiving_bank_account ? this.client.receiving_bank_account : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      remittance_bank_name: [this.client.remittance_bank_name ? this.client.remittance_bank_name : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
-      remittance_bank_account: [this.client.remittance_bank_account ? this.client.remittance_bank_account : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
+      receiving_bank_name: [this.client.receiving_bank_name ? this.client.receiving_bank_name : null, [],],
+      receiving_bank_account: [this.client.receiving_bank_account ? this.client.receiving_bank_account : null, [],],
+      remittance_bank_name: [this.client.remittance_bank_name ? this.client.remittance_bank_name : null, [],],
+      remittance_bank_account: [this.client.remittance_bank_account ? this.client.remittance_bank_account : null, [],],
       comments: [this.client.comments ? this.client.comments : null, Validators.compose([Validators.required, Validators.minLength(2)]),],
 
       client_details: this.fb.array([]),
@@ -268,7 +258,8 @@ export class ClientFormComponent implements OnInit {
     this.router.navigateByUrl('/client/page');
   }
 
-
-
+  getNoData() {
+    this.srv.getNoData().subscribe(resp => { this.no.setValue(resp["no"]); console.log(resp) })
+  }
 
 }

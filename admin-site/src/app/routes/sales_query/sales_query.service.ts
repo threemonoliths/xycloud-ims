@@ -13,11 +13,6 @@ export class SalesQueryService {
   sales_query: any = null;
 
   formOperation = 'create';
-  // isUpdate = false;
-
-  // listOnePage(q: any) {
-  //   return this.http.get(this.url, setTokenAndParams(q));
-  // }
 
   listReceivable(q: any) {
     return this.http.get(this.url, setTokenAndParams(q))
