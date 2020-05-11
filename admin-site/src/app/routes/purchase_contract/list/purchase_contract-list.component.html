@@ -156,8 +156,9 @@
                       <th>笔次信息</th>
                       <th>发票金额</th>
                       <th>实付金额</th>
-                      <th>发票信息</th>
-                      <th>实付信息</th>
+                      <th>挂账日期</th>
+                      <th>应付日期</th>
+                      <th>实付日期</th>
                     </tr>
                   </thead>
         <tbody>
@@ -166,6 +167,7 @@
             <td>{{ data.invoice_amount }}</td>
             <td>{{ data.actual_payment }}</td>
             <td>{{ data.invoice_date }}</td>
+            <td>{{ data.due_date }}</td>
             <td>{{ data.payment_date }}</td>
           </tr>
         </tbody>

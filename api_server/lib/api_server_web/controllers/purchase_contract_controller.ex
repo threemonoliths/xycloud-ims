@@ -126,7 +126,7 @@ defmodule ApiServerWeb.PurchaseContractController do
     # path = String.replace(attachment.path,"/","\\")
     path = attachment.path
     th = [:cno,:cname,:party_a,:party_b,:sign_date,:expiry_date,:amount,:comments]
-    th_details = [:issue_name, :invoice_amount, :actual_payment, :invoice_date, :payment_date]
+    th_details = [:issue_name, :invoice_amount, :actual_payment, :invoice_date, :due_date, :payment_date]
     Xlsxir.multi_extract(path, 0)
     |>case do
       {:ok, pid} ->
@@ -134,7 +134,7 @@ defmodule ApiServerWeb.PurchaseContractController do
         purchase_contract = Enum.map(tail,fn c ->
             # 组装detail为map
             details_list = c -- hd Enum.chunk_every(c,8)
-            details_map = details_list |> Enum.chunk_every(5) |> Enum.map(fn el ->
+            details_map = details_list |> Enum.chunk_every(6) |> Enum.map(fn el ->
               Enum.zip(th_details,el) |> Enum.into(%{})
             end)
             purchase_contract_params = Enum.zip(th,c) |> Enum.into(%{}) |> Map.put(:purchase_contract_details, details_map)

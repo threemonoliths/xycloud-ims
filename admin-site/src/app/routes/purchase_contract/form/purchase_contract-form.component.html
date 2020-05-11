@@ -99,7 +99,8 @@
                 <th>笔次信息</th>
                 <th>发票金额</th>
                 <th>实付金额</th>
-                <th>发票信息</th>
+                <th>挂账日期</th>
+                <th>应付信息</th>
                 <th>实付信息</th>
                 <th>操作</th>
               </tr>
@@ -126,8 +127,14 @@
                 </td>
                 <td>
                   <span *ngIf="editIndex !== i">{{ purchase_contract_details.value[i].invoice_date }}</span>
-                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择发票日期">
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择挂账日期">
                     <nz-date-picker formControlName="invoice_date"></nz-date-picker>
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="editIndex !== i">{{ purchase_contract_details.value[i].due_date }}</span>
+                  <span *ngIf="editIndex === i" nz-form-control nzErrorTip="请选择应付日期">
+                    <nz-date-picker formControlName="due_date"></nz-date-picker>
                   </span>
                 </td>
                 <td>

@@ -7,9 +7,9 @@ defmodule ApiServerWeb.PurchaseContractExporter do
   @path "priv/static/exports/"
   @name "export_purchase_contract.xlsx"
   @header [ "编号", "名称", "甲方", "乙方", "签订日期", "终止日期", "金额", "备注", 
-            "笔次", "发票金额", "实付金额", "发票时间", "实付时间", 
-            "笔次", "发票金额", "实付金额", "发票时间", "实付时间", 
-            "笔次", "发票金额", "实付金额", "发票时间", "实付时间" ]
+            "笔次", "发票金额", "实付金额", "挂账时间", "应付时间", "实付时间", 
+            "笔次", "发票金额", "实付金额", "挂账时间", "应付时间", "实付时间", 
+            "笔次", "发票金额", "实付金额", "挂账时间", "应付时间", "实付时间" ]
 
   def get_name() do
     @name
@@ -61,6 +61,7 @@ defmodule ApiServerWeb.PurchaseContractExporter do
       d.invoice_amount, 
       d.actual_payment, 
       d.invoice_date |> ApiServer.Utils.DatetimeHandler.get_date_str , 
+      d.due_date |> ApiServer.Utils.DatetimeHandler.get_date_str ,
       d.payment_date |> ApiServer.Utils.DatetimeHandler.get_date_str ]
     end)
   end

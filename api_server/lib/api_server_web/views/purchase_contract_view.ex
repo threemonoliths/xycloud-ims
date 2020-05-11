@@ -41,6 +41,7 @@ defmodule ApiServerWeb.PurchaseContractView do
         invoice_amount: el.invoice_amount,
         actual_payment: el.actual_payment,
         invoice_date: el.invoice_date,
+        due_date: el.due_date,
         payment_date: el.payment_date
       }
     end)

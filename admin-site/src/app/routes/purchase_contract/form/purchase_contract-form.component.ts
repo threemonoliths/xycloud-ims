@@ -138,6 +138,7 @@ export class PurchaseContractFormComponent implements OnInit {
       invoice_amount: [null, [Validators.required]],
       actual_payment: [null],
       invoice_date: [null, [Validators.required]],
+      due_date: [null],
       payment_date: [null],
     });
   }
@@ -162,6 +163,8 @@ export class PurchaseContractFormComponent implements OnInit {
 
   save(index: number) {
     this.purchase_contract_details.value[index].invoice_date = getFormatDateStr(this.purchase_contract_details.value[index].invoice_date)
+    this.purchase_contract_details.value[index].due_date = (this.purchase_contract_details.value[index].due_date ?
+      getFormatDateStr(this.purchase_contract_details.value[index].due_date) : null)
     this.purchase_contract_details.value[index].payment_date = (this.purchase_contract_details.value[index].payment_date ?
       getFormatDateStr(this.purchase_contract_details.value[index].payment_date) : null)
     this.purchase_contract_details.value[index].actual_payment =
