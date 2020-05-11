@@ -12,7 +12,7 @@ config :api_server,
 
 # Configures the endpoint
 config :api_server, ApiServerWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "172.27.39.116"],
   secret_key_base: "KI1QW33ZpSh1cOPWWCbVTtEmjkxrtqRjaqEXaZpiL4fCLhs/iBbqPi7fDaSpRpYD",
   render_errors: [view: ApiServerWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: ApiServer.PubSub, adapter: Phoenix.PubSub.PG2]
