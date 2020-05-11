@@ -70,7 +70,8 @@ defmodule ApiServerWeb.ResourceController do
    def import_excel(conn,params) do
     IO.puts("#######import#######")
     attachment = Map.get(params, "attachment")
-    path = String.replace(attachment.path,"/","\\")
+    # path = String.replace(attachment.path,"/","\\")
+    path = attachment.path
     th = [:name, :server_name, :opening_type, :class, :product_type, :cpu, :memory, :storage, :bandwidth, :storage_type, :ip, :client_id, :final_client,:applicant, 
           :application_time, :opening_time, :security_service, :backup_service, :contract_id]
     Xlsxir.multi_extract(path, 0)

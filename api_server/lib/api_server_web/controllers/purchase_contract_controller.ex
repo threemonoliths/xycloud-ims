@@ -123,7 +123,8 @@ defmodule ApiServerWeb.PurchaseContractController do
   def import_excel(conn,params) do
     IO.puts("#######import#######")
     attachment = Map.get(params, "attachment")
-    path = String.replace(attachment.path,"/","\\")
+    # path = String.replace(attachment.path,"/","\\")
+    path = attachment.path
     th = [:cno,:cname,:party_a,:party_b,:sign_date,:expiry_date,:amount,:comments]
     th_details = [:issue_name, :invoice_amount, :actual_payment, :invoice_date, :payment_date]
     Xlsxir.multi_extract(path, 0)
