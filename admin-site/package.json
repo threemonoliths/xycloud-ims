@@ -117,7 +117,7 @@
     "typescript": "~3.5.3",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-server": "^3.0.0",
-    "xlsx": "^0.14.4"
+    "xlsx": "^0.17.0"
   },
   "husky": {
     "hooks": {
